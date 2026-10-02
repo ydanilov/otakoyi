@@ -22,13 +22,16 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "verify": "pnpm tokens:check && pnpm lint && pnpm format:check && pnpm typecheck && pnpm check:stories && pnpm test && pnpm test:stories",
-    "verify:full": "pnpm verify && pnpm build && pnpm check:budget && pnpm test:e2e"
+    "verify:full": "pnpm verify && pnpm build && pnpm check:budget && pnpm test:e2e && pnpm test:layout",
+    "test:layout": "playwright test tests/layout",
+    "prepare": "lefthook install || true",
+    "check:deadcode": "knip --no-progress",
+    "test:lighthouse": "lhci autorun"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.3.8",
-    "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.1",
     "@types/mdx": "^2.0.14",
     "class-variance-authority": "^0.7.1",
@@ -45,6 +48,9 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.63.0",
     "@storybook/addon-a11y": "^10.6.1",
     "@storybook/addon-docs": "^10.6.1",
@@ -64,6 +70,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
     "eslint-plugin-storybook": "^10.6.1",
+    "knip": "^6.39.0",
+    "lefthook": "^2.1.16",
     "playwright": "latest",
     "prettier": "^3.9.9",
     "prettier-plugin-tailwindcss": "^0.8.1",

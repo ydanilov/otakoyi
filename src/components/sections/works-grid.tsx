@@ -35,7 +35,7 @@ export function WorksGrid({ items, formats }: WorksGridProps) {
         <ul className="grid gap-x-6 gap-y-12 md:grid-cols-2">
           {visible.map((item) => (
             <li key={item.slug}>
-              <WorkCard item={item} />
+              <WorkCard item={item} headingLevel="h2" />
             </li>
           ))}
         </ul>

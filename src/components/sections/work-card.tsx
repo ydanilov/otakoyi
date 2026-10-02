@@ -5,7 +5,14 @@ import { GenerativeWork } from "@/components/works/generative-work"
 import type { Case } from "@/content/cases"
 import { cn } from "@/lib/utils"
 
-export function WorkCard({ item, className }: { item: Case; className?: string }) {
+type WorkCardProps = {
+  item: Case
+  /** Heading level for the card title — keep the page outline without skipped levels. */
+  headingLevel?: "h2" | "h3"
+  className?: string
+}
+
+export function WorkCard({ item, headingLevel: Title = "h3", className }: WorkCardProps) {
   const headline = item.results[0]
   return (
     <Link
@@ -32,7 +39,7 @@ export function WorkCard({ item, className }: { item: Case; className?: string }
       </div>
       <div className="mt-4 flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-lg font-medium tracking-tight">{item.title}</h3>
+          <Title className="text-lg font-medium tracking-tight">{item.title}</Title>
           <p className="text-sm text-muted-foreground">{item.location}</p>
         </div>
         <div className="flex flex-wrap justify-end gap-1">

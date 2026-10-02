@@ -16,6 +16,7 @@ export default function WorksPage() {
     <>
       <div className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
         <SectionHeading
+          as="h1"
           eyebrow="Installations"
           title="Installations that worked for brands like yours"
           description="Every image here is rendered live by the same engine we install on site. Filter by the kind of space you are planning."

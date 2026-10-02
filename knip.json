@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["src/**/*.stories.tsx", "tests/**/*.ts", "scripts/agent-hooks/*.mjs", "scripts/*.mjs"],
+  "project": ["src/**/*.{ts,tsx}", "scripts/**/*.mjs", "tests/**/*.ts"],
+  "ignoreDependencies": ["tw-animate-css", "tailwindcss"],
+  "ignoreExportsUsedInFile": true,
+  "rules": {
+    "exports": "error",
+    "types": "error"
+  },
+  "ignoreFiles": [],
+  "ignore": ["src/components/ui/**"]
+}

@@ -39,26 +39,34 @@ Humans own direction and approval; agents do the work between checkpoints.
 
 ```bash
 pnpm dev                 # Next dev server
-pnpm storybook           # component workshop on :6006
+pnpm storybook           # component workshop on :6006 (also an MCP server at /mcp)
 pnpm tokens              # regenerate CSS/TS from tokens/tokens.json
-pnpm verify              # fast sensors: tokens, lint, format, types, story coverage, unit + story tests
-pnpm verify:full         # + production build, JS budget, Playwright e2e/a11y
+pnpm verify              # fast sensors: tokens, lint, format, types, story coverage, unit + Storybook (interaction, a11y, layout)
+pnpm verify:full         # + build, JS budget, Playwright e2e/a11y + layout contract
+pnpm check:deadcode      # knip: unused files, exports, deps
+pnpm test:lighthouse     # Lighthouse CI budgets (needs a build)
 pnpm test:visual         # screenshot regression (baselines are generated in CI only)
 ```
 
-Run `pnpm verify` before every commit. Run `pnpm verify:full` before opening a PR.
+Agent shortcuts (Claude Code): `/task`, `/verify`, `/ship`, `/sweep`, `/figma-sync`; subagents
+`reviewer`, `a11y-auditor`, `design-parity`; skills `new-component`, `new-case`. See `docs/workflow.md`.
+
+Hooks run automatically: every edit is formatted + linted (`scripts/agent-hooks/post-edit.mjs`);
+before you finish, tokens / story coverage / types must be green (`stop.mjs`). Git hooks (lefthook)
+lint staged files, enforce conventional commits and run `pnpm verify` before push.
 
 ## Hard rules (enforced by sensors — the error message tells you the fix)
 
 1. **Tokens only.** No raw colors (`#fff`, `rgb()`, `oklch()`) and no Tailwind palette colors (`bg-red-500`) in `src/`. Use semantic classes (`bg-background`, `text-muted-foreground`, `bg-signal`) or `var(--token)`. New color → add it to `tokens/tokens.json`, run `pnpm tokens`, map it in `globals.css`.
 2. **Design system first.** Compose pages from `@/components/ui/*` and `@/components/sections/*`. Never import `radix-ui` outside `src/components/ui`. Need a new primitive? Copy it from shadcn, don't hand-roll it.
 3. **WebGL is quarantined.** `three` / `@react-three/*` only inside `src/components/works`. Everywhere else use `<GenerativeWork work seed palette density />`.
-4. **No story, no component.** Every file in `sections/`, `site/`, `works/` needs a story next to it (`pnpm check:stories`). Add `play` functions for interactive behaviour.
+4. **No story, no component.** Every file in `ui/`, `sections/`, `site/`, `works/` needs a story next to it (`pnpm check:stories`). Add `play` functions for interactive behaviour. Every story is also checked for overflow, overlapping controls and clipped text — opt out only with `parameters.layoutCheck = false` and a comment why.
 5. **Accessibility is a test, not a review comment.** Storybook a11y runs in `error` mode; Playwright runs axe (WCAG 2.2 AA) on every route.
 6. **Content contract.** Each case = entry in `src/content/cases.ts` + `src/content/cases/<slug>.mdx`. Schema is zod; tests fail on orphans or missing bodies.
 7. **Budget.** Initial JS ≤ 230 KB gzip per route and three.js must be lazy (`pnpm check:budget`).
 8. **Determinism.** Generative works must render identically for the same `seed` under `prefers-reduced-motion: reduce` (used by visual tests). Never use `Math.random()` in shaders or render paths — derive from `seed`.
-9. Use the `@/` alias, never `../` imports.
+9. **Page outline.** One `h1` per page, no skipped heading levels (`SectionHeading as="h1"`, `WorkCard headingLevel`). Every page ends with a proposal CTA — enforced by `pnpm test:layout`.
+10. Use the `@/` alias, never `../` imports.
 
 ## Workflow per task (full version: `docs/workflow.md`)
 

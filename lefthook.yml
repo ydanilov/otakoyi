@@ -1,0 +1,24 @@
+# Git hooks — the fastest sensors run before code leaves the machine.
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.{ts,tsx,js,mjs,json,css,md}"
+      run: pnpm exec prettier --write {staged_files}
+      stage_fixed: true
+    lint:
+      glob: "*.{ts,tsx}"
+      run: pnpm exec eslint --max-warnings=0 {staged_files}
+    tokens:
+      glob: "tokens/tokens.json"
+      run: pnpm tokens && git add src/app/tokens.css src/lib/tokens.generated.ts
+
+commit-msg:
+  commands:
+    conventional:
+      run: pnpm exec commitlint --edit {1}
+
+pre-push:
+  commands:
+    verify:
+      run: pnpm verify

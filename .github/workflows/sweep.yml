@@ -1,0 +1,35 @@
+name: Weekly sweep
+
+# Harness garbage collection: surfaces dead code, outdated deps and drift as one issue.
+on:
+  schedule: [{ cron: "0 6 * * 1" }]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Collect findings
+        run: |
+          {
+            echo "## Dead code (knip)"; echo '```'; pnpm -s check:deadcode 2>&1 || true; echo '```'
+            echo "## Outdated dependencies"; echo '```'; pnpm outdated 2>&1 || true; echo '```'
+            echo "## Story coverage"; echo '```'; pnpm -s check:stories 2>&1 || true; echo '```'
+            echo "## Token drift"; echo '```'; pnpm -s tokens:check 2>&1 || true; echo '```'
+            echo; echo "_Run \`/sweep\` in Claude Code to turn this into a cleanup PR. Figma ↔ code drift is checked by the agent via Figma MCP._"
+          } > sweep.md
+      - name: Open or update the sweep issue
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          n=$(gh issue list --label sweep --state open --json number -q '.[0].number')
+          if [ -n "$n" ]; then gh issue edit "$n" --body-file sweep.md
+          else gh label create sweep --color 5319e7 2>/dev/null || true; gh issue create --title "Weekly sweep" --label sweep --body-file sweep.md; fi
