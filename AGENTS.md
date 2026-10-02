@@ -29,6 +29,12 @@ Humans own direction and approval; agents do the work between checkpoints.
 | Design         | Figma file "Draft" (Variables mirror `tokens.json`); references from Mobbin |
 | Hosting        | GitHub (private) → Vercel (preview per PR, prod on `main`)                  |
 
+## Live
+
+- Site: https://studio-portfolio-navy.vercel.app
+- Storybook: https://studio-portfolio-storybook.vercel.app
+- Figma: https://www.figma.com/design/7fyYBxvBHHEK4IKO6ZTkXN/Draft
+
 ## Commands
 
 ```bash

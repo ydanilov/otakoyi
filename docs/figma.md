@@ -14,3 +14,8 @@ Rules:
 - Component names = React component names; variant props = React prop names.
 - Generative imagery in Figma is a placeholder fill (screenshots of `GenerativeWork` at a fixed seed); the real thing lives in code.
 - Code Connect mapping is planned once the library stabilises (`figma-code-connect`).
+
+## Live links
+
+- Site: https://studio-portfolio-navy.vercel.app
+- Storybook: https://studio-portfolio-storybook.vercel.app (Vercel project `studio-portfolio-storybook`, build `pnpm build-storybook`, output `storybook-static`)

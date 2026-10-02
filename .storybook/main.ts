@@ -1,7 +1,8 @@
 import type { StorybookConfig } from "@storybook/nextjs-vite"
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(ts|tsx)"],
+  // Case MDX in src/content is site content, not Storybook docs.
+  stories: ["../src/docs/**/*.mdx", "../src/**/*.stories.@(ts|tsx)"],
   addons: [
     "@storybook/addon-vitest",
     "@storybook/addon-a11y",
