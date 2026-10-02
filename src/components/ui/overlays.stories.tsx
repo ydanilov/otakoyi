@@ -59,7 +59,8 @@ export const DialogStory: Story = {
   play: async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Book a call" }))
     const dialog = await screen.findByRole("dialog", { name: "Book a 30-minute call" })
-    await expect(dialog).toBeVisible()
+    // Radix animates in from opacity 0 — wait for the animation instead of racing it.
+    await waitFor(() => expect(dialog).toBeVisible())
     await userEvent.keyboard("{Escape}")
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument())
   },
@@ -82,7 +83,8 @@ export const SheetStory: Story = {
   ),
   play: async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Open menu" }))
-    await expect(await screen.findByRole("dialog", { name: "Field Studio" })).toBeVisible()
+    const sheet = await screen.findByRole("dialog", { name: "Field Studio" })
+    await waitFor(() => expect(sheet).toBeVisible())
     await userEvent.keyboard("{Escape}")
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument())
   },
@@ -107,7 +109,7 @@ export const DropdownStory: Story = {
   play: async ({ canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Format" }))
     const menu = await screen.findByRole("menu")
-    await expect(menu).toBeVisible()
+    await waitFor(() => expect(menu).toBeVisible())
     await expect(screen.getAllByRole("menuitem")).toHaveLength(3)
     await userEvent.keyboard("{Escape}")
     await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument())
