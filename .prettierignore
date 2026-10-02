@@ -1,0 +1,10 @@
+.next
+node_modules
+pnpm-lock.yaml
+storybook-static
+playwright-report
+test-results
+src/app/tokens.css
+src/lib/tokens.generated.ts
+tests/visual/__screenshots__
+*.mdx
