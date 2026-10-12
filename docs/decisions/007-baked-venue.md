@@ -13,3 +13,5 @@
 - Runtime adds walking mannequins (instanced), visitor ripples on the interactive floor, bloom / grain / vignette, and quality tiers via `PerformanceMonitor`.
 
 **Consequences.** Changing the venue means editing the script and re-baking (~5 min on 2 CPU cores). Assets add ~0.9 MB, loaded only when the tour scrolls into view.
+
+**Update 2026-10-12 — visitors and four stops.** The tour now covers exhibitions → offices → music events → museums. Walking capsules were replaced by standing visitors built in `scripts/blender/people.py`: MakeHuman bodies (CC0 assets, generated with MPFB 2 as a build tool) posed from Mixamo-rigged characters in the three.js examples, exported as one mesh (`public/models/people.glb`) and rendered as glossy oil-black sculpture. Their shadows are part of the bake.
