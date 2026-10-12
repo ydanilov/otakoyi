@@ -110,6 +110,8 @@ export function WorksReel({ items }: WorksReelProps) {
                   />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-background/40" />
+                {/* Centre scrim: keeps title, location and result readable over busy works. */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_50%_50%,var(--background)_0%,transparent_100%)] opacity-80" />
               </div>
             )
           })}
@@ -118,7 +120,7 @@ export function WorksReel({ items }: WorksReelProps) {
           <div className="absolute inset-0 z-50 flex flex-col">
             <div
               aria-hidden
-              className="mx-auto flex w-full max-w-7xl items-start justify-between px-4 pt-8 font-mono text-xs tracking-widest text-muted-foreground uppercase md:px-8"
+              className="mx-auto flex w-full max-w-7xl items-start justify-between px-4 pt-10 font-mono text-xs tracking-widest text-muted-foreground uppercase md:px-8"
             >
               <span>
                 <span className="text-foreground">{pad(active + 1)}</span> / {pad(n)}
