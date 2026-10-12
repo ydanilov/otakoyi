@@ -170,3 +170,28 @@ void main() {
   gl_FragColor = vec4(col, a * (0.55 + vGlow * 0.45));
 }
 `
+
+/**
+ * Ripples from visitors on an interactive floor. uPoints: up to 8 visitors as (u, v, active)
+ * in the floor's UV space. Additive, so it lights up the generative floor underneath.
+ */
+export const rippleFragmentShader = /* glsl */ `
+precision highp float;
+varying vec2 vUv;
+uniform float uTime;
+uniform vec3 uPoints[8];
+uniform vec3 uColor;
+
+void main() {
+  float a = 0.0;
+  for (int i = 0; i < 8; i++) {
+    vec3 p = uPoints[i];
+    if (p.z < 0.5) continue;
+    float d = distance(vUv, p.xy);
+    float ring = sin(d * 70.0 - uTime * 5.0 + float(i)) * 0.5 + 0.5;
+    a += pow(ring, 6.0) * smoothstep(0.22, 0.0, d);
+    a += smoothstep(0.035, 0.0, d) * 0.8; // footprint glow
+  }
+  gl_FragColor = vec4(uColor * a * 0.9, a);
+}
+`

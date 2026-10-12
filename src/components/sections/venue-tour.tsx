@@ -74,7 +74,7 @@ export function VenueTour({ stops }: VenueTourProps) {
           <VenueScene progress={progress} className="absolute inset-0" />
           <div
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/20 to-transparent"
+            className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-transparent"
           />
 
           <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col justify-between px-4 py-10 md:px-8">
@@ -141,7 +141,13 @@ export function VenueTour({ stops }: VenueTourProps) {
 
 function StopCopy({ stop, large }: { stop: Solution; large?: boolean }) {
   return (
-    <div className="space-y-4">
+    <div
+      className={cn(
+        "space-y-4",
+        large &&
+          "rounded-2xl border border-border/60 bg-background/55 p-6 shadow-2xl backdrop-blur-xl md:p-8",
+      )}
+    >
       <p className="font-mono text-xs tracking-widest text-signal uppercase">{stop.label}</p>
       <h3
         className={cn(
