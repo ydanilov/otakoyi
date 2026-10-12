@@ -4,9 +4,9 @@ import Link from "next/link"
 import { useState } from "react"
 import { LayoutGridIcon, ListIcon } from "lucide-react"
 
+import { CaseVisual } from "@/components/sections/case-visual"
 import { Badge } from "@/components/ui/badge"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { GenerativeWork } from "@/components/works/generative-work"
 import type { Case, CaseFormat } from "@/content/cases"
 import { WorkCard } from "./work-card"
 
@@ -76,11 +76,10 @@ export function WorksGrid({ items, formats }: WorksGridProps) {
                     </Badge>
                   ))}
                 </span>
-                <GenerativeWork
-                  work={item.hero.work}
-                  seed={item.hero.seed}
-                  density={item.hero.density}
+                <CaseVisual
+                  item={item}
                   animate={false}
+                  sizes="8rem"
                   className="hidden aspect-[4/3] rounded-md opacity-60 transition-opacity group-hover:opacity-100 md:block"
                 />
               </Link>

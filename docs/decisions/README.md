@@ -10,4 +10,4 @@ Short, numbered, immutable. To change a decision, add a new ADR that supersedes 
 | [004](004-mdx-content.md)             | MDX in the repo for case studies              | Accepted |
 | [005](005-tokens-source-of-truth.md)  | `tokens/tokens.json` as token source of truth | Accepted |
 | [006](006-motion-policy.md)           | Motion on for everyone, with a site toggle    | Accepted |
-| [007](007-baked-venue.md)            | Blender-built venue with baked lighting       | Accepted |
+| [007](007-baked-venue.md)             | Blender-built venue with baked lighting       | Accepted |

@@ -1,7 +1,7 @@
 import Link from "next/link"
 
+import { CaseVisual } from "@/components/sections/case-visual"
 import { Badge } from "@/components/ui/badge"
-import { GenerativeWork } from "@/components/works/generative-work"
 import type { Case } from "@/content/cases"
 import { cn } from "@/lib/utils"
 
@@ -16,13 +16,17 @@ export function WorkCard({ item, className }: { item: Case; className?: string }
       )}
     >
       <div className="relative">
-        <GenerativeWork
-          work={item.hero.work}
-          seed={item.hero.seed}
-          density={item.hero.density}
+        <CaseVisual
+          item={item}
           animate={false}
+          sizes="(min-width: 768px) 50vw, 100vw"
           className="aspect-[4/3] rounded-lg transition-transform duration-500 group-hover:scale-[0.985]"
         />
+        {item.status !== "Delivered" && (
+          <Badge className="absolute top-3 left-3 bg-background/80 text-foreground backdrop-blur">
+            {item.status}
+          </Badge>
+        )}
         {headline && (
           <p className="absolute bottom-3 left-3 rounded-md bg-background/80 px-3 py-2 backdrop-blur">
             <span className="text-lg font-medium">{headline.value}</span>{" "}

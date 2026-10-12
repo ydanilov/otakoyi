@@ -6,8 +6,8 @@ import { ArrowRightIcon } from "lucide-react"
 import { WorkCard } from "@/components/sections/work-card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { GenerativeWork } from "@/components/works/generative-work"
 import type { Case } from "@/content/cases"
+import { CaseVisual } from "@/components/sections/case-visual"
 import { cn } from "@/lib/utils"
 import { useScrollProgress } from "@/lib/use-scroll-progress"
 
@@ -101,13 +101,7 @@ export function WorksReel({ items }: WorksReelProps) {
                   className="absolute inset-0 origin-top"
                   style={{ transform: `scale(${(1 + covered * 0.06).toFixed(4)})` }}
                 >
-                  <GenerativeWork
-                    work={item.hero.work}
-                    seed={item.hero.seed}
-                    density={item.hero.density}
-                    animate={i === active}
-                    className="absolute inset-0"
-                  />
+                  <CaseVisual item={item} animate={i === active} className="absolute inset-0" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-background/40" />
                 {/* Centre scrim: keeps title, location and result readable over busy works. */}

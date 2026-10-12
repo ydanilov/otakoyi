@@ -1,0 +1,21 @@
+## The idea
+
+Everyone in crypto knows the market heatmap: a wall of coins, red when they fall, green when they rise. Pump The Market puts that picture on a big screen and keeps it in a permanent crash.
+
+Then a visitor walks into the zone. The tiles under their body break into fine cells and turn green — their own silhouette becomes a rising cluster on the map. When they walk away, the green fades and the market settles back into red. The feeling is simple and very shareable: *I'm the one who pumps the market.*
+
+## Why it works on a booth
+
+- **It explains itself.** Nobody needs instructions — you see the red, you step in, you turn it green.
+- **It invites a crowd.** Up to five people play at once, queued by who arrived first, so friends pull each other in.
+- **It never looks broken.** Nothing pops: green grows out from the body's centre and retracts when people leave; in idle the grid breathes and drifts.
+
+## How it is built
+
+A camera feeds a separate tracking process that separates people with MediaPipe and turns their masks into a coarse occupancy grid. TouchDesigner receives only that grid over OSC and builds the map: tiles that cross the silhouette edge split recursively so the outline stays sharp, while every line stays straight and axis-aligned.
+
+52 show parameters on five pages — players, layout, motion, colour, output — can be changed live during the event, with eleven transition styles to choose from.
+
+## Status
+
+Live-tested with one person at 60 fps; the multi-player queue is covered by self-tests and is next on a real booth. Zone calibration, a TouchDesigner-only fallback and kiosk autostart are on the roadmap.

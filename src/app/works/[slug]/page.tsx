@@ -3,10 +3,12 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowRightIcon } from "lucide-react"
 
+import Image from "next/image"
+
+import { CaseVisual } from "@/components/sections/case-visual"
 import { Cta } from "@/components/sections/cta"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { GenerativeWork } from "@/components/works/generative-work"
 import { getCase, getCases } from "@/content/cases"
 
 export const dynamicParams = false
@@ -41,6 +43,9 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
         </h1>
         <p className="mt-6 max-w-2xl text-xl text-pretty text-muted-foreground">{item.summary}</p>
         <div className="mt-6 flex flex-wrap gap-2">
+          {item.status !== "Delivered" && (
+            <Badge className="bg-signal text-signal-foreground">{item.status}</Badge>
+          )}
           {item.formats.map((t) => (
             <Badge key={t} variant="outline">
               {t}
@@ -67,10 +72,10 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
         </dl>
       </header>
 
-      <GenerativeWork
-        work={item.hero.work}
-        seed={item.hero.seed}
-        density={item.hero.density}
+      <CaseVisual
+        item={item}
+        priority
+        sizes="(min-width: 1280px) 1280px, 100vw"
         className="mx-auto mt-12 aspect-[16/9] max-w-7xl md:mt-16 md:rounded-xl"
       />
 
@@ -85,6 +90,34 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
           ))}
         </dl>
       </section>
+
+      {item.gallery && (
+        <section aria-label="Gallery" className="mx-auto max-w-7xl px-4 pt-12 md:px-8">
+          <ul className="grid gap-6 md:grid-cols-2">
+            {item.gallery.map((g, i) => (
+              <li
+                key={g.src}
+                className={i === 0 && item.gallery!.length % 2 === 1 ? "md:col-span-2" : undefined}
+              >
+                <figure>
+                  <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-muted">
+                    <Image
+                      src={g.src}
+                      alt={g.alt}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <figcaption className="mt-3 text-sm text-muted-foreground">
+                    {g.caption}
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:grid-cols-[1fr_2fr] md:px-8 md:py-24">
         <aside className="space-y-6 md:sticky md:top-24 md:self-start">
@@ -145,10 +178,9 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
           href={`/works/${next.slug}`}
           className="group relative block overflow-hidden rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          <GenerativeWork
-            work={next.hero.work}
-            seed={next.hero.seed}
-            density={next.hero.density}
+          <CaseVisual
+            item={next}
+            sizes="(min-width: 1280px) 1280px, 100vw"
             className="aspect-[21/9] transition-transform duration-700 group-hover:scale-[1.02]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />

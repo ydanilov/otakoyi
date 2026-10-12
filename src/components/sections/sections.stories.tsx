@@ -3,6 +3,7 @@ import { expect } from "storybook/test"
 
 import { getCases } from "@/content/cases"
 import { Benefits } from "./benefits"
+import { CaseVisual } from "./case-visual"
 import { Cta } from "./cta"
 import { Faq } from "./faq"
 import { Formats } from "./formats"
@@ -46,3 +47,20 @@ export const Card: Story = {
 }
 
 export const CallToAction: Story = { render: () => <Cta />, parameters: { layout: "fullscreen" } }
+
+export const CaseVisualCover: Story = {
+  render: () => {
+    const item = getCases().find((c) => c.cover)!
+    return <CaseVisual item={item} className="aspect-[16/9] w-full max-w-3xl rounded-xl" />
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("img")).toHaveAttribute("alt", expect.stringMatching(/.{10,}/))
+  },
+}
+
+export const CaseVisualGenerative: Story = {
+  render: () => {
+    const item = getCases().find((c) => !c.cover)!
+    return <CaseVisual item={item} className="aspect-[16/9] w-full max-w-3xl rounded-xl" />
+  },
+}

@@ -10,7 +10,8 @@ export const formats = ["Conference", "Event", "Office", "Exhibition", "Brand ac
  * Validated in unit tests (`pnpm test`) and at build time via `getCases()`.
  * Body copy lives in `src/content/cases/<slug>.mdx`.
  *
- * NOTE: all clients, numbers and results below are PLACEHOLDERS. Replace with real,
+ * NOTE: "pump-the-market" and "the-whale" are real studio projects (numbers from their repos).
+ * All other clients, numbers and results are PLACEHOLDERS. Replace with real,
  * verifiable results before launch — this is a sales site, claims must be true.
  */
 export const caseSchema = z.object({
@@ -43,6 +44,19 @@ export const caseSchema = z.object({
     .array(z.object({ label: z.string(), value: z.string() }))
     .min(2)
     .max(6),
+  /** Real imagery (in /public/works/<slug>/). When present it replaces the generative stand-in. */
+  cover: z.object({ src: z.string().startsWith("/works/"), alt: z.string().min(10) }).optional(),
+  gallery: z
+    .array(
+      z.object({
+        src: z.string().startsWith("/works/"),
+        alt: z.string().min(10),
+        caption: z.string(),
+      }),
+    )
+    .optional(),
+  /** Honest project stage — shown as a badge. */
+  status: z.enum(["Delivered", "Live-tested", "In development"]).default("Delivered"),
   featured: z.boolean().default(false),
 })
 
@@ -50,6 +64,128 @@ export type Case = z.infer<typeof caseSchema>
 export type CaseFormat = (typeof formats)[number]
 
 const raw: z.input<typeof caseSchema>[] = [
+  {
+    slug: "pump-the-market",
+    title: "Pump The Market",
+    client: "Otakoyi.team original",
+    year: 2026,
+    location: "Crypto conference booths · big screen or projection",
+    summary:
+      "A market heatmap that bleeds red until a visitor steps in — their silhouette turns the tiles under them green.",
+    formats: ["Exhibition", "Conference"],
+    hero: { work: "lattice", seed: 12, density: 0.35 },
+    customisation: [
+      "Ticker list and market palette",
+      "Up to 5 players, first come first served",
+      "52 live parameters, 11 transition styles",
+    ],
+    facts: { surface: "Big screen or projection, 16:9", timeline: "R&D · live-tested Sept 2026" },
+    backstage: [
+      { label: "Engine", value: "TouchDesigner 2025, Python engine inside the network" },
+      { label: "Tracking", value: "MediaPipe pose + segmentation, one webcam or iPhone" },
+      { label: "Protocol", value: "OSC occupancy grid 32 × 18, two-way control" },
+      { label: "Performance", value: "60 fps with ~950 tiles on an Apple Silicon Mac" },
+    ],
+    results: [
+      { value: "60 fps", label: "with ~950 live tiles on screen" },
+      { value: "5", label: "players at once, queued by arrival" },
+      { value: "52", label: "show parameters tunable live" },
+    ],
+    cover: {
+      src: "/works/pump-the-market/hero.webp",
+      alt: "Red market heatmap with a visitor's silhouette rendered as a cluster of green tiles",
+    },
+    gallery: [
+      {
+        src: "/works/pump-the-market/idle.webp",
+        alt: "Idle state: every tile of the heatmap in shades of red",
+        caption: "Idle — the market bleeds.",
+      },
+      {
+        src: "/works/pump-the-market/entering.webp",
+        alt: "A visitor entering the zone, green growing from their centre",
+        caption: "A visitor steps in: green grows out from their centre.",
+      },
+      {
+        src: "/works/pump-the-market/two-people.webp",
+        alt: "Two visitors as two green silhouettes on the red heatmap",
+        caption: "Two players, each with their own mask.",
+      },
+      {
+        src: "/works/pump-the-market/clusters.webp",
+        alt: "Fine green clusters following the outline of a body",
+        caption: "Tiles split at the silhouette edge to keep the outline sharp.",
+      },
+      {
+        src: "/works/pump-the-market/dev-mode.webp",
+        alt: "Developer mode overlaying the live silhouette on the heatmap",
+        caption: "Dev mode: the live silhouette over the map.",
+      },
+    ],
+    status: "Live-tested",
+    featured: true,
+  },
+  {
+    slug: "the-whale",
+    title: "The Whale",
+    client: "Otakoyi.team original",
+    year: 2026,
+    location: "Blockchain and crypto conferences · floor zone + square projection",
+    summary:
+      "One visitor's arm steers a living crypto chart — raise it to pump, lower it to dump. The market always pushes back.",
+    formats: ["Conference", "Exhibition"],
+    hero: { work: "signal-field", seed: 31, density: 0.3 },
+    customisation: [
+      "Market scenarios, price scale and events",
+      "Gesture: arm up pumps, arm down dumps",
+      "Moon and crash moments with full-screen overlays",
+    ],
+    facts: { surface: "Square projection, 1280 × 1280", timeline: "In development · 2026" },
+    backstage: [
+      { label: "Engine", value: "TouchDesigner, GPU-instanced candles" },
+      { label: "Tracking", value: "MediaPipe Pose, up to 4 people, stable IDs" },
+      { label: "Gesture", value: "Arm elevation against the torso, mapped 20–160" },
+      { label: "Rehearsal", value: "Seeded market engine — every run reproducible" },
+    ],
+    results: [
+      { value: "9", label: "market scenarios rotating every 30–90 s" },
+      { value: "1", label: "ordinary camera — no depth sensor" },
+      { value: "4", label: "candles a second, always alive" },
+    ],
+    cover: {
+      src: "/works/the-whale/whale_pump.webp",
+      alt: "Candlestick chart climbing steeply while a visitor holds their arm up in whale mode",
+    },
+    gallery: [
+      {
+        src: "/works/the-whale/market_live.webp",
+        alt: "Live market chart with no visitor in the zone",
+        caption: "No whale: scenarios and sentiment run on their own.",
+      },
+      {
+        src: "/works/the-whale/whale_dump.webp",
+        alt: "Chart sliding down while the visitor lowers their arm",
+        caption: "Arm down: the slide is steep, never perfectly clean.",
+      },
+      {
+        src: "/works/the-whale/to_the_moon.webp",
+        alt: "Full-screen To the moon event when price hits the ceiling",
+        caption: "Moon event: the news explains the correction.",
+      },
+      {
+        src: "/works/the-whale/market_crash.webp",
+        alt: "Full-screen crash event when price hits the floor",
+        caption: "Crash: price hits the floor, the bounce begins.",
+      },
+      {
+        src: "/works/the-whale/sandbox_ui.webp",
+        alt: "Tuning sandbox with parameter panels next to the chart",
+        caption: "Tuning sandbox mirroring the TouchDesigner parameters.",
+      },
+    ],
+    status: "In development",
+    featured: true,
+  },
   {
     slug: "tidal-index",
     title: "Tidal Index",
