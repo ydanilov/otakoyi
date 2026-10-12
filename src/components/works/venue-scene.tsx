@@ -11,7 +11,7 @@ import { useThemeMode, useVisibility, useWebGL } from "./runtime"
 const VenueSceneCanvas = dynamic(() => import("./venue-scene-canvas"), { ssr: false })
 
 export type VenueSceneProps = {
-  /** 0..1 — camera position along the tour: conference stage → office lobby → exhibition stand. */
+  /** 0..1 — camera position along the tour: exhibition stand → office lobby → music stage → museum room. */
   progress?: number
   /** Defaults to the current site theme. */
   palette?: GenerativeMode
@@ -27,7 +27,7 @@ export type VenueSceneProps = {
 export function VenueScene({
   progress = 0,
   palette,
-  label = "3D venue with generative installations on a conference stage, in an office lobby and on an exhibition stand",
+  label = "3D venue with generative installations on an exhibition stand, in an office lobby, on a music stage and in an immersive museum room",
   className,
 }: VenueSceneProps) {
   const motion = useMotion()

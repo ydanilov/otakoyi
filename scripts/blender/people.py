@@ -145,8 +145,52 @@ def _look_at(arm, target, weight=0.6):
         fwd = (q.to_matrix() @ fwd).normalized()
 
 
+# --------------------------------------------------------------------------- lean-back pose
+def _lean_dirs(base, i):
+    """
+    The 'lean back' pose: torso arched far back, head thrown back to the sky, knees soft and
+    pushed forward, arms hanging limp along the body. Directions are in the rig's rest space
+    (Blender: z up; the MakeHuman rig faces -Y at rest, so 'back' is +Y).
+    Each person gets a small, deterministic variation so the crowd isn't copy-pasted.
+    """
+    import random
+
+    r = random.Random(1000 + i)
+    k = 0.85 + r.random() * 0.3  # how far back
+    knee = 0.3 + r.random() * 0.15
+    spread = 0.04 + r.random() * 0.06
+    d = dict(base)
+
+    def v(x, y, z):
+        # +y = towards the back (the body faces -Y at rest).
+        return Vector((x, y, z)).normalized()
+
+    d["mixamorig:Hips"] = v(0, 0.35 * k, 1)
+    d["mixamorig:Spine"] = v(0, 0.6 * k, 1)
+    d["mixamorig:Spine1"] = v(0, 0.85 * k, 1)
+    d["mixamorig:Spine2"] = v(0, 1.1 * k, 1)
+    d["mixamorig:Neck"] = v(0, 1.45 * k, 0.8)
+    d["mixamorig:Head"] = v(0.04 * (r.random() - 0.5), 1.7 * k, 0.45)
+    for side, sx in (("Left", 1), ("Right", -1)):
+        d[f"mixamorig:{side}UpLeg"] = v(0.06 * sx, -knee, -1)
+        d[f"mixamorig:{side}Leg"] = v(0.01 * sx, 0.14, -1)
+        d[f"mixamorig:{side}Foot"] = v(0.05 * sx, -1, -0.12)
+        # Arms hang with gravity: straight down, a touch behind the body because it leans back.
+        d[f"mixamorig:{side}Arm"] = v(spread * sx, 0.08, -1)
+        d[f"mixamorig:{side}ForeArm"] = v(0.02 * sx, 0.02 + r.random() * 0.06, -1)
+        d[f"mixamorig:{side}Hand"] = v(0.0, 0.05, -1)
+    return d
+
+
+def _drop_to_floor(obj, floor_z):
+    """After posing, bent knees lift the feet: put the lowest point back on the floor."""
+    low = min((obj.matrix_world @ vert.co).z for vert in obj.data.vertices)
+    obj.location.z -= low - floor_z
+    bpy.ops.object.transform_apply(location=True, rotation=False, scale=False)
+
+
 # --------------------------------------------------------------------------- build
-def build(specs):
+def build(specs, lean=False):
     """
     specs: list of dicts with three.js-space placement:
       pos (x, y, z), face (deg, 0 = facing +z / the camera), look (x, y, z) or None,
@@ -170,7 +214,9 @@ def build(specs):
         bpy.context.view_layer.objects.active = arm
         bpy.ops.object.mode_set(mode="POSE")
         dirs = dict(poses[s["pose"]])
-        if s.get("raise_arm"):
+        if lean:
+            dirs = _lean_dirs(dirs, i)
+        elif s.get("raise_arm"):
             # One hand in the air (concert crowd). Bodies face -Y; their right side is -X.
             sx = -1 if s["raise_arm"] == "right" else 1
             side = "Right" if s["raise_arm"] == "right" else "Left"
@@ -182,7 +228,7 @@ def build(specs):
         arm.rotation_euler[2] = math.radians(180 + s["face"])
         arm.location = B(*s["pos"])
         bpy.context.view_layer.update()
-        if s.get("look"):
+        if s.get("look") and not lean:
             bpy.ops.object.mode_set(mode="POSE")
             _look_at(arm, B(*s["look"]), s.get("look_weight", 0.6))
             bpy.ops.object.mode_set(mode="OBJECT")
@@ -202,6 +248,7 @@ def build(specs):
         # Keep the placement the rig gave it (location + facing) before the rig goes away.
         bpy.ops.object.parent_clear(type="CLEAR_KEEP_TRANSFORM")
         bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+        _drop_to_floor(body, B(*s["pos"])[2])
         bpy.data.objects.remove(arm, do_unlink=True)
         for vg in list(body.vertex_groups):
             body.vertex_groups.remove(vg)

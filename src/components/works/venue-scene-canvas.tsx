@@ -17,7 +17,7 @@ import { meshVertexShader, rippleFragmentShader } from "./shaders"
 import venuePeople from "./venue-people.json"
 
 export type VenueSceneCanvasProps = {
-  /** 0..1 — camera position along the tour (stage → lobby → stand). */
+  /** 0..1 — camera position along the tour (stand → lobby → music → museum). */
   progress: number
   palette: GenerativeMode
   /** Live time, people, camera drift. Off → frozen, deterministic frame. */
@@ -45,57 +45,111 @@ const SCREENS: Record<string, { work: WorkId; seed: number; density: number }> =
   Screen_MuseumFloor: { work: "contour", seed: 21, density: 0.35 },
 }
 
+// ---------------------------------------------------------------------------------- camera
 /**
- * Camera keyframes [position, look-at] at 35-ish mm, evenly spaced over progress 0..1:
- * stand from above → on the stand → lobby → towards the concert → music stage → museum entrance → inside.
+ * The rooms stand on an arc around an empty floor (placement from build-venue.py). Each stop is
+ * a composed shot in that room's own coordinates — subject on the right third, the copy panel on
+ * the left — and each move between stops is its own camera move: crane out, sweep across the
+ * dark, push in. Progress holds on a stop for a moment, then eases through the move.
  */
-const KEYS: [THREE.Vector3Tuple, THREE.Vector3Tuple][] = [
-  // 0 — exhibition stand from above            (stop 1 at progress 0)
-  [
-    [29, 6.5, 10.5],
-    [32, 0.4, 0],
-  ],
-  // on the stand, among the visitors
-  [
-    [38, 3.6, 10],
-    [31.5, 0.7, -0.6],
-  ],
-  // 2/6 — office lobby, brand wall              (stop 2)
-  [
-    [19.5, 1.8, 8],
-    [16, 3.1, -2.2],
-  ],
-  // crossing towards the concert
-  [
-    [8, 3.2, 14],
-    [2, 2.6, -1],
-  ],
-  // 4/6 — music: behind the crowd, stage ahead  (stop 3)
-  [
-    [0.6, 2.1, 12.5],
-    [0, 3.0, -2.5],
-  ],
-  // entering the immersive room
-  [
-    [-11, 2.2, 10],
-    [-16, 2.2, -1.5],
-  ],
-  // 1 — museum, inside the projections          (stop 4)
-  [
-    [-16, 1.75, 5.6],
-    [-16, 2.1, -3],
-  ],
-]
-const posCurve = new THREE.CatmullRomCurve3(
-  KEYS.map(([p]) => new THREE.Vector3(...p)),
-  false,
-  "centripetal",
-)
-const lookCurve = new THREE.CatmullRomCurve3(
-  KEYS.map(([, l]) => new THREE.Vector3(...l)),
-  false,
-  "centripetal",
-)
+type ZoneName = keyof typeof venuePeople.zones
+type Shot = { pos: THREE.Vector3Tuple; look: THREE.Vector3Tuple; fov: number }
+
+const ORDER: ZoneName[] = ["stand", "lobby", "music", "museum"]
+
+const SHOTS: Record<ZoneName, Shot> = {
+  // High three-quarter: the interactive floor and the people standing on it.
+  stand: { pos: [-3.2, 5.6, 9.4], look: [-1.7, 0.2, -0.4], fov: 34 },
+  // Low, frontal and level: architecture lines stay vertical, the wall sits on the right third.
+  lobby: { pos: [-3.1, 1.5, 12.6], look: [-2.9, 2.7, -2.2], fov: 32 },
+  // Behind the crowd, slightly below eye level: silhouettes against the LED wall.
+  music: { pos: [-2.2, 1.25, 11.8], look: [-2.6, 3.2, -2.5], fov: 40 },
+  // Inside the room: wide, so walls and floor wrap the frame.
+  museum: { pos: [1.1, 1.5, 4.6], look: [-0.6, 1.9, -3.1], fov: 54 },
+}
+
+/** How each move flies: height of the arc, how far it pulls back, and the bank into the turn. */
+const MOVES = [
+  { name: "crane", height: 9.5, pull: 5, approach: 9, inner: 0.35, bank: 0.05 },
+  { name: "track", height: 1.15, pull: 3, approach: 8, inner: 0.12, bank: -0.035 },
+  { name: "rise", height: 8, pull: 2, approach: 6, inner: 0.22, bank: 0.06 },
+] as const
+
+/** Hold on a stop for this share of each segment at both ends. */
+const HOLD = 0.1
+
+function toWorld(zone: ZoneName, [x, y, z]: THREE.Vector3Tuple) {
+  const { x: zx, z: zz, yaw } = venuePeople.zones[zone]
+  const c = Math.cos(yaw)
+  const s = Math.sin(yaw)
+  return new THREE.Vector3(zx + x * c + z * s, y, zz - x * s + z * c)
+}
+
+function zoneCenter(zone: ZoneName, y: number) {
+  return toWorld(zone, [0, y, 0])
+}
+
+type Segment = {
+  pos: THREE.CatmullRomCurve3
+  look: THREE.CatmullRomCurve3
+  fov: [number, number]
+  bank: number
+}
+
+const SEGMENTS: Segment[] = ORDER.slice(0, -1).map((from, i) => {
+  const to = ORDER[i + 1]!
+  const move = MOVES[i]!
+  const a = toWorld(from, SHOTS[from].pos)
+  const b = toWorld(to, SHOTS[to].pos)
+  // Back out along the room's own axis, sweep through the open floor, push in along the next.
+  const outA = toWorld(from, [SHOTS[from].pos[0], 0, SHOTS[from].pos[2] + move.pull])
+  const inB = toWorld(to, [SHOTS[to].pos[0] * 0.5, 0, SHOTS[to].pos[2] + move.approach])
+  const mid = a
+    .clone()
+    .lerp(b, 0.5)
+    .multiplyScalar(1 - move.inner)
+  outA.y = THREE.MathUtils.lerp(a.y, move.height, 0.55)
+  mid.y = move.height
+  inB.y = THREE.MathUtils.lerp(b.y, move.height, 0.4)
+  return {
+    pos: new THREE.CatmullRomCurve3([a, outA, mid, inB, b], false, "centripetal"),
+    // Keep the old room in frame while pulling out (a reveal), then turn to the new one.
+    look: new THREE.CatmullRomCurve3(
+      [
+        toWorld(from, SHOTS[from].look),
+        zoneCenter(from, 1.6),
+        zoneCenter(to, 2.2),
+        toWorld(to, SHOTS[to].look),
+      ],
+      false,
+      "centripetal",
+    ),
+    fov: [SHOTS[from].fov, SHOTS[to].fov],
+    bank: move.bank,
+  }
+})
+
+const smootherstep = (x: number) => x * x * x * (x * (x * 6 - 15) + 10)
+
+/** progress 0..1 → camera position, look target, fov and roll. */
+function cameraAt(progress: number, pos: THREE.Vector3, look: THREE.Vector3) {
+  const n = SEGMENTS.length
+  const p = THREE.MathUtils.clamp(progress, 0, 1) * n
+  const i = Math.min(Math.floor(p), n - 1)
+  const seg = SEGMENTS[i]!
+  const raw = THREE.MathUtils.clamp((p - i - HOLD) / (1 - 2 * HOLD), 0, 1)
+  const u = smootherstep(raw)
+  seg.pos.getPointAt(u, pos)
+  seg.look.getPoint(u, look)
+  const swing = Math.sin(Math.PI * u)
+  return {
+    // Widen in flight for speed, settle back to the shot's lens on arrival.
+    fov: THREE.MathUtils.lerp(seg.fov[0], seg.fov[1], u) + swing * 9,
+    roll: swing * seg.bank,
+  }
+}
+
+const START = toWorld("stand", SHOTS.stand.pos).toArray()
 
 function screenMaterial(work: WorkId, seed: number, density: number, aspect: number) {
   return new THREE.ShaderMaterial({
@@ -141,8 +195,8 @@ function People() {
   return <primitive object={object} />
 }
 
-/** Visitors standing on the interactive floor, from the same placement list that built the model. */
-const STAND_FEET = venuePeople.feet.filter(([x, z]) => x! > 28 && x! < 36 && z! > -3.2 && z! < 3.8)
+/** Visitors standing on the interactive floor, in its UV space (from the same placement list). */
+const RIPPLES = venuePeople.ripples
 
 // ---------------------------------------------------------------------------------- venue
 function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
@@ -151,7 +205,7 @@ function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
   const { invalidate } = useThree()
   const colors = generativePalette[palette]
   const materials = useRef<THREE.ShaderMaterial[]>([])
-  const look = useRef(new THREE.Vector3(...KEYS[0]![1]))
+  const look = useRef(new THREE.Vector3())
   const smoothed = useRef(progress)
   const reported = useRef(false)
 
@@ -211,13 +265,9 @@ function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
     mesh.position.y += 0.004
     mesh.quaternion.copy(src.quaternion)
     // Each visitor standing on the floor sends out slow rings from their feet.
-    const box = new THREE.Box3().setFromObject(src)
-    const size = Math.max(box.max.x - box.min.x, box.max.z - box.min.z) || 6.5
-    const cx = (box.min.x + box.max.x) / 2
-    const cz = (box.min.z + box.max.z) / 2
     const points = m.uniforms.uPoints!.value as THREE.Vector3[]
-    STAND_FEET.slice(0, points.length).forEach(([x, z], i) => {
-      points[i]!.set((x! - cx) / size + 0.5, 1 - ((z! - cz) / size + 0.5), 1)
+    RIPPLES.slice(0, points.length).forEach(([u, v], i) => {
+      points[i]!.set(u!, v!, 1)
     })
     return { mesh, material: m }
   }, [scene])
@@ -229,9 +279,7 @@ function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
     smoothed.current = animate
       ? THREE.MathUtils.damp(smoothed.current, progress, 2.6, delta)
       : progress
-    const t = THREE.MathUtils.clamp(smoothed.current, 0, 1)
-    camera.position.copy(posCurve.getPoint(t))
-    look.current.copy(lookCurve.getPoint(t))
+    const shot = cameraAt(smoothed.current, camera.position, look.current)
     const time = animate ? FROZEN_TIME + state.clock.elapsedTime : FROZEN_TIME
     if (animate) {
       // Handheld drift + pointer parallax: the room answers when you look around.
@@ -239,6 +287,12 @@ function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
       camera.position.y += Math.sin(time * 0.5) * 0.04 + state.pointer.y * 0.22
     }
     camera.lookAt(look.current)
+    camera.rotateZ(shot.roll)
+    const lens = camera as THREE.PerspectiveCamera
+    if (Math.abs(lens.fov - shot.fov) > 0.01) {
+      lens.fov = shot.fov
+      lens.updateProjectionMatrix()
+    }
 
     for (const m of materials.current) {
       const u = m.uniforms
@@ -262,7 +316,7 @@ function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
   return (
     <>
       <color attach="background" args={["black"]} />
-      <fog attach="fog" args={["black", 18, 46]} />
+      <fog attach="fog" args={["black", 16, 52]} />
       {/* Reflections for the glossy visitors: light shapes where the screens and LED strips are. */}
       <Environment resolution={256} frames={1}>
         <Lightformer
@@ -326,7 +380,7 @@ export default function VenueSceneCanvas(props: VenueSceneCanvasProps) {
   const dpr: [number, number] = [1, tier === 2 ? 1.75 : tier === 1 ? 1.25 : 1]
   return (
     <Canvas
-      camera={{ position: KEYS[0]![0], fov: 38, near: 0.1, far: 120 }}
+      camera={{ position: START, fov: SHOTS.stand.fov, near: 0.1, far: 140 }}
       dpr={dpr}
       frameloop={props.animate ? "always" : "demand"}
       gl={{ antialias: false, preserveDrawingBuffer: true, powerPreference: "high-performance" }}
