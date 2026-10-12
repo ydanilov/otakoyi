@@ -1,16 +1,12 @@
-import Link from "next/link"
-import { ArrowRightIcon } from "lucide-react"
-
 import { Benefits } from "@/components/sections/benefits"
 import { BrandDemo } from "@/components/sections/brand-demo"
 import { Cta } from "@/components/sections/cta"
 import { Faq } from "@/components/sections/faq"
 import { Formats } from "@/components/sections/formats"
 import { Hero } from "@/components/sections/hero"
-import { Process } from "@/components/sections/process"
+import { PinnedProcess } from "@/components/sections/pinned-process"
 import { SectionHeading } from "@/components/sections/section-heading"
-import { WorkCard } from "@/components/sections/work-card"
-import { Button } from "@/components/ui/button"
+import { WorksReel } from "@/components/sections/works-reel"
 import { getCases } from "@/content/cases"
 
 function Section({ id, children }: { id?: string; children: React.ReactNode }) {
@@ -57,36 +53,9 @@ export default function HomePage() {
         <BrandDemo />
       </Section>
 
-      <Section id="installations">
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading
-            eyebrow="Selected installations"
-            title="Built for stages, stands and lobbies."
-          />
-          <Button asChild variant="ghost">
-            <Link href="/works">
-              All installations <ArrowRightIcon />
-            </Link>
-          </Button>
-        </div>
-        <ul className="grid gap-x-6 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-          {featured.map((item) => (
-            <li key={item.slug}>
-              <WorkCard item={item} />
-            </li>
-          ))}
-        </ul>
-      </Section>
+      <WorksReel items={featured} />
 
-      <Section id="process">
-        <SectionHeading
-          eyebrow="How it works"
-          title="From brief to opening night."
-          description="Fixed milestones, a live prototype in week one, and no surprises on site."
-          className="mb-12"
-        />
-        <Process />
-      </Section>
+      <PinnedProcess skipTo="#faq" />
 
       <Section id="faq">
         <SectionHeading

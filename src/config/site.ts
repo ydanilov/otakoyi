@@ -1,10 +1,9 @@
-// Placeholder identity — replace when the studio name is final.
 export const site = {
-  name: "Field Studio",
+  name: "Otakoyi.team",
   tagline: "Generative installations for conferences, events, offices and exhibitions.",
   description:
     "We design, build and install generative visual installations that stop people in their tracks — customised to your brand, driven by your data, delivered turnkey.",
-  email: "hello@field.studio",
+  email: "hello@otakoyi.team",
   cta: { label: "Get a proposal", subject: "Installation proposal" },
   nav: [
     { href: "/works", label: "Installations" },

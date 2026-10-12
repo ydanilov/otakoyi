@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ArrowRightIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { ReactiveHeadline } from "@/components/sections/reactive-headline"
 import { GenerativeWork } from "@/components/works/generative-work"
 import { proposalHref, site } from "@/config/site"
 
@@ -17,9 +18,10 @@ export function Hero() {
         <p className="mb-6 font-mono text-xs tracking-widest text-muted-foreground uppercase">
           Generative installations for brands
         </p>
-        <h1 className="max-w-5xl text-5xl leading-[0.95] font-medium tracking-tighter text-balance md:text-8xl">
-          Installations people stop for.
-        </h1>
+        <ReactiveHeadline
+          text="Installations people stop for."
+          className="max-w-5xl text-5xl leading-[0.95] tracking-tighter md:text-8xl"
+        />
         <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground md:text-xl">
           {site.description}
         </p>
