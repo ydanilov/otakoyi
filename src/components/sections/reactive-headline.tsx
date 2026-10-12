@@ -2,6 +2,7 @@
 
 import { Fragment, useEffect, useRef } from "react"
 
+import { useMotion } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
 type ReactiveHeadlineProps = {
@@ -15,12 +16,11 @@ type ReactiveHeadlineProps = {
   className?: string
 }
 
-const REDUCED = "(prefers-reduced-motion: reduce)"
 const FINE_POINTER = "(pointer: fine)"
 
 /**
  * Headline whose letters thicken around the pointer — the page reacts to people the way an
- * installation does. Pointer-only and off under `prefers-reduced-motion`, so the static render
+ * installation does. Pointer-only and off when site motion is off (ADR-006), so the static render
  * (and visual tests) always show every letter at `restWeight`.
  */
 export function ReactiveHeadline({
@@ -31,11 +31,17 @@ export function ReactiveHeadline({
   className,
 }: ReactiveHeadlineProps) {
   const ref = useRef<HTMLHeadingElement>(null)
+  const motion = useMotion()
 
   useEffect(() => {
     const root = ref.current
     if (!root) return
-    if (window.matchMedia(REDUCED).matches || !window.matchMedia(FINE_POINTER).matches) return
+    if (!motion || !window.matchMedia(FINE_POINTER).matches) {
+      root
+        .querySelectorAll<HTMLSpanElement>("[data-letter]")
+        .forEach((el) => el.style.setProperty("--w", String(restWeight)))
+      return
+    }
 
     const letters = Array.from(root.querySelectorAll<HTMLSpanElement>("[data-letter]"))
     let centers: { x: number; y: number }[] = []
@@ -94,7 +100,7 @@ export function ReactiveHeadline({
       document.documentElement.removeEventListener("pointerleave", onLeave)
       window.removeEventListener("resize", measure)
     }
-  }, [restWeight, peakWeight, radius])
+  }, [restWeight, peakWeight, radius, motion])
 
   const words = text.split(" ")
 

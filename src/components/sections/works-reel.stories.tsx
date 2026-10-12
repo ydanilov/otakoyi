@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>
 /** Scroll the canvas: each installation wipes in fullscreen, prev / next in the corners. */
 export const Default: Story = {
   play: async ({ canvas, args }) => {
-    // Every installation is reachable — not only the one on screen. (In reduced motion, which the
+    // Every installation is reachable — not only the one on screen. (With motion off, which the
     // test runner uses, these are the fallback cards; otherwise the screen-reader list.)
     const hrefs = canvas.getAllByRole("link").map((a) => a.getAttribute("href"))
     for (const item of args.items) {

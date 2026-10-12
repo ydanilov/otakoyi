@@ -21,7 +21,7 @@ type WorksReelProps = { items: Case[] }
  * Selected installations as a fullscreen reel: each installation takes the whole screen and the
  * next one wipes in from below as you scroll. Corner labels show previous / next, the centre
  * carries the name, the headline result and the way into the case.
- * Under `prefers-reduced-motion` it falls back to the card grid; a plain link list is what
+ * Under motion off (ADR-006) it falls back to the card grid; a plain link list is what
  * assistive tech reads.
  */
 export function WorksReel({ items }: WorksReelProps) {
@@ -53,7 +53,7 @@ export function WorksReel({ items }: WorksReelProps) {
       </div>
 
       {/* Assistive tech: the same installations as a simple list. */}
-      <ul className="sr-only motion-reduce:hidden">
+      <ul className="sr-only motion-off:hidden">
         {items.map((item) => (
           <li key={item.slug}>
             <Link href={`/works/${item.slug}`} tabIndex={-1}>
@@ -65,7 +65,7 @@ export function WorksReel({ items }: WorksReelProps) {
       </ul>
 
       {/* Reduced motion: the card grid. */}
-      <ul className="mx-auto hidden max-w-7xl gap-x-6 gap-y-12 px-4 pb-20 motion-reduce:grid md:grid-cols-2 md:px-8 md:pb-28 lg:grid-cols-3">
+      <ul className="mx-auto hidden max-w-7xl gap-x-6 gap-y-12 px-4 pb-20 md:grid-cols-2 md:px-8 md:pb-28 lg:grid-cols-3 motion-off:grid">
         {items.map((item) => (
           <li key={item.slug}>
             <WorkCard item={item} />
@@ -76,7 +76,7 @@ export function WorksReel({ items }: WorksReelProps) {
       {/* The reel. */}
       <div
         ref={ref}
-        className="relative motion-reduce:hidden"
+        className="relative motion-off:hidden"
         style={{ height: `${n * 100}svh` }}
         data-works-reel
         data-active={items[active]?.slug}

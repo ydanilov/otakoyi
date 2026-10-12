@@ -28,7 +28,7 @@ type PinnedProcessProps = {
 /**
  * "From brief to opening night" as a pinned scroll story: one step per screen, a build-progress
  * counter, a skip link, and the CTA as the last step. The generative work in the background gets
- * denser as the project takes shape. Under `prefers-reduced-motion` it falls back to the static
+ * denser as the project takes shape. Under motion off (ADR-006) it falls back to the static
  * step grid; that grid is also what assistive tech reads.
  */
 export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
@@ -38,8 +38,8 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
 
   return (
     <section id="process" aria-labelledby="process-title">
-      {/* Static layout: reduced motion, and the accessible version of the story. */}
-      <div className="sr-only motion-reduce:not-sr-only motion-reduce:mx-auto motion-reduce:block motion-reduce:max-w-7xl motion-reduce:px-4 motion-reduce:py-20 md:motion-reduce:px-8 md:motion-reduce:py-28">
+      {/* Static layout: motion off, and the accessible version of the story. */}
+      <div className="sr-only motion-off:not-sr-only motion-off:mx-auto motion-off:block motion-off:max-w-7xl motion-off:px-4 motion-off:py-20 md:motion-off:px-8 md:motion-off:py-28">
         <div className="mb-12 max-w-2xl space-y-3">
           <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
             How it works
@@ -60,7 +60,7 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
       {/* Pinned story — visual duplicate of the content above (aria-hidden), except for the CTA. */}
       <div
         ref={ref}
-        className="relative motion-reduce:hidden"
+        className="relative motion-off:hidden"
         style={{ height: `${steps.length * 90 + 10}svh` }}
         data-pinned-process
         data-step={active + 1}

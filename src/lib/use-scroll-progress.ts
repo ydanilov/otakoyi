@@ -2,20 +2,21 @@
 
 import { useEffect, useRef, useState } from "react"
 
-const REDUCED = "(prefers-reduced-motion: reduce)"
+import { useMotion } from "@/lib/motion"
 
 /**
  * Progress (0..1) of scrolling through a tall "pinned" section: 0 when its top reaches
  * `offset` px below the viewport top, 1 when its bottom reaches the viewport bottom.
- * Stays 0 under `prefers-reduced-motion` — pinned sections render their static layout there.
+ * Stays 0 when site motion is off (ADR-006) — pinned sections render their static layout there.
  */
 export function useScrollProgress<T extends HTMLElement>(offset = 0) {
   const ref = useRef<T>(null)
   const [progress, setProgress] = useState(0)
+  const motion = useMotion()
 
   useEffect(() => {
     const el = ref.current
-    if (!el || window.matchMedia(REDUCED).matches) return
+    if (!el || !motion) return
 
     let frame = 0
     const update = () => {
@@ -37,7 +38,7 @@ export function useScrollProgress<T extends HTMLElement>(offset = 0) {
       window.removeEventListener("scroll", schedule)
       window.removeEventListener("resize", schedule)
     }
-  }, [offset])
+  }, [offset, motion])
 
   return [ref, progress] as const
 }

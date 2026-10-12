@@ -3,6 +3,9 @@
 @import "./tokens.css";
 
 @custom-variant dark (&:is(.dark *));
+/* Site motion switch (ADR-006): <html data-motion="off"> */
+@custom-variant motion-off (&:where([data-motion="off"], [data-motion="off"] *));
+@custom-variant motion-on (&:where(:root:not([data-motion="off"]), :root:not([data-motion="off"]) *));
 
 /* Map token CSS variables → Tailwind theme. Never hardcode colors in components. */
 @theme inline {
@@ -55,14 +58,13 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+/* Motion off (header toggle, ADR-006) — the OS reduced-motion setting is deliberately not used. */
+html[data-motion="off"] {
+  scroll-behavior: auto;
+}
+[data-motion="off"] *,
+[data-motion="off"] *::before,
+[data-motion="off"] *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
 }
