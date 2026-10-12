@@ -106,7 +106,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
                       alt={g.alt}
                       fill
                       sizes="(min-width: 768px) 50vw, 100vw"
-                      className="object-cover"
+                      className="object-contain"
                     />
                   </div>
                   <figcaption className="mt-3 text-sm text-muted-foreground">

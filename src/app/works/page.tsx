@@ -18,7 +18,7 @@ export default function WorksPage() {
         <SectionHeading
           eyebrow="Installations"
           title="Installations that worked for brands like yours"
-          description="Every image here is rendered live by the same engine we install on site. Filter by the kind of space you are planning."
+          description="Our own TouchDesigner installations and studies from the generative engine we install on site. Filter by the kind of space you are planning."
           className="mb-12"
         />
         <WorksGrid items={getCases()} formats={formats} />
