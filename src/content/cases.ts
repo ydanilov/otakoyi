@@ -33,6 +33,16 @@ export const caseSchema = z.object({
     .array(z.object({ value: z.string(), label: z.string() }))
     .min(1)
     .max(4),
+  /** Quick-facts strip on the case page. */
+  facts: z.object({
+    surface: z.string().min(2),
+    timeline: z.string().min(2),
+  }),
+  /** "Backstage" — the setup that makes it reliable: hardware, inputs, runtime. */
+  backstage: z
+    .array(z.object({ label: z.string(), value: z.string() }))
+    .min(2)
+    .max(6),
   featured: z.boolean().default(false),
 })
 
@@ -54,6 +64,13 @@ const raw: z.input<typeof caseSchema>[] = [
       "Brand palette and typography",
       "Live trading-volume feed",
       "Logo reveal on keynote cue",
+    ],
+    facts: { surface: "24 × 4 m LED backdrop", timeline: "5 weeks, brief to stage" },
+    backstage: [
+      { label: "Display", value: "Stage LED wall, 3.9 mm pitch" },
+      { label: "Engine", value: "Real-time render node + hot spare" },
+      { label: "Inputs", value: "Trading-volume API, show-caller cues" },
+      { label: "On site", value: "1 operator, 3 days" },
     ],
     results: [
       { value: "2.4M", label: "social impressions in 3 days" },
@@ -77,6 +94,13 @@ const raw: z.input<typeof caseSchema>[] = [
       "Motion tracking of visitors",
       "Branded photo moment",
     ],
+    facts: { surface: "30 m floor projection", timeline: "6 weeks, brief to opening" },
+    backstage: [
+      { label: "Display", value: "4 laser projectors, edge-blended" },
+      { label: "Tracking", value: "Overhead depth sensors" },
+      { label: "Engine", value: "Real-time render node" },
+      { label: "Runtime", value: "31 days, remote monitoring" },
+    ],
     results: [
       { value: "48k", label: "visitors in 31 days" },
       { value: "11 min", label: "average dwell time" },
@@ -99,6 +123,13 @@ const raw: z.input<typeof caseSchema>[] = [
       "Internal KPI feed",
       "Seasonal and campaign modes",
     ],
+    facts: { surface: "Lobby LED wall, 6 × 3 m", timeline: "8 weeks, permanent" },
+    backstage: [
+      { label: "Display", value: "Existing lobby LED wall" },
+      { label: "Inputs", value: "Internal KPI feed, time of day" },
+      { label: "Runtime", value: "24/7, unattended" },
+      { label: "Support", value: "Remote monitoring and updates" },
+    ],
     results: [
       { value: "24/7", label: "running with zero content updates" },
       { value: "1", label: "engine reused for 6 campaigns" },
@@ -116,6 +147,13 @@ const raw: z.input<typeof caseSchema>[] = [
     formats: ["Event", "Brand activation"],
     hero: { work: "signal-field", seed: 42, density: 0.2 },
     customisation: ["Launch campaign palette", "Audio-reactive visuals", "City-specific seeds"],
+    facts: { surface: "Touring stage screens", timeline: "4 weeks + same-day re-setup" },
+    backstage: [
+      { label: "Display", value: "Venue screens, 3 different layouts" },
+      { label: "Inputs", value: "Live audio from the set" },
+      { label: "Engine", value: "Portable render node" },
+      { label: "Re-setup", value: "One afternoon per city" },
+    ],
     results: [
       { value: "3", label: "cities on one setup" },
       { value: "−40%", label: "content production cost vs. video" },

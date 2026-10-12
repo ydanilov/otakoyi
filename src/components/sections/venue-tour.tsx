@@ -1,0 +1,145 @@
+"use client"
+
+import Link from "next/link"
+import { ArrowRightIcon } from "lucide-react"
+
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { VenueScene } from "@/components/works/venue-scene"
+import type { Solution } from "@/content/solutions"
+import { cn } from "@/lib/utils"
+import { useScrollProgress } from "@/lib/use-scroll-progress"
+
+const HEADER = 56
+
+type VenueTourProps = {
+  /** Stops along the tour, in camera order (their `venue` value places them on the path). */
+  stops: Solution[]
+}
+
+/**
+ * Scroll flies a camera through one 3D venue — conference stage, office lobby, exhibition
+ * stand — with live works on every screen, so buyers see the format where it would live.
+ * Motion off (ADR-006): a still of the venue and the stops as a plain list.
+ */
+export function VenueTour({ stops }: VenueTourProps) {
+  const [ref, progress] = useScrollProgress<HTMLDivElement>(HEADER)
+  const active = stops.reduce(
+    (best, s, i) =>
+      Math.abs(s.venue - progress) < Math.abs(stops[best]!.venue - progress) ? i : best,
+    0,
+  )
+
+  return (
+    <section id="venues" aria-labelledby="venues-title">
+      <div className="mx-auto max-w-7xl px-4 pt-20 pb-12 md:px-8 md:pt-28">
+        <p className="mb-3 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+          Where it lives
+        </p>
+        <h2
+          id="venues-title"
+          className="max-w-3xl text-3xl font-medium tracking-tight text-balance md:text-5xl"
+        >
+          Walk through the spaces your brand shows up in.
+        </h2>
+      </div>
+
+      {/* Motion off: one still frame and the stops as cards. */}
+      <div className="mx-auto hidden max-w-7xl px-4 pb-20 md:px-8 motion-off:block">
+        <VenueScene className="aspect-[16/9] rounded-xl" />
+        <ul className="mt-8 grid gap-6 md:grid-cols-3">
+          {stops.map((s) => (
+            <li key={s.slug}>
+              <StopCopy stop={s} />
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div
+        ref={ref}
+        style={{ height: `${stops.length * 110 + 60}svh` }}
+        className="relative motion-off:hidden"
+      >
+        <div className="sticky top-14 h-[calc(100svh-3.5rem)] overflow-hidden">
+          <VenueScene progress={progress} className="absolute inset-0" />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/20 to-transparent"
+          />
+
+          <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col justify-between px-4 py-10 md:px-8">
+            <ol aria-label="Tour stops" className="flex gap-2 self-end">
+              {stops.map((s, i) => (
+                <li key={s.slug} className="flex items-center gap-2">
+                  <span
+                    className={cn(
+                      "h-0.5 w-10 rounded-full bg-muted-foreground/30 transition-colors",
+                      i <= active && "bg-signal",
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "hidden font-mono text-xs tracking-widest uppercase md:inline",
+                      i === active ? "text-foreground" : "text-muted-foreground",
+                    )}
+                  >
+                    {s.label}
+                  </span>
+                </li>
+              ))}
+            </ol>
+
+            <div className="relative max-w-md">
+              {stops.map((s, i) => (
+                <div
+                  key={s.slug}
+                  aria-hidden={i !== active}
+                  inert={i !== active}
+                  className={cn(
+                    "transition-all duration-700 ease-out",
+                    i === 0 ? "relative" : "absolute inset-x-0 bottom-0",
+                    i === active
+                      ? "translate-y-0 opacity-100"
+                      : "pointer-events-none translate-y-6 opacity-0",
+                  )}
+                >
+                  <StopCopy stop={s} large />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function StopCopy({ stop, large }: { stop: Solution; large?: boolean }) {
+  return (
+    <div className="space-y-4">
+      <p className="font-mono text-xs tracking-widest text-signal uppercase">{stop.label}</p>
+      <h3
+        className={cn(
+          "font-medium tracking-tight text-balance",
+          large ? "text-3xl md:text-5xl" : "text-2xl",
+        )}
+      >
+        {stop.title}
+      </h3>
+      <p className="text-pretty text-muted-foreground">{stop.promise}</p>
+      <div className="flex flex-wrap gap-1.5">
+        {stop.surfaces.map((x) => (
+          <Badge key={x} variant="outline" className="bg-background/60 backdrop-blur">
+            {x}
+          </Badge>
+        ))}
+      </div>
+      <Button asChild variant="outline" className="rounded-full">
+        <Link href={`/solutions/${stop.slug}`}>
+          {stop.label} <ArrowRightIcon />
+        </Link>
+      </Button>
+    </div>
+  )
+}

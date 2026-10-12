@@ -40,6 +40,25 @@ const principles = [
   },
 ]
 
+/** What we need from the venue — the spec sheet nobody else publishes. */
+const venueNeeds = [
+  { label: "Power", value: "Standard 230 V per render node; LED and projectors per supplier spec" },
+  { label: "Signal", value: "HDMI / SDI / DisplayPort to your screens, or our own media server" },
+  {
+    label: "Network",
+    value: "Wired internet for live data feeds and remote monitoring (optional offline mode)",
+  },
+  {
+    label: "Space",
+    value: "Interactive floors from ~3 × 3 m; mounting and sightlines agreed with your builder",
+  },
+  {
+    label: "Access",
+    value: "One setup day on site for events; calibration night for permanent walls",
+  },
+  { label: "From you", value: "Brand guidelines, logo files, any data you want to show" },
+]
+
 const team = [
   { name: "Team Member", role: "Creative director" },
   { name: "Team Member", role: "Creative technologist" },
@@ -88,6 +107,25 @@ export default function StudioPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section id="venue-requirements" className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
+        <SectionHeading
+          eyebrow="Venue requirements"
+          title="What we need from the venue"
+          description="Hand this to your venue or stand builder — it answers most technical questions before the first call."
+          className="mb-8"
+        />
+        <dl className="grid gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-2 lg:grid-cols-3">
+          {venueNeeds.map((v) => (
+            <div key={v.label} className="flex flex-col-reverse bg-background p-6">
+              <dt className="mt-2 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                {v.label}
+              </dt>
+              <dd className="text-pretty">{v.value}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">

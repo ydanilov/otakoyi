@@ -46,6 +46,8 @@ test("mobile menu opens", async ({ page, isMobile }) => {
 test("theme toggle persists light mode", async ({ page }) => {
   await page.goto("/")
   await expect(page.locator("html")).toHaveClass(/dark/)
+  // Tests run with motion off (ADR-006); the toggle reads "Play motion" only once React has hydrated.
+  await expect(page.getByRole("button", { name: "Play motion" }).first()).toBeVisible()
   await page.getByRole("button", { name: "Toggle theme" }).first().click()
   await page.reload()
   await expect(page.locator("html")).not.toHaveClass(/dark/)

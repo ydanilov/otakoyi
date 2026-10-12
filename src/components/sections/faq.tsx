@@ -28,10 +28,10 @@ export const faqItems = [
   },
 ] as const
 
-export function Faq() {
+export function Faq({ items = faqItems }: { items?: readonly { q: string; a: string }[] }) {
   return (
     <Accordion type="single" collapsible className="max-w-3xl">
-      {faqItems.map((f, i) => (
+      {items.map((f, i) => (
         <AccordionItem key={f.q} value={`faq-${i}`}>
           <AccordionTrigger className="text-lg">{f.q}</AccordionTrigger>
           <AccordionContent className="text-base text-muted-foreground">{f.a}</AccordionContent>

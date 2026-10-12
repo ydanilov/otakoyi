@@ -2,9 +2,8 @@ import type { Metadata } from "next"
 
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
-import { themeScript } from "@/components/site/theme-toggle"
 import { site } from "@/config/site"
-import { motionScript } from "@/lib/motion"
+import { motionScript, themeScript } from "@/lib/init-scripts"
 import { fontMono, fontSans } from "@/fonts"
 import "./globals.css"
 

@@ -7,6 +7,8 @@ export const site = {
   cta: { label: "Get a proposal", subject: "Installation proposal" },
   nav: [
     { href: "/works", label: "Installations" },
+    { href: "/solutions", label: "Solutions" },
+    { href: "/lab", label: "Lab" },
     { href: "/studio", label: "Studio" },
   ],
   social: [

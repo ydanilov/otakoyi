@@ -5,12 +5,10 @@ import { useSyncExternalStore } from "react"
 /**
  * Site-level motion switch (ADR-006). Motion is ON for everyone by default — the OS
  * `prefers-reduced-motion` setting is not used — and visitors turn it off with the header
- * toggle. The choice lives on `<html data-motion="off">` (set before paint by `motionScript`)
+ * toggle. The choice lives on `<html data-motion="off">` (set before paint by `motionScript` in `@/lib/init-scripts`)
  * and in localStorage. Visual tests set it off to freeze every generative work.
  */
 export const MOTION_KEY = "motion"
-
-export const motionScript = `try{if(localStorage.getItem("${MOTION_KEY}")==="off")document.documentElement.dataset.motion="off"}catch(e){}`
 
 export function isMotionOn() {
   return typeof document === "undefined" || document.documentElement.dataset.motion !== "off"

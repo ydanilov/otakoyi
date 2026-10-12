@@ -104,3 +104,69 @@ void main() {
   gl_FragColor = vec4(col, 1.0);
 }
 `
+
+/** Vertex shader for generative works mapped onto 3D surfaces (screens in the venue scene). */
+export const meshVertexShader = /* glsl */ `
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`
+
+/**
+ * Particle wordmark. Each point has a target (a pixel of the wordmark) and a seeded scatter
+ * position. uScatter (scroll) blends between them; the pointer pushes points away.
+ * uTime is frozen when site motion is off, so the frame is deterministic.
+ */
+export const particleVertexShader = /* glsl */ `
+uniform float uTime;
+uniform float uScatter;
+uniform vec2 uPointer;
+uniform float uPointerStrength;
+uniform float uSize;
+uniform float uPixelRatio;
+attribute vec3 aScatter;
+attribute float aRandom;
+varying float vRandom;
+varying float vGlow;
+
+void main() {
+  vRandom = aRandom;
+  float t = uTime * (0.25 + aRandom * 0.35);
+  vec3 drift = vec3(sin(t + aRandom * 31.0), cos(t * 1.3 + aRandom * 17.0), sin(t * 0.7)) * 0.012;
+  float s = smoothstep(0.0, 1.0, clamp(uScatter * (0.7 + aRandom * 0.6), 0.0, 1.0));
+  vec3 p = mix(position + drift, aScatter, s);
+
+  vec2 d = p.xy - uPointer;
+  float dist = length(d);
+  float push = uPointerStrength * smoothstep(0.16, 0.0, dist);
+  p.xy += normalize(d + 1e-5) * push * 0.08;
+  p.z += push * 0.4;
+  vGlow = push;
+
+  vec4 mv = modelViewMatrix * vec4(p, 1.0);
+  gl_Position = projectionMatrix * mv;
+  gl_PointSize = uSize * uPixelRatio * (0.6 + aRandom * 0.8) * (1.0 + push * 1.5) / -mv.z;
+}
+`
+
+export const particleFragmentShader = /* glsl */ `
+precision highp float;
+uniform vec3 uC1;
+uniform vec3 uC2;
+uniform vec3 uC3;
+uniform vec3 uC4;
+varying float vRandom;
+varying float vGlow;
+
+void main() {
+  vec2 c = gl_PointCoord - 0.5;
+  float r = length(c);
+  if (r > 0.5) discard;
+  float a = smoothstep(0.5, 0.1, r);
+  vec3 col = vRandom < 0.08 ? uC1 : vRandom < 0.55 ? uC4 : vRandom < 0.8 ? uC2 : uC3;
+  col = mix(col, uC1, vGlow);
+  gl_FragColor = vec4(col, a * (0.55 + vGlow * 0.45));
+}
+`
