@@ -5,17 +5,16 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber"
-import { PerformanceMonitor } from "@react-three/drei"
+import { Environment, Lightformer, PerformanceMonitor } from "@react-three/drei"
 import { Bloom, EffectComposer, Noise, Vignette } from "@react-three/postprocessing"
 import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js"
-import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js"
 
 import { generativePalette, type GenerativeMode } from "@/lib/tokens.generated"
 import { works, type WorkId } from "./registry"
-import { seeded } from "./runtime"
 import { meshVertexShader, rippleFragmentShader } from "./shaders"
+import venuePeople from "./venue-people.json"
 
 export type VenueSceneCanvasProps = {
   /** 0..1 — camera position along the tour (stage → lobby → stand). */
@@ -38,36 +37,53 @@ const SCREENS: Record<string, { work: WorkId; seed: number; density: number }> =
   Screen_Lobby: { work: "lattice", seed: 3, density: 0.3 },
   Screen_StandFloor: { work: "contour", seed: 4, density: 0.5 },
   Screen_StandWall: { work: "signal-field", seed: 27, density: 0.5 },
+  Screen_MusicSideL: { work: "lattice", seed: 8, density: 0.45 },
+  Screen_MusicSideR: { work: "lattice", seed: 9, density: 0.45 },
+  Screen_MuseumBack: { work: "signal-field", seed: 64, density: 0.55 },
+  Screen_MuseumLeft: { work: "contour", seed: 12, density: 0.45 },
+  Screen_MuseumRight: { work: "contour", seed: 13, density: 0.45 },
+  Screen_MuseumFloor: { work: "contour", seed: 21, density: 0.35 },
 }
 
 /**
  * Camera keyframes [position, look-at] at 35-ish mm, evenly spaced over progress 0..1:
- * wide stage → close on the backdrop → lobby reveal → brand wall → stand from above → on the stand.
+ * stand from above → on the stand → lobby → towards the concert → music stage → museum entrance → inside.
  */
 const KEYS: [THREE.Vector3Tuple, THREE.Vector3Tuple][] = [
-  [
-    [0, 2.2, 13],
-    [0, 2.4, -1.5],
-  ],
-  [
-    [-3.2, 1.6, 6.4],
-    [0.8, 2.6, -1.9],
-  ],
-  [
-    [11.5, 2.4, 10],
-    [16, 3, -2],
-  ],
-  [
-    [19.5, 1.7, 7.5],
-    [16, 3.2, -2.2],
-  ],
+  // 0 — exhibition stand from above            (stop 1 at progress 0)
   [
     [29, 6.5, 10.5],
     [32, 0.4, 0],
   ],
+  // on the stand, among the visitors
   [
     [38, 3.6, 10],
     [31.5, 0.7, -0.6],
+  ],
+  // 2/6 — office lobby, brand wall              (stop 2)
+  [
+    [19.5, 1.8, 8],
+    [16, 3.1, -2.2],
+  ],
+  // crossing towards the concert
+  [
+    [8, 3.2, 14],
+    [2, 2.6, -1],
+  ],
+  // 4/6 — music: behind the crowd, stage ahead  (stop 3)
+  [
+    [0.6, 2.1, 12.5],
+    [0, 3.0, -2.5],
+  ],
+  // entering the immersive room
+  [
+    [-11, 2.2, 10],
+    [-16, 2.2, -1.5],
+  ],
+  // 1 — museum, inside the projections          (stop 4)
+  [
+    [-16, 1.75, 5.6],
+    [-16, 2.1, -3],
   ],
 ]
 const posCurve = new THREE.CatmullRomCurve3(
@@ -80,7 +96,6 @@ const lookCurve = new THREE.CatmullRomCurve3(
   false,
   "centripetal",
 )
-const ease = (t: number) => t * t * (3 - 2 * t)
 
 function screenMaterial(work: WorkId, seed: number, density: number, aspect: number) {
   return new THREE.ShaderMaterial({
@@ -101,154 +116,33 @@ function screenMaterial(work: WorkId, seed: number, density: number, aspect: num
 }
 
 // ---------------------------------------------------------------------------------- people
-const PEOPLE = 26
-/** Each walker loops between two points; stand visitors converge on the interactive floor. */
-type Walker = {
-  from: THREE.Vector2
-  to: THREE.Vector2
-  speed: number
-  phase: number
-  height: number
-}
+/** Standing visitors (scripts/blender/people.py): one mesh, glossy oil-black like sculpture. */
+const PEOPLE_MODEL = "/models/people.glb"
 
-function makeWalkers(seed: number): Walker[] {
-  const r = seeded(seed)
-  const out: Walker[] = []
-  for (let i = 0; i < PEOPLE; i++) {
-    const zone = i < 8 ? "conference" : i < 13 ? "lobby" : "stand"
-    let from: THREE.Vector2
-    let to: THREE.Vector2
-    if (zone === "conference") {
-      // Down the centre aisle towards the stage, well in front of the camera.
-      from = new THREE.Vector2(-0.35 + r() * 0.7, 5.6 + r() * 0.6)
-      to = new THREE.Vector2(-0.35 + r() * 0.7, 1.9 + r() * 0.5)
-    } else if (zone === "lobby") {
-      from = new THREE.Vector2(10.5 + r() * 3, -0.8 + r() * 3)
-      to = new THREE.Vector2(18.5 + r() * 3, -0.8 + r() * 3)
-    } else {
-      // From the aisle on the left towards the stand — "the stand everyone walks towards".
-      from = new THREE.Vector2(23 + r() * 3, -1 + r() * 4)
-      to = new THREE.Vector2(29.8 + r() * 4.5, -1.6 + r() * 4)
-    }
-    out.push({ from, to, speed: 0.035 + r() * 0.04, phase: r() * 2, height: 1.62 + r() * 0.22 })
-  }
-  return out
-}
-
-function walkerPos(w: Walker, time: number, out: THREE.Vector2) {
-  // Ping-pong with a pause at each end, eased so people slow down as they arrive.
-  const t = (time * w.speed + w.phase) % 2
-  const k = t < 1 ? t : 2 - t
-  const s = ease(Math.min(1, Math.max(0, (k - 0.1) / 0.8)))
-  return out.copy(w.from).lerp(w.to, s)
-}
-
-/** Merge parts into one smooth-shaded geometry, so a mannequin part is a single instanced draw. */
-function merge(parts: THREE.BufferGeometry[]) {
-  const g = mergeGeometries(
-    parts.map((p) => p.toNonIndexed()),
-    false,
-  )!
-  return g
-}
-
-function People({
-  animate,
-  floorCenter,
-  floorSize,
-  rippleRef,
-}: {
-  animate: boolean
-  floorCenter: THREE.Vector2
-  floorSize: number
-  rippleRef: React.RefObject<THREE.ShaderMaterial | null>
-}) {
-  const body = useRef<THREE.InstancedMesh>(null)
-  const legL = useRef<THREE.InstancedMesh>(null)
-  const legR = useRef<THREE.InstancedMesh>(null)
-  const walkers = useMemo(() => makeWalkers(19), [])
-  // A slim gallery mannequin: torso + shoulders + head + arms; legs swing from the hip.
-  const geo = useMemo(() => {
-    const torso = new THREE.CapsuleGeometry(0.15, 0.42, 4, 12).translate(0, 1.18, 0)
-    const shoulders = new THREE.CapsuleGeometry(0.07, 0.3, 4, 8)
-      .rotateZ(Math.PI / 2)
-      .translate(0, 1.42, 0)
-    const head = new THREE.SphereGeometry(0.105, 16, 12).translate(0, 1.66, 0)
-    const armL = new THREE.CapsuleGeometry(0.045, 0.5, 4, 8).translate(-0.24, 1.16, 0)
-    const armR = new THREE.CapsuleGeometry(0.045, 0.5, 4, 8).translate(0.24, 1.16, 0)
-    // Leg pivots at the hip (y = 0.88): geometry hangs below the origin.
-    const leg = new THREE.CapsuleGeometry(0.065, 0.72, 4, 8).translate(0, -0.44, 0)
-    return { body: merge([torso, shoulders, head, armL, armR]), leg }
-  }, [])
-  const tmp = useMemo(
-    () => ({
-      o: new THREE.Object3D(),
-      l: new THREE.Object3D(),
-      p: new THREE.Vector2(),
-      q: new THREE.Vector2(),
-    }),
-    [],
+function People() {
+  const gltf = useLoader(GLTFLoader, PEOPLE_MODEL, (loader) =>
+    loader.setMeshoptDecoder(MeshoptDecoder),
   )
-
-  useFrame((state) => {
-    const b = body.current
-    const L = legL.current
-    const R = legR.current
-    if (!b || !L || !R) return
-    const time = animate ? FROZEN_TIME + state.clock.elapsedTime : FROZEN_TIME
-    const ripples = rippleRef.current?.uniforms.uPoints?.value as THREE.Vector3[] | undefined
-    let n = 0
-    walkers.forEach((w, i) => {
-      const p = walkerPos(w, time, tmp.p).clone()
-      const ahead = walkerPos(w, time + 0.3, tmp.q)
-      const moving = p.distanceTo(ahead) > 0.01
-      const stride = moving && animate ? Math.sin(time * 7 + i * 1.7) : 0
-      const y = inStand(p) ? 0.125 : 0
-      const s = w.height / 1.75
-      tmp.o.position.set(p.x, y + Math.abs(stride) * 0.025, p.y)
-      if (moving) tmp.o.lookAt(ahead.x, tmp.o.position.y, ahead.y)
-      tmp.o.scale.setScalar(s)
-      tmp.o.updateMatrix()
-      b.setMatrixAt(i, tmp.o.matrix)
-      for (const [mesh, side] of [
-        [L, -1],
-        [R, 1],
-      ] as const) {
-        tmp.l.position.set(side * 0.085, 0.88, 0)
-        tmp.l.rotation.set(stride * side * 0.45, 0, 0)
-        tmp.l.updateMatrix()
-        tmp.l.matrix.premultiply(tmp.o.matrix)
-        mesh.setMatrixAt(i, tmp.l.matrix)
-      }
-      // Visitors on the interactive floor drive the ripples.
-      if (ripples && n < ripples.length) {
-        const u = (p.x - floorCenter.x) / floorSize + 0.5
-        const v = (p.y - floorCenter.y) / floorSize + 0.5
-        if (u > 0 && u < 1 && v > 0 && v < 1) ripples[n++]!.set(u, 1 - v, 1)
-      }
+  const object = useMemo(() => {
+    const root = gltf.scene.clone(true)
+    const oil = new THREE.MeshPhysicalMaterial({
+      color: "black",
+      roughness: 0.16,
+      metalness: 0,
+      clearcoat: 1,
+      clearcoatRoughness: 0.035,
+      envMapIntensity: 1.5,
     })
-    if (ripples) for (let k = n; k < ripples.length; k++) ripples[k]!.z = 0
-    b.instanceMatrix.needsUpdate = true
-    L.instanceMatrix.needsUpdate = true
-    R.instanceMatrix.needsUpdate = true
-  })
-
-  return (
-    <>
-      <instancedMesh ref={body} args={[geo.body, undefined, PEOPLE]} frustumCulled={false}>
-        <meshStandardMaterial color="dimgray" roughness={0.55} metalness={0.1} />
-      </instancedMesh>
-      <instancedMesh ref={legL} args={[geo.leg, undefined, PEOPLE]} frustumCulled={false}>
-        <meshStandardMaterial color="dimgray" roughness={0.55} metalness={0.1} />
-      </instancedMesh>
-      <instancedMesh ref={legR} args={[geo.leg, undefined, PEOPLE]} frustumCulled={false}>
-        <meshStandardMaterial color="dimgray" roughness={0.55} metalness={0.1} />
-      </instancedMesh>
-    </>
-  )
+    root.traverse((o) => {
+      if ((o as THREE.Mesh).isMesh) (o as THREE.Mesh).material = oil
+    })
+    return root
+  }, [gltf])
+  return <primitive object={object} />
 }
 
-const inStand = (p: THREE.Vector2) => p.x > 28 && p.x < 36 && p.y > -3.2 && p.y < 3.8
+/** Visitors standing on the interactive floor, from the same placement list that built the model. */
+const STAND_FEET = venuePeople.feet.filter(([x, z]) => x! > 28 && x! < 36 && z! > -3.2 && z! < 3.8)
 
 // ---------------------------------------------------------------------------------- venue
 function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
@@ -257,7 +151,6 @@ function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
   const { invalidate } = useThree()
   const colors = generativePalette[palette]
   const materials = useRef<THREE.ShaderMaterial[]>([])
-  const ripple = useRef<THREE.ShaderMaterial>(null)
   const look = useRef(new THREE.Vector3(...KEYS[0]![1]))
   const smoothed = useRef(progress)
   const reported = useRef(false)
@@ -317,20 +210,16 @@ function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
     mesh.position.copy(src.position)
     mesh.position.y += 0.004
     mesh.quaternion.copy(src.quaternion)
+    // Each visitor standing on the floor sends out slow rings from their feet.
+    const box = new THREE.Box3().setFromObject(src)
+    const size = Math.max(box.max.x - box.min.x, box.max.z - box.min.z) || 6.5
+    const cx = (box.min.x + box.max.x) / 2
+    const cz = (box.min.z + box.max.z) / 2
+    const points = m.uniforms.uPoints!.value as THREE.Vector3[]
+    STAND_FEET.slice(0, points.length).forEach(([x, z], i) => {
+      points[i]!.set((x! - cx) / size + 0.5, 1 - ((z! - cz) / size + 0.5), 1)
+    })
     return { mesh, material: m }
-  }, [scene])
-
-  useEffect(() => {
-    ripple.current = rippleMesh?.material ?? null
-  }, [rippleMesh])
-
-  const floorInfo = useMemo(() => {
-    const box = new THREE.Box3().setFromObject(scene.floorScreen ?? new THREE.Object3D())
-    const c = new THREE.Vector3()
-    const s = new THREE.Vector3()
-    box.getCenter(c)
-    box.getSize(s)
-    return { center: new THREE.Vector2(c.x, c.z), size: Math.max(s.x, s.z) || 6.5 }
   }, [scene])
 
   useEffect(() => invalidate(), [progress, palette, animate, invalidate])
@@ -374,18 +263,43 @@ function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
     <>
       <color attach="background" args={["black"]} />
       <fog attach="fog" args={["black", 18, 46]} />
-      {/* People are the only lit objects: a dim key so they read as silhouettes with a rim. */}
-      <hemisphereLight args={[colors["gen-2"], "black", 0.35]} />
-      <directionalLight position={[4, 6, -8]} intensity={1.6} color={colors["gen-2"]} />
-      <directionalLight position={[-6, 8, 10]} intensity={0.35} />
+      {/* Reflections for the glossy visitors: light shapes where the screens and LED strips are. */}
+      <Environment resolution={256} frames={1}>
+        <Lightformer
+          form="rect"
+          intensity={3}
+          color={colors["gen-2"]}
+          position={[0, 2.5, -6]}
+          scale={[12, 4, 1]}
+        />
+        <Lightformer
+          form="rect"
+          intensity={2.5}
+          color={colors["gen-1"]}
+          position={[6, 0.5, 4]}
+          scale={[10, 0.4, 1]}
+          rotation-y={-Math.PI / 2}
+        />
+        <Lightformer
+          form="rect"
+          intensity={1.5}
+          color={colors["gen-3"]}
+          position={[-6, 3, 2]}
+          scale={[4, 6, 1]}
+          rotation-y={Math.PI / 2}
+        />
+        <Lightformer
+          form="rect"
+          intensity={1.2}
+          position={[0, 8, 0]}
+          scale={[10, 10, 1]}
+          rotation-x={Math.PI / 2}
+        />
+      </Environment>
+      <directionalLight position={[4, 6, -8]} intensity={1.2} color={colors["gen-2"]} />
       <primitive object={scene.root} />
       {rippleMesh && <primitive object={rippleMesh.mesh} />}
-      <People
-        animate={animate}
-        floorCenter={floorInfo.center}
-        floorSize={floorInfo.size}
-        rippleRef={ripple}
-      />
+      <People />
     </>
   )
 }

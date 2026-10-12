@@ -68,3 +68,14 @@ html[data-motion="off"] {
   animation-duration: 0.01ms !important;
   transition-duration: 0.01ms !important;
 }
+
+/* Tailwind v4 resets buttons to the default cursor; everything clickable shows the hand. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="radio"],
+  summary,
+  label[for] {
+    cursor: pointer;
+  }
+}

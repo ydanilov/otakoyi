@@ -12,7 +12,7 @@ import { SpecMarquee } from "@/components/sections/spec-marquee"
 import { VenueTour } from "@/components/sections/venue-tour"
 import { WorksReel } from "@/components/sections/works-reel"
 import { getCases } from "@/content/cases"
-import { solutions } from "@/content/solutions"
+import { solutions, tourStops } from "@/content/solutions"
 
 function Section({ id, children }: { id?: string; children: React.ReactNode }) {
   return (
@@ -45,7 +45,6 @@ const stats = [
 
 export default function HomePage() {
   const featured = getCases().filter((c) => c.featured)
-  const tourStops = solutions.filter((s) => s.slug !== "launches")
 
   return (
     <>

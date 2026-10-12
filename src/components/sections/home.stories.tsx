@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect } from "storybook/test"
 
-import { solutions } from "@/content/solutions"
+import { solutions, tourStops } from "@/content/solutions"
 import { InNumbers } from "./in-numbers"
 import { LabPlayground } from "./lab-playground"
 import { LabTeaser } from "./lab-teaser"
@@ -23,12 +23,17 @@ export const Marquee: Story = {
 }
 
 export const Tour: Story = {
-  render: () => <VenueTour stops={solutions.filter((s) => s.slug !== "launches")} />,
+  render: () => <VenueTour stops={tourStops} />,
   play: async ({ canvas }) => {
-    await expect(canvas.getByRole("link", { name: /Conferences/ })).toHaveAttribute(
+    await expect(canvas.getByRole("link", { name: /Exhibitions/ })).toHaveAttribute(
       "href",
-      "/solutions/conferences",
+      "/solutions/exhibitions",
     )
+    const menu = canvas.getByRole("navigation", { name: "Tour stops" })
+    await expect(menu.querySelectorAll("button")).toHaveLength(4)
+    await expect(
+      canvas.getByRole("button", { name: "Go to Exhibitions & trade shows" }),
+    ).toHaveAttribute("aria-current", "step")
   },
 }
 

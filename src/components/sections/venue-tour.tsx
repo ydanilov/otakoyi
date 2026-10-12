@@ -87,7 +87,7 @@ export function VenueTour({ stops }: VenueTourProps) {
                       onClick={() => goTo(s)}
                       aria-current={i === active ? "step" : undefined}
                       aria-label={`Go to ${s.label}`}
-                      className="group flex items-center gap-2 rounded-full px-2 py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      className="group flex cursor-pointer items-center gap-2 rounded-full px-2 py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       <span
                         aria-hidden

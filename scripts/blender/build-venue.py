@@ -1,19 +1,21 @@
 """
-Build the 3D venue used by the home-page tour (conference stage → office lobby → exhibition stand).
+Build the 3D venue used by the home-page tour (exhibition stand → office lobby → music stage → museum room).
 
 Reproducible: run with Blender's Python module (pip install bpy) — no Blender UI needed.
 
     python scripts/blender/build-venue.py [--quick]
-    npx @gltf-transform/cli meshopt public/models/venue.glb public/models/venue.glb   # ~465 KB → ~135 KB
+    npx @gltf-transform/cli meshopt public/models/venue.glb public/models/venue.glb
+    npx @gltf-transform/cli meshopt public/models/people.glb public/models/people.glb
 
 Outputs (public/models/):
   venue.glb          geometry: baked "Venue" + "Floor" meshes, live "Screen_*" planes (UVs 0..1)
+  people.glb         standing visitors (one mesh, with normals) — see people.py
   venue-bake.jpg     Cycles-baked lighting + albedo for the Venue mesh (UV0)
   floor-bake.jpg     Cycles-baked lighting for the Floor mesh (UV0)
 
 Coordinates below are written in three.js space (x right, y up, z towards camera) and converted
 to Blender (z up). Zone origins match the camera path in src/components/works/venue-scene-canvas.tsx:
-conference x=0, lobby x=16, stand x=32.
+music x=0, lobby x=16, stand x=32, museum x=-16.
 
 Screens are not baked: the site replaces their material with the live generative shaders. They still
 emit light here, so their glow is baked onto the floor and walls around them.
@@ -24,6 +26,9 @@ import os
 import sys
 
 import bpy
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import people  # noqa: E402  (after bpy: it uses it)
 
 QUICK = "--quick" in sys.argv
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -91,7 +96,13 @@ M = {
 
 # Screens emit an average of the palette their live work uses, so the bake carries their glow.
 SCREENS = {
-    "Screen_Stage": ("#4252e0", 5.0),
+    "Screen_Stage": ("#4252e0", 6.0),
+    "Screen_MusicSideL": ("#7a3fd8", 4.0),
+    "Screen_MusicSideR": ("#7a3fd8", 4.0),
+    "Screen_MuseumBack": ("#3f5ae0", 3.0),
+    "Screen_MuseumLeft": ("#2f7a6a", 2.5),
+    "Screen_MuseumRight": ("#6a3fb8", 2.5),
+    "Screen_MuseumFloor": ("#2c5a8a", 1.5),
     "Screen_Lobby": ("#3b6ee0", 4.0),
     "Screen_StandFloor": ("#3b8a62", 2.0),
     "Screen_StandWall": ("#4a5ee8", 4.0),
@@ -184,28 +195,50 @@ def truss_beam(x0, x1, y, z):
         x += 0.5
 
 
-# --------------------------------------------------------------------------- 1. conference
-box((12, 0.6, 3.6), (0, 0.3, -0.6), M["dark"], bevel=0.03)
-box((12, 0.05, 0.03), (0, 0.12, 1.21), M["strip"], bevel=0)
-for sx in (-5.2, 5.2):
-    box((1.2, 0.2, 0.5), (sx, 0.1, 1.45), M["panel"])
-    box((1.2, 0.4, 0.5), (sx, 0.2, 1.0), M["panel"])
-box((11.5, 4.0, 0.2), (0, 2.6, -2.06), M["bezel"], bevel=0.02)
-screen("Screen_Stage", 11.0, 3.6, (0, 2.6, -1.95))
-truss(-6.2, -2.0, 5.2)
-truss(6.2, -2.0, 5.2)
-truss_beam(-6.2, 6.2, 5.2, -2.0)
-# Lectern
-box((0.6, 1.05, 0.45), (3.9, 1.125, -0.2), M["panel"], bevel=0.02)
-box((0.7, 0.04, 0.55), (3.9, 1.67, -0.2), M["wood"], bevel=0.01)
-# Audience: 8 rows × 14 seats with an aisle
-for r in range(8):
-    for c in range(14):
-        x = (c - 6.5) * 0.7 + (0.5 if c >= 7 else -0.5)
-        z = 2.6 + r * 0.95
-        box((0.48, 0.08, 0.46), (x, 0.46, z), M["seat"], bevel=0)
-        box((0.48, 0.5, 0.07), (x, 0.73, z + 0.22), M["seat"], bevel=0)
-        cyl(0.03, 0.42, (x, 0.21, z), M["metal"], verts=6)
+# --------------------------------------------------------------------------- 3. music events (x = 0)
+# Concert stage: deep stage, LED backdrop and side columns, truss with lights, speaker stacks,
+# crowd barrier. The camera reaches it third (exhibition → lobby → music → museum).
+box((13, 1.0, 5), (0, 0.5, -1.1), M["dark"], bevel=0.03)
+box((13, 0.05, 0.03), (0, 0.2, 1.41), M["strip"], bevel=0)
+box((11.8, 4.2, 0.2), (0, 3.2, -3.46), M["bezel"], bevel=0.02)
+screen("Screen_Stage", 11.4, 3.9, (0, 3.2, -3.35))
+for side, name in ((-1, "Screen_MusicSideL"), (1, "Screen_MusicSideR")):
+    x = side * 7.2
+    box((1.7, 5.4, 0.2), (x, 2.7, -1.6), M["bezel"], bevel=0.02)
+    screen(name, 1.5, 5.2, (x, 2.7, -1.49))
+    for y in (0.5, 1.45, 2.35):  # speaker stack
+        box((1.2, 0.9, 1.0), (side * 8.6, y, 0.2), M["dark"], bevel=0.03)
+truss(-6.6, -3.2, 6.4)
+truss(6.6, -3.2, 6.4)
+truss_beam(-6.6, 6.6, 6.4, -3.2)
+truss_beam(-6.6, 6.6, 6.4, 0.6)
+for x in (-5, -2.5, 0, 2.5, 5):  # moving heads on the front truss
+    cyl(0.16, 0.32, (x, 6.05, 0.6), M["dark"], verts=16)
+    cyl(0.11, 0.02, (x, 5.88, 0.6), M["strip"], verts=16)
+box((12, 1.1, 0.12), (0, 0.55, 3.0), M["metal"], bevel=0.01)  # crowd barrier
+# Mixing desk (FOH) far back
+box((2.2, 1.0, 1.0), (0, 0.5, 11.5), M["dark"], bevel=0.03)
+
+# --------------------------------------------------------------------------- 4. museum / interactive park (x = -16)
+# Immersive room: back + side walls and the floor are all projection surfaces.
+MX = -16
+box((10.4, 4.6, 0.25), (MX, 2.3, -3.3), M["dark"], bevel=0)
+screen("Screen_MuseumBack", 10, 4.2, (MX, 2.3, -3.15))
+for side, name in ((-1, "Screen_MuseumLeft"), (1, "Screen_MuseumRight")):
+    box((0.25, 4.6, 7.4), (MX + side * 5.2, 2.3, 0.4), M["dark"], bevel=0)
+    bpy.ops.mesh.primitive_plane_add(size=1, location=B(MX + side * 5.05, 2.3, 0.4))
+    o = bpy.context.object
+    o.name = o.data.name = name
+    o.scale = (7.0, 4.2, 1)
+    o.rotation_euler = (math.pi / 2, 0, -side * math.pi / 2)
+    bpy.ops.object.transform_apply(rotation=True, scale=True)
+    color, strength = SCREENS[name]
+    add(o, material(name, "#000000", 0.3, emit=color, strength=strength), bake=False)
+screen("Screen_MuseumFloor", 10, 7, (MX, 0.01, 0.4), facing="y")
+box((10.6, 0.4, 7.6), (MX, 4.8, 0.4), M["dark"], bevel=0)  # ceiling lip hides projectors
+for x in (MX - 3, MX, MX + 3):
+    box((0.35, 0.25, 0.5), (x, 4.48, 2.6), M["panel"], bevel=0.02)  # projectors
+box((2.4, 0.42, 0.6), (MX, 0.21, 2.2), M["wood"], bevel=0.02)  # bench
 
 # --------------------------------------------------------------------------- 2. office lobby
 LX = 16
@@ -250,12 +283,52 @@ truss(SX + 3.6, -2.6, 4.4, y0=0.12)
 for (px, pz, ph) in ((SX - 1.6, 2.1, 0.9), (SX - 0.9, 2.6, 0.7)):
     box((0.5, ph, 0.5), (px, 0.12 + ph / 2, pz), M["white"], bevel=0.02)
 
+# --------------------------------------------------------------------------- visitors
+# Standing, not walking: placed where people would naturally stop and look.
+# body = (gender, age, muscle, weight, height); face = degrees, 0 faces the camera (+z).
+STAGE_SCREEN = (0, 3.2, -3.35)
+LOBBY_SCREEN = (16, 3.4, -2.2)
+STAND_FLOOR = (32, 0.1, 0.5)
+STAND_WALL = (33.6, 2.0, -2.8)
+MUSEUM_BACK = (-16, 2.6, -3.1)
+MUSEUM_FLOOR = (-16, 0.0, 0.4)
+VISITORS = [
+    # Exhibition stand
+    dict(pos=(30.6, 0.12, 0.3), face=140, look=STAND_FLOOR, look_weight=0.8, body=(0.1, 0.5, 0.5, 0.5, 0.52), pose=("Xbot", "idle", 15)),
+    dict(pos=(32.3, 0.12, 1.6), face=200, look=STAND_FLOOR, look_weight=0.8, body=(1.0, 0.5, 0.6, 0.5, 0.6), pose=("Xbot", "sad_pose", 0)),
+    dict(pos=(33.8, 0.12, -0.3), face=160, look=STAND_WALL, body=(0.0, 0.55, 0.45, 0.45, 0.55), pose=("Michelle", "SambaDance", 417)),
+    dict(pos=(31.9, 0.12, 3.1), face=190, look=STAND_WALL, body=(0.85, 0.4, 0.55, 0.5, 0.62), pose=("Xbot", "agree", 20)),
+    dict(pos=(34.4, 0.12, 2.0), face=225, look=STAND_FLOOR, look_weight=0.7, body=(0.2, 0.6, 0.5, 0.55, 0.5), pose=("Soldier", "Idle", 24)),
+    # Office lobby
+    dict(pos=(15.1, 0, 0.6), face=170, look=LOBBY_SCREEN, body=(1.0, 0.6, 0.5, 0.55, 0.58), pose=("Xbot", "idle", 30)),
+    dict(pos=(16.9, 0, 1.3), face=200, look=LOBBY_SCREEN, body=(0.0, 0.45, 0.5, 0.5, 0.5), pose=("Michelle", "SambaDance", 408)),
+    # Music: a crowd at the barrier, two hands in the air
+    dict(pos=(-2.6, 0, 4.0), face=176, look=STAGE_SCREEN, body=(1.0, 0.45, 0.6, 0.5, 0.62), pose=("Xbot", "idle", 0), raise_arm="right"),
+    dict(pos=(-1.2, 0, 4.4), face=184, look=STAGE_SCREEN, body=(0.0, 0.4, 0.5, 0.45, 0.52), pose=("Michelle", "SambaDance", 417)),
+    dict(pos=(0.4, 0, 3.9), face=180, look=STAGE_SCREEN, body=(0.9, 0.5, 0.55, 0.5, 0.6), pose=("Xbot", "sad_pose", 0)),
+    dict(pos=(1.9, 0, 4.5), face=170, look=STAGE_SCREEN, body=(0.1, 0.45, 0.5, 0.5, 0.5), pose=("Xbot", "idle", 30), raise_arm="left"),
+    dict(pos=(3.3, 0, 4.1), face=190, look=STAGE_SCREEN, body=(1.0, 0.55, 0.5, 0.55, 0.58), pose=("Soldier", "Idle", 24)),
+    dict(pos=(-0.4, 0, 5.8), face=178, look=STAGE_SCREEN, body=(0.7, 0.5, 0.5, 0.5, 0.56), pose=("Xbot", "agree", 20)),
+    # Museum / interactive park
+    dict(pos=(-17.6, 0, 0.9), face=160, look=MUSEUM_BACK, body=(0.0, 0.5, 0.5, 0.45, 0.52), pose=("Michelle", "SambaDance", 408)),
+    dict(pos=(-15.2, 0, 0.1), face=200, look=MUSEUM_FLOOR, look_weight=0.8, body=(1.0, 0.6, 0.5, 0.55, 0.6), pose=("Xbot", "sad_pose", 0)),
+    dict(pos=(-14.0, 0, 1.9), face=230, look=(-21, 2.4, 0.4), body=(0.2, 0.4, 0.5, 0.5, 0.48), pose=("Xbot", "idle", 15)),
+    dict(pos=(-16.6, 0, 2.6), face=185, look=MUSEUM_BACK, body=(0.9, 0.45, 0.55, 0.5, 0.6), pose=("Xbot", "idle", 45)),
+]
+crowd, feet = people.build(VISITORS)
+crowd.data.materials.clear()
+crowd.data.materials.append(material("person", "#050506", 0.12, 0.0))
+with open(os.path.join(ROOT, "src", "components", "works", "venue-people.json"), "w") as fh:
+    import json
+
+    json.dump({"feet": [[p[0], p[2]] for p in feet]}, fh)
+
 # --------------------------------------------------------------------------- floor (own bake)
-bpy.ops.mesh.primitive_plane_add(size=1, location=B(16, 0, 2))
+bpy.ops.mesh.primitive_plane_add(size=1, location=B(9, 0, 2))
 floor = bpy.context.object
 floor.name = "Floor"
 floor.data.name = "Floor"
-floor.scale = (90, 50, 1)
+floor.scale = (100, 50, 1)
 bpy.ops.object.transform_apply(scale=True)
 floor.data.materials.append(M["floor"])
 
@@ -270,10 +343,11 @@ def area(pos, size, power, color="#fff4e6"):
     scene.collection.objects.link(o)
 
 
-area((0, 7, 3), 6, 900)
+area((0, 8, 1), 7, 1100, "#c9b8ff")
+area((MX, 6, 1.5), 5, 250)
 area((LX, 8, 1.5), 5, 700)
 area((SX, 6.5, 1), 5, 650)
-area((16, 9, 12), 20, 600, "#9fb4ff")
+area((9, 9, 12), 24, 700, "#9fb4ff")
 
 # --------------------------------------------------------------------------- join + unwrap
 bpy.ops.object.select_all(action="DESELECT")
@@ -329,18 +403,22 @@ bake(venue, VENUE_RES, os.path.join(OUT, "venue-bake.jpg"))
 bake(floor, FLOOR_RES, os.path.join(OUT, "floor-bake.jpg"))
 
 # --------------------------------------------------------------------------- export
-bpy.ops.object.select_all(action="DESELECT")
-for o in bpy.data.objects:
-    if o.type == "MESH":
+def export(path, objs, normals):
+    bpy.ops.object.select_all(action="DESELECT")
+    for o in objs:
         o.select_set(True)
-bpy.ops.export_scene.gltf(
-    filepath=os.path.join(OUT, "venue.glb"),
-    export_format="GLB",
-    use_selection=True,
-    export_materials="NONE",
-    export_texcoords=True,
-    export_normals=False,
-    export_yup=True,
-    export_apply=True,
-)
-print("exported", os.path.join(OUT, "venue.glb"))
+    bpy.ops.export_scene.gltf(
+        filepath=path,
+        export_format="GLB",
+        use_selection=True,
+        export_materials="NONE",
+        export_texcoords=not normals,
+        export_normals=normals,
+        export_yup=True,
+        export_apply=True,
+    )
+    print("exported", path)
+
+
+export(os.path.join(OUT, "venue.glb"), [o for o in bpy.data.objects if o.type == "MESH" and o.name != "People"], False)
+export(os.path.join(OUT, "people.glb"), [crowd], True)
