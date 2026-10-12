@@ -24,6 +24,15 @@ type VenueTourProps = {
  */
 export function VenueTour({ stops }: VenueTourProps) {
   const [ref, progress] = useScrollProgress<HTMLDivElement>(HEADER)
+
+  /** Scroll so the camera lands on a stop (progress = its `venue`); the camera eases there. */
+  const goTo = (stop: Solution) => {
+    const el = ref.current
+    if (!el) return
+    const top = el.getBoundingClientRect().top + window.scrollY - HEADER
+    const travel = el.offsetHeight - (window.innerHeight - HEADER)
+    window.scrollTo({ top: top + stop.venue * travel, behavior: "smooth" })
+  }
   const active = stops.reduce(
     (best, s, i) =>
       Math.abs(s.venue - progress) < Math.abs(stops[best]!.venue - progress) ? i : best,
@@ -69,26 +78,41 @@ export function VenueTour({ stops }: VenueTourProps) {
           />
 
           <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col justify-between px-4 py-10 md:px-8">
-            <ol aria-label="Tour stops" className="flex gap-2 self-end">
-              {stops.map((s, i) => (
-                <li key={s.slug} className="flex items-center gap-2">
-                  <span
-                    className={cn(
-                      "h-0.5 w-10 rounded-full bg-muted-foreground/30 transition-colors",
-                      i <= active && "bg-signal",
-                    )}
-                  />
-                  <span
-                    className={cn(
-                      "hidden font-mono text-xs tracking-widest uppercase md:inline",
-                      i === active ? "text-foreground" : "text-muted-foreground",
-                    )}
-                  >
-                    {s.label}
-                  </span>
-                </li>
-              ))}
-            </ol>
+            <nav aria-label="Tour stops" className="self-end">
+              <ol className="flex gap-1">
+                {stops.map((s, i) => (
+                  <li key={s.slug}>
+                    <button
+                      type="button"
+                      onClick={() => goTo(s)}
+                      aria-current={i === active ? "step" : undefined}
+                      aria-label={`Go to ${s.label}`}
+                      className="group flex items-center gap-2 rounded-full px-2 py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "h-0.5 rounded-full transition-all duration-500",
+                          i === active ? "w-14 bg-signal" : "w-8 bg-muted-foreground/40",
+                          i < active && "bg-signal/60",
+                          "group-hover:w-14 group-hover:bg-signal",
+                        )}
+                      />
+                      <span
+                        className={cn(
+                          "font-mono text-xs tracking-widest whitespace-nowrap uppercase transition-colors",
+                          i === active
+                            ? "text-foreground"
+                            : "hidden text-muted-foreground group-hover:text-foreground md:inline",
+                        )}
+                      >
+                        {s.label}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </nav>
 
             <div className="relative max-w-md">
               {stops.map((s, i) => (
