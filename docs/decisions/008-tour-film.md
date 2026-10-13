@@ -11,3 +11,10 @@
 - `TourFilm` maps scroll progress to film time through the stop frames; `TourStill` shows one stop. The WebGL venue (`works/venue-scene*`, ADR-007) stays in the repo but is no longer on the home page.
 
 **Consequences.** Screens show rendered content, not the live generative engine. Changing the tour means re-rendering in Blender (~25 min) and re-encoding. The home page no longer loads three.js for the tour.
+
+## Update 2026-10-13 — timecoded scenes
+
+- The film is cut into scenes with timecodes (`TOUR.scenes`, film frames). Scroll is split into equal parts, one per scene. Inside a scene, scroll scrubs the film and can stop on any frame.
+- Transitions are never scrubbed. When scroll crosses into another scene, the film plays the transition through on its own, forward or backward, and the stop card changes when it lands. Skipping several scenes plays them one after another, faster (≤ 2.6 s total).
+- (Pending re-render; the live film still uses the 96-frame cut with `TOUR.scenes` [1,66] [110,146] [190,226] [270,336].) The new cut: each scene is 196 frames: 20 inside the screen, a 30-frame pull-out, a ~96-frame animated hold (the scrubbed part; timecodes [1,146] [226,322] [402,498] [578,724]), a 30-frame dive, then 20 inside the next screen. During the dive the camera ends fully inside the screen, a compositor blur ramps up, and a 20-frame gamma cross blends the two blurred screens. No room edges are visible mid-blend.
+- The concert hold is animated (crowd on the beat, moving heads, laser fans, the DJ's arm via shape keys, denser fog). All cycles divide 96 frames.
