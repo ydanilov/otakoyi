@@ -7,8 +7,11 @@ import { cn } from "@/lib/utils"
 
 /**
  * The venue tour as a pre-rendered film (Blender, EEVEE): stand → lobby → concert → museum,
- * each move diving into one room's screen and surfacing from the next. Scroll scrubs it, so the
- * frame is exactly what was rendered and the page ships no 3D engine.
+ * each move diving into one room's screen and surfacing from the next. The page ships no 3D engine.
+ *
+ * The film is cut into timecoded parts. Inside a scene, scroll scrubs the film, so you can stop
+ * anywhere. The transition between two scenes never stops halfway: once scroll crosses into the
+ * next scene, the transition plays through on its own, forwards or backwards.
  * Encoded with a keyframe every few frames so seeking stays smooth (see docs/decisions/008).
  */
 export const TOUR = {
@@ -18,18 +21,35 @@ export const TOUR = {
   webm: "/tour/tour.webm",
   webmSmall: "/tour/tour-960.webm",
   fps: 24,
-  /** Film frames where each stop holds (stand, lobby, concert, museum). */
-  stops: [12, 120, 200, 312],
+  /** Scroll-scrubbed part of each scene, in film frames [from, to]; the gaps are transitions. */
+  scenes: [
+    [1, 66],
+    [110, 146],
+    [190, 226],
+    [270, 336],
+  ],
   posters: ["/tour/stop-0.jpg", "/tour/stop-1.jpg", "/tour/stop-2.jpg", "/tour/stop-3.jpg"],
 } as const
 
-/** progress 0..1 across the stops → film time in seconds (stops spread evenly over progress). */
+const SCENES = TOUR.scenes.length
+const frameTime = (frame: number) => (frame - 1) / TOUR.fps
+
+/** Which scene a scroll position belongs to: scroll is split into equal parts, one per scene. */
+export function tourScene(progress: number) {
+  return Math.min(SCENES - 1, Math.floor(Math.min(1, Math.max(0, progress)) * SCENES))
+}
+
+/** progress 0..1 → film time in seconds, inside the scene that progress belongs to. */
 export function tourTime(progress: number) {
-  const n = TOUR.stops.length - 1
-  const p = Math.min(1, Math.max(0, progress)) * n
-  const i = Math.min(Math.floor(p), n - 1)
-  const f = TOUR.stops[i]! + (TOUR.stops[i + 1]! - TOUR.stops[i]!) * (p - i)
-  return (f - 1) / TOUR.fps
+  const p = Math.min(1, Math.max(0, progress)) * SCENES
+  const i = tourScene(progress)
+  const [from, to] = TOUR.scenes[i]!
+  return frameTime(from + (to - from) * Math.min(1, p - i))
+}
+
+/** Scroll position of the middle of a scene, for jumping to it. */
+export function tourSceneProgress(scene: number) {
+  return (scene + 0.5) / SCENES
 }
 
 /** The poster of the stop nearest to a progress value (0 stand … 1 museum). */
@@ -38,40 +58,72 @@ export function tourPoster(progress: number) {
   return TOUR.posters[i]!
 }
 
+/** Longest a transition may take, in seconds — skipping several scenes speeds it up. */
+const MAX_TRANSITION = 2.6
+
 type TourFilmProps = {
   /** 0..1 along the tour. */
   progress: number
+  /** Called when the film has arrived in another scene (after its transition). */
+  onSceneChange?: (scene: number) => void
   label?: string
   className?: string
 }
 
 export function TourFilm({
   progress,
+  onSceneChange,
   label = "Film flying through an exhibition stand, an office lobby, a concert and an immersive museum room, each with generative content on its screens",
   className,
 }: TourFilmProps) {
   const motion = useMotion()
   const video = useRef<HTMLVideoElement>(null)
-  const target = useRef(tourTime(progress))
+  const target = useRef({ scene: tourScene(progress), time: tourTime(progress) })
+  const sceneCb = useRef(onSceneChange)
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    target.current = tourTime(progress)
+    target.current = { scene: tourScene(progress), time: tourTime(progress) }
   }, [progress])
+  useEffect(() => {
+    sceneCb.current = onSceneChange
+  }, [onSceneChange])
 
-  // Ease the playhead towards the scroll position; seek only when it actually moves.
   useEffect(() => {
     if (!motion) return
     const v = video.current
     if (!v) return
     let raf = 0
-    let current = target.current
-    const tick = () => {
-      current += (target.current - current) * 0.18
-      if (Math.abs(target.current - current) < 0.002) current = target.current
-      if (v.readyState >= 1 && Math.abs(v.currentTime - current) > 1 / (TOUR.fps * 2)) {
-        v.currentTime = current
+    let scene = target.current.scene
+    let current = target.current.time
+    // A running transition: film time from → to, started at `at` (ms), lasting `ms`.
+    let move: { from: number; to: number; at: number; ms: number; scene: number } | null = null
+    const seek = (t: number) => {
+      if (v.readyState >= 1 && Math.abs(v.currentTime - t) > 1 / (TOUR.fps * 2)) v.currentTime = t
+    }
+    const tick = (now: number) => {
+      const goal = target.current
+      if (move) {
+        const k = Math.min(1, (now - move.at) / move.ms)
+        current = move.from + (move.to - move.from) * k
+        if (k >= 1) {
+          scene = move.scene
+          move = null
+          sceneCb.current?.(scene)
+        }
+      } else if (goal.scene !== scene) {
+        // Leave the scene: play straight to the edge of the next one in the scroll direction.
+        const next = scene + Math.sign(goal.scene - scene)
+        const edge = frameTime(goal.scene > scene ? TOUR.scenes[next]![0] : TOUR.scenes[next]![1])
+        const span = Math.abs(edge - current)
+        const hops = Math.abs(goal.scene - scene)
+        const seconds = Math.min(span, MAX_TRANSITION / hops)
+        move = { from: current, to: edge, at: now, ms: seconds * 1000, scene: next }
+      } else {
+        current += (goal.time - current) * 0.18
+        if (Math.abs(goal.time - current) < 0.002) current = goal.time
       }
+      seek(current)
       raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)

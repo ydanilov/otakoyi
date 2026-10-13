@@ -5,7 +5,9 @@ import { ArrowRightIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { TourFilm, TourStill } from "@/components/sections/tour-film"
+import { useState } from "react"
+
+import { TourFilm, TourStill, tourScene, tourSceneProgress } from "@/components/sections/tour-film"
 import type { Solution } from "@/content/solutions"
 import { cn } from "@/lib/utils"
 import { useScrollProgress } from "@/lib/use-scroll-progress"
@@ -25,19 +27,17 @@ type VenueTourProps = {
 export function VenueTour({ stops }: VenueTourProps) {
   const [ref, progress] = useScrollProgress<HTMLDivElement>(HEADER)
 
-  /** Scroll so the camera lands on a stop (progress = its `venue`); the camera eases there. */
-  const goTo = (stop: Solution) => {
+  // The card follows the film: it switches when the transition has landed in the next scene.
+  const [active, setActive] = useState(() => tourScene(progress))
+
+  /** Scroll to the middle of a stop's scene; the film plays the transitions on the way. */
+  const goTo = (i: number) => {
     const el = ref.current
     if (!el) return
     const top = el.getBoundingClientRect().top + window.scrollY - HEADER
     const travel = el.offsetHeight - (window.innerHeight - HEADER)
-    window.scrollTo({ top: top + stop.venue * travel, behavior: "smooth" })
+    window.scrollTo({ top: top + tourSceneProgress(i) * travel, behavior: "smooth" })
   }
-  const active = stops.reduce(
-    (best, s, i) =>
-      Math.abs(s.venue - progress) < Math.abs(stops[best]!.venue - progress) ? i : best,
-    0,
-  )
 
   return (
     <section id="venues" aria-labelledby="venues-title">
@@ -75,7 +75,7 @@ export function VenueTour({ stops }: VenueTourProps) {
         className="relative motion-off:hidden"
       >
         <div className="sticky top-14 h-[calc(100svh-3.5rem)] overflow-hidden">
-          <TourFilm progress={progress} className="absolute inset-0" />
+          <TourFilm progress={progress} onSceneChange={setActive} className="absolute inset-0" />
           <div
             aria-hidden
             className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-transparent"
@@ -88,7 +88,7 @@ export function VenueTour({ stops }: VenueTourProps) {
                   <li key={s.slug}>
                     <button
                       type="button"
-                      onClick={() => goTo(s)}
+                      onClick={() => goTo(i)}
                       aria-current={i === active ? "step" : undefined}
                       aria-label={`Go to ${s.label}`}
                       className="group flex cursor-pointer items-center gap-2 rounded-full px-2 py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
