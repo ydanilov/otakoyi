@@ -195,3 +195,85 @@ void main() {
   gl_FragColor = vec4(uColor * a * 0.9, a);
 }
 `
+
+/**
+ * Bloom — a flower of translucent silk and smoke. Layers of broad petals billow like ink in
+ * water, light glows through their edges, a warm core opens, and every so often the whole bloom
+ * drifts up into smoke while the next one opens underneath. Each bloom differs (petal counts,
+ * curl, tilt) from the seed, so the screen never repeats within a day.
+ */
+export const bloom = /* glsl */ `
+${common}
+#define PI 3.14159265
+float h1(float n) { return fract(sin(n * 127.1 + uSeed * 3.7) * 43758.5453); }
+mat2 rot(float a) { float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
+
+vec3 bloomAt(vec2 uv, float t, float cyc, float ph, inout float dens) {
+  float s0 = h1(cyc);
+  float undo = smoothstep(0.62, 1.0, ph) * 0.92;
+  float open = smoothstep(0.0, 0.45, ph);
+  vec2 q = uv;
+  q.y -= undo * undo * 0.35;                              // drifts up as it comes undone
+  q = rot((s0 - 0.5) * 0.9 + t * 0.03) * q;
+  q.y *= 0.82;                                            // a little taller than wide
+  vec3 col = vec3(0.0);
+  float size = (0.36 + 0.08 * uDensity) * (0.35 + 0.65 * open) * (1.0 + undo * 0.35);
+  for (int k = 0; k < 7; k++) {
+    float fk = float(k);
+    float lk = 1.0 - fk * 0.1;
+    float n = 3.0 + floor(h1(cyc + fk * 7.0) * 3.0);
+    float dir = mod(fk, 2.0) < 1.0 ? 1.0 : -1.0;
+    vec2 wq = q + (vec2(fbm(q * 2.1 + vec2(fk * 1.3, t * 0.35)), fbm(q * 2.1 + vec2(t * -0.3, fk * 2.1))) - 0.5) * (0.2 + undo * 0.35);
+    float r = length(wq);
+    float a = atan(wq.y, wq.x);
+    float curl = 0.7 * sin(r * 7.0 - t * 0.8 + fk);
+    float lobe = 0.5 + 0.5 * cos(a * n + h1(cyc + fk * 3.3) * 6.28 + dir * t * 0.06 + curl);
+    float R = size * lk;
+    float edge = R * (0.42 + 0.58 * pow(lobe, 1.4)) * (1.0 + (fbm(vec2(a * 3.0 + fk, t * 0.15 + fk)) - 0.5) * 0.35);
+    float sheet = smoothstep(edge, edge * 0.35, r);
+    float rim = exp(-pow((r - edge * 0.93) / (0.012 + 0.03 * lk), 2.0)) * (0.35 + 0.65 * lobe);
+    float streak = fbm(vec2(a * 14.0 / n + curl, r * 2.5 - t * 0.12 + fk));
+    float erode = smoothstep(undo * 1.1 - 0.1, undo * 1.1 + 0.05, fbm(wq * 4.0 + fk + t * 0.4) + (1.0 - r / max(edge, 1e-3)) * 0.4);
+    float depth = fk / 6.0;                               // 0 outer … 1 core
+    vec3 tint = mix(mix(uC2, uC3, smoothstep(0.0, 0.6, depth + streak * 0.3)), uC1, smoothstep(0.55, 1.0, depth + 0.25 * (1.0 - r / max(R, 1e-3))));
+    tint = mix(tint, uC3, 0.25 * sin(a * 2.0 + fk + t * 0.2) + 0.1);   // iridescent drift
+    col *= 1.0 - sheet * 0.32 * erode;                    // inner layers shade the ones behind
+    col += tint * (sheet * (0.13 + 0.2 * streak) + rim * 0.42) * erode;
+    dens += sheet * 0.2 * erode;
+  }
+  return col;
+}
+
+void main() {
+  vec2 uv = vUv - 0.5;
+  uv.x *= uResolution.x / max(uResolution.y, 1.0);
+  float t = uTime;
+  float period = 18.0;
+  float T = t / period;
+  float cyc = floor(T);
+  float ph = fract(T);
+  vec2 c = vec2((h1(cyc + 1.3) - 0.5) * 0.18, (h1(cyc + 2.1) - 0.5) * 0.08);
+  float dens = 0.0;
+  vec3 col = bloomAt((uv - c) * mix(1.12, 0.94, ph), t, cyc, ph, dens);
+  // the previous bloom still dissolving into smoke for the first moments of the next one
+  if (ph < 0.2) {
+    vec2 cp = vec2((h1(cyc - 1.0 + 1.3) - 0.5) * 0.18, (h1(cyc - 1.0 + 2.1) - 0.5) * 0.08);
+    float d2 = 0.0;
+    col += bloomAt((uv - cp) * 0.94, t, cyc - 1.0, 0.92 + ph * 0.4, d2) * (1.0 - ph / 0.2);
+  }
+  // smoke rising from the bloom
+  vec2 sp = uv - c;
+  float sm = fbm(vec2(sp.x * 2.4 + fbm(sp * 3.0 + t * 0.05) * 1.5, sp.y * 1.6 - t * 0.09));
+  float column = smoothstep(0.55, 0.0, abs(sp.x) * 1.4) * smoothstep(-0.25, 0.35, sp.y);
+  col += mix(uC2, uC3, sm) * smoothstep(0.42, 0.8, sm) * column * 0.22;
+  // floating dust
+  vec2 gp = (uv + vec2(0.0, t * 0.01)) * 170.0;
+  col += uC1 * step(0.9972, hash(floor(gp))) * smoothstep(0.5, 0.05, length(fract(gp) - 0.5)) * 0.6;
+  col = 1.0 - exp(-col * 1.15);                           // soft tone map keeps silk translucent
+  col = mix(vec3(dot(col, vec3(0.333))), col, 1.3);       // keep the hue in the bright core
+  col += uC4 * 0.02;
+  col *= smoothstep(1.3, 0.3, length(uv));
+  col += (hash(vUv * uResolution + fract(t)) - 0.5) * 0.02;
+  gl_FragColor = vec4(max(col, 0.0), 1.0);
+}
+`

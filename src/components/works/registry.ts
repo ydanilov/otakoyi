@@ -1,4 +1,4 @@
-import { contour, lattice, signalField } from "./shaders"
+import { bloom, contour, lattice, signalField } from "./shaders"
 
 export type WorkDefinition = {
   title: string
@@ -26,6 +26,12 @@ export const works = {
     description: "A grid of cells breathing with noise; rare cells flare in accent",
     fragmentShader: lattice,
     defaults: { seed: 3, density: 0.3 },
+  },
+  bloom: {
+    title: "Bloom",
+    description: "A silk flower unfolds from the dark, then comes undone into smoke and the next one grows",
+    fragmentShader: bloom,
+    defaults: { seed: 11, density: 0.4 },
   },
 } satisfies Record<string, WorkDefinition>
 
