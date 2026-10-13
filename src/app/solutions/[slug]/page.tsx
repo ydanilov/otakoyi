@@ -80,7 +80,7 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
       <section className="mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28">
         <SectionHeading
           eyebrow="What you get"
-          title="Built for this exact moment."
+          title="Built for this exact moment"
           className="mb-12"
         />
         <ul className="grid gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-3">
@@ -96,7 +96,7 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
 
       <section className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-20 md:grid-cols-[1fr_1.4fr] md:px-8 md:pb-28">
         <div>
-          <SectionHeading eyebrow="Surfaces" title="Where it goes." className="mb-8" />
+          <SectionHeading eyebrow="Surfaces" title="Where it goes" className="mb-8" />
           <ul className="space-y-3">
             {s.surfaces.map((x) => (
               <li key={x} className="flex items-start gap-3 text-lg">
@@ -116,7 +116,7 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
       <section id="installations" className="mx-auto max-w-7xl px-4 pb-20 md:px-8 md:pb-28">
         <SectionHeading
           eyebrow="Installations"
-          title={`${s.label} we have built.`}
+          title={`${s.label} we have built`}
           className="mb-12"
         />
         {matching.length ? (
@@ -141,7 +141,7 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
       <section className="mx-auto max-w-7xl px-4 pb-20 md:px-8 md:pb-28">
         <SectionHeading
           eyebrow="How it works"
-          title="From brief to opening night."
+          title="From brief to opening night"
           className="mb-12"
         />
         <Process />

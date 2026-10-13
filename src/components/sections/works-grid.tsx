@@ -51,7 +51,7 @@ export function WorksGrid({ items, formats }: WorksGridProps) {
         </ToggleGroup>
       </div>
       {visible.length === 0 ? (
-        <p className="text-muted-foreground">No installations in this format yet.</p>
+        <p className="text-muted-foreground">No installations in this format yet</p>
       ) : view === "list" ? (
         <ol className="border-t">
           {visible.map((item, i) => (

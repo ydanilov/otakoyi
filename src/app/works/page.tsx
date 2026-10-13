@@ -8,7 +8,7 @@ import { formats, getCases } from "@/content/cases"
 export const metadata: Metadata = {
   title: "Installations",
   description:
-    "Generative installations for conferences, events, offices and exhibitions — customised to each client's brand.",
+    "Generative installations for conferences, events, offices and exhibitions — customised to each client's brand",
 }
 
 export default function WorksPage() {
@@ -18,7 +18,7 @@ export default function WorksPage() {
         <SectionHeading
           eyebrow="Installations"
           title="Installations that worked for brands like yours"
-          description="Our own TouchDesigner installations and studies from the generative engine we install on site. Filter by the kind of space you are planning."
+          description="Our own TouchDesigner installations and studies from the generative engine we install on site. Filter by the kind of space you are planning"
           className="mb-12"
         />
         <WorksGrid items={getCases()} formats={formats} />

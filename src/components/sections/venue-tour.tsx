@@ -49,7 +49,7 @@ export function VenueTour({ stops }: VenueTourProps) {
           id="venues-title"
           className="max-w-3xl text-3xl font-medium tracking-tight text-balance md:text-5xl"
         >
-          Walk through the spaces your brand shows up in.
+          Walk through the spaces your brand shows up in
         </h2>
       </div>
 

@@ -4,7 +4,6 @@ import { Cta } from "@/components/sections/cta"
 import { Faq } from "@/components/sections/faq"
 import { Hero } from "@/components/sections/hero"
 import { InNumbers } from "@/components/sections/in-numbers"
-import { LabTeaser } from "@/components/sections/lab-teaser"
 import { PinnedProcess } from "@/components/sections/pinned-process"
 import { SectionHeading } from "@/components/sections/section-heading"
 import { SpecMarquee } from "@/components/sections/spec-marquee"
@@ -58,8 +57,8 @@ export default function HomePage() {
       <Section id="technology">
         <SectionHeading
           eyebrow="Technology"
-          title="One engine. Every surface in the room."
-          description="Projection, LED, light and screens, driven by music, movement and your data — so every surface tells the same story, live."
+          title="One engine. Every surface in the room"
+          description="Projection, LED, light and screens, driven by music, movement and your data — so every surface tells the same story, live"
           className="mb-12"
         />
         <Technologies items={technologies} />
@@ -68,8 +67,8 @@ export default function HomePage() {
       <Section id="benefits">
         <SectionHeading
           eyebrow="Why it pays off"
-          title="Attention is the scarcest thing at any event. We design for it."
-          description="Generative installations are not decoration. They are a measurable way to win footfall, dwell time and reach."
+          title="Attention is the scarcest thing at any event. We design for it"
+          description="Generative installations are not decoration. They are a measurable way to win footfall, dwell time and reach"
           className="mb-12"
         />
         <Benefits />
@@ -80,7 +79,7 @@ export default function HomePage() {
       <Section id="numbers">
         <SectionHeading
           eyebrow="How we deliver"
-          title="Built to run, not to render."
+          title="Built to run, not to render"
           className="mb-12"
         />
         <InNumbers stats={stats} />
@@ -89,18 +88,14 @@ export default function HomePage() {
       <Section id="customisation">
         <SectionHeading
           eyebrow="Customised to your brand"
-          title="Your brand is the input, not a logo in the corner."
-          description="Every installation is built around your identity and your data — so it could only ever be yours."
+          title="Your brand is the input, not a logo in the corner"
+          description="Every installation is built around your identity and your data — so it could only ever be yours"
           className="mb-12"
         />
         <BrandDemo />
       </Section>
 
-      <PinnedProcess skipTo="#lab" />
-
-      <Section id="lab">
-        <LabTeaser />
-      </Section>
+      <PinnedProcess skipTo="#faq" />
 
       <Section id="faq">
         <SectionHeading

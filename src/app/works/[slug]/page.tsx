@@ -152,7 +152,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
               Backstage
             </p>
             <h2 id="backstage-title" className="text-3xl font-medium tracking-tight text-balance">
-              What made it reliable on the night.
+              What made it reliable on the night
             </h2>
           </div>
           <dl className="grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2">

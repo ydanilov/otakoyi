@@ -71,7 +71,7 @@ const raw: z.input<typeof caseSchema>[] = [
     year: 2026,
     location: "Crypto conference booths · big screen or projection",
     summary:
-      "A market heatmap that bleeds red until a visitor steps in — their silhouette turns the tiles under them green.",
+      "A market heatmap that bleeds red until a visitor steps in — their silhouette turns the tiles under them green",
     formats: ["Exhibition", "Conference"],
     hero: { work: "lattice", seed: 12, density: 0.35 },
     customisation: [
@@ -99,27 +99,27 @@ const raw: z.input<typeof caseSchema>[] = [
       {
         src: "/works/pump-the-market/idle.webp",
         alt: "Idle state: every tile of the heatmap in shades of red",
-        caption: "Idle — the market bleeds.",
+        caption: "Idle — the market bleeds",
       },
       {
         src: "/works/pump-the-market/entering.webp",
         alt: "A visitor entering the zone, green growing from their centre",
-        caption: "A visitor steps in: green grows out from their centre.",
+        caption: "A visitor steps in: green grows out from their centre",
       },
       {
         src: "/works/pump-the-market/two-people.webp",
         alt: "Two visitors as two green silhouettes on the red heatmap",
-        caption: "Two players, each with their own mask.",
+        caption: "Two players, each with their own mask",
       },
       {
         src: "/works/pump-the-market/clusters.webp",
         alt: "Fine green clusters following the outline of a body",
-        caption: "Tiles split at the silhouette edge to keep the outline sharp.",
+        caption: "Tiles split at the silhouette edge to keep the outline sharp",
       },
       {
         src: "/works/pump-the-market/dev-mode.webp",
         alt: "Developer mode overlaying the live silhouette on the heatmap",
-        caption: "Dev mode: the live silhouette over the map.",
+        caption: "Dev mode: the live silhouette over the map",
       },
     ],
     status: "Live-tested",
@@ -132,7 +132,7 @@ const raw: z.input<typeof caseSchema>[] = [
     year: 2026,
     location: "Blockchain and crypto conferences · floor zone + square projection",
     summary:
-      "One visitor's arm steers a living crypto chart — raise it to pump, lower it to dump. The market always pushes back.",
+      "One visitor's arm steers a living crypto chart — raise it to pump, lower it to dump. The market always pushes back",
     formats: ["Conference", "Exhibition"],
     hero: { work: "signal-field", seed: 31, density: 0.3 },
     customisation: [
@@ -160,27 +160,27 @@ const raw: z.input<typeof caseSchema>[] = [
       {
         src: "/works/the-whale/market_live.webp",
         alt: "Live market chart with no visitor in the zone",
-        caption: "No whale: scenarios and sentiment run on their own.",
+        caption: "No whale: scenarios and sentiment run on their own",
       },
       {
         src: "/works/the-whale/whale_dump.webp",
         alt: "Chart sliding down while the visitor lowers their arm",
-        caption: "Arm down: the slide is steep, never perfectly clean.",
+        caption: "Arm down: the slide is steep, never perfectly clean",
       },
       {
         src: "/works/the-whale/to_the_moon.webp",
         alt: "Full-screen To the moon event when price hits the ceiling",
-        caption: "Moon event: the news explains the correction.",
+        caption: "Moon event: the news explains the correction",
       },
       {
         src: "/works/the-whale/market_crash.webp",
         alt: "Full-screen crash event when price hits the floor",
-        caption: "Crash: price hits the floor, the bounce begins.",
+        caption: "Crash: price hits the floor, the bounce begins",
       },
       {
         src: "/works/the-whale/sandbox_ui.webp",
         alt: "Tuning sandbox with parameter panels next to the chart",
-        caption: "Tuning sandbox mirroring the TouchDesigner parameters.",
+        caption: "Tuning sandbox mirroring the TouchDesigner parameters",
       },
     ],
     status: "In development",
@@ -193,7 +193,7 @@ const raw: z.input<typeof caseSchema>[] = [
     year: 2026,
     location: "Fintech summit, main stage",
     summary:
-      "A 24-metre stage backdrop driven by live market data, recoloured in the client's brand palette.",
+      "A 24-metre stage backdrop driven by live market data, recoloured in the client's brand palette",
     formats: ["Conference", "Event"],
     hero: { work: "signal-field", seed: 11, density: 0.4 },
     customisation: [
@@ -222,7 +222,7 @@ const raw: z.input<typeof caseSchema>[] = [
     year: 2025,
     location: "Trade show pavilion, 30 m projection",
     summary:
-      "A projection floor that turns visitor movement into a slow-moving topography — the busiest stand on the floor.",
+      "A projection floor that turns visitor movement into a slow-moving topography — the busiest stand on the floor",
     formats: ["Exhibition", "Brand activation"],
     hero: { work: "contour", seed: 4, density: 0.5 },
     customisation: [
@@ -251,7 +251,7 @@ const raw: z.input<typeof caseSchema>[] = [
     year: 2025,
     location: "Headquarters lobby, permanent LED wall",
     summary:
-      "A permanent lobby wall that visualises the company's day — always on brand, never the same twice.",
+      "A permanent lobby wall that visualises the company's day — always on brand, never the same twice",
     formats: ["Office"],
     hero: { work: "lattice", seed: 9, density: 0.25 },
     customisation: [
@@ -279,7 +279,7 @@ const raw: z.input<typeof caseSchema>[] = [
     year: 2024,
     location: "Product launch, 3 cities",
     summary:
-      "A touring launch installation that reacts to sound — rebuilt for each city in an afternoon.",
+      "A touring launch installation that reacts to sound — rebuilt for each city in an afternoon",
     formats: ["Event", "Brand activation"],
     hero: { work: "signal-field", seed: 42, density: 0.2 },
     customisation: ["Launch campaign palette", "Audio-reactive visuals", "City-specific seeds"],

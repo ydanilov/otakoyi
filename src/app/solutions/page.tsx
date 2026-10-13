@@ -8,7 +8,7 @@ import { solutions } from "@/content/solutions"
 export const metadata: Metadata = {
   title: "Solutions",
   description:
-    "Generative installations for conferences, launches, office lobbies and exhibitions — pick your occasion.",
+    "Generative installations for conferences, launches, office lobbies and exhibitions — pick your occasion",
 }
 
 export default function SolutionsPage() {
@@ -18,7 +18,7 @@ export default function SolutionsPage() {
         <SectionHeading
           eyebrow="Solutions"
           title="What are you planning?"
-          description="Start from the space and the moment. Each page shows what you get, how long it takes and installations like it."
+          description="Start from the space and the moment. Each page shows what you get, how long it takes and installations like it"
           className="mb-12"
         />
         <Occasions items={solutions} />

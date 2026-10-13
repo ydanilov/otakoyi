@@ -42,7 +42,7 @@ export function WorksReel({ items }: WorksReelProps) {
             id="installations-title"
             className="text-3xl font-medium tracking-tight text-balance md:text-5xl"
           >
-            Built for stages, stands and lobbies.
+            Built for stages, stands and lobbies
           </h2>
         </div>
         <Button asChild variant="ghost">

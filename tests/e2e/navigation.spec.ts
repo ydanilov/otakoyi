@@ -4,7 +4,7 @@ import { getCases } from "../../src/content/cases"
 
 test("home → works → case → next case", async ({ page, isMobile }) => {
   await page.goto("/")
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Installations people stop for.")
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Installations people stop for")
 
   await page.getByRole("link", { name: "See installations" }).click()
   await expect(page).toHaveURL(/\/works$/)

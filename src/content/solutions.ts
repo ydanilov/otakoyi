@@ -34,11 +34,11 @@ const raw: Solution[] = [
   {
     slug: "conferences",
     label: "Conferences",
-    title: "A stage people film, not a slide people skip.",
+    title: "A stage people film, not a slide people skip",
     promise:
-      "Stage backdrops, sponsor booths and registration zones that make your brand the one on every phone.",
+      "Stage backdrops, sponsor booths and registration zones that make your brand the one on every phone",
     description:
-      "Keynote stages, sponsor zones and registration areas compete for the same attention. A live generative backdrop changes every minute, reacts to the room and the agenda, and stays unmistakably on brand from the first session to the last.",
+      "Keynote stages, sponsor zones and registration areas compete for the same attention. A live generative backdrop changes every minute, reacts to the room and the agenda, and stays unmistakably on brand from the first session to the last",
     matches: ["Conference"],
     hero: { work: "signal-field", seed: 11 },
     venue: 0.62,
@@ -46,15 +46,15 @@ const raw: Solution[] = [
     outcomes: [
       {
         title: "Own the stage",
-        body: "Your palette and type on the biggest screen in the room, all day.",
+        body: "Your palette and type on the biggest screen in the room, all day",
       },
       {
         title: "Cue-driven moments",
-        body: "Logo reveals, speaker intros and session breaks triggered live by the show caller.",
+        body: "Logo reveals, speaker intros and session breaks triggered live by the show caller",
       },
       {
         title: "Content without production",
-        body: "One engine covers every session — no new videos to render between talks.",
+        body: "One engine covers every session — no new videos to render between talks",
       },
     ],
     facts: [
@@ -65,21 +65,21 @@ const raw: Solution[] = [
     faq: [
       {
         q: "Can it follow the agenda?",
-        a: "Yes. We connect to the run-of-show so scenes change with sessions, breaks and keynote cues.",
+        a: "Yes. We connect to the run-of-show so scenes change with sessions, breaks and keynote cues",
       },
       {
         q: "Does it work with the venue's AV team?",
-        a: "We deliver a standard video signal and work alongside the venue's AV, or bring our own media server.",
+        a: "We deliver a standard video signal and work alongside the venue's AV, or bring our own media server",
       },
     ],
   },
   {
     slug: "launches",
     label: "Events & launches",
-    title: "One launch moment, then the same engine on tour.",
-    promise: "Audio-reactive, touring installations that rebuild in an afternoon for every venue.",
+    title: "One launch moment, then the same engine on tour",
+    promise: "Audio-reactive, touring installations that rebuild in an afternoon for every venue",
     description:
-      "A product launch has one shot at the room. We build the moment around the product and the music — and because the system is generative, it adapts to the next city's screens and stage without re-rendering a frame.",
+      "A product launch has one shot at the room. We build the moment around the product and the music — and because the system is generative, it adapts to the next city's screens and stage without re-rendering a frame",
     matches: ["Event", "Brand activation"],
     hero: { work: "contour", seed: 9 },
     venue: 0.6,
@@ -87,15 +87,15 @@ const raw: Solution[] = [
     outcomes: [
       {
         title: "A reveal people share",
-        body: "The product appears out of the field on cue — built to be filmed in your colours.",
+        body: "The product appears out of the field on cue — built to be filmed in your colours",
       },
       {
         title: "Tour-ready",
-        body: "Any screen size, any venue: the engine re-lays itself out instead of being re-rendered.",
+        body: "Any screen size, any venue: the engine re-lays itself out instead of being re-rendered",
       },
       {
         title: "Music in the loop",
-        body: "Live audio drives motion, so the visuals and the set breathe together.",
+        body: "Live audio drives motion, so the visuals and the set breathe together",
       },
     ],
     facts: [
@@ -106,21 +106,21 @@ const raw: Solution[] = [
     faq: [
       {
         q: "Can we reuse it for social?",
-        a: "Yes. The engine renders loops and stills in any aspect ratio for social and press.",
+        a: "Yes. The engine renders loops and stills in any aspect ratio for social and press",
       },
       {
         q: "What if the venue changes?",
-        a: "Screen sizes and layouts are parameters, not re-renders. We adapt in hours.",
+        a: "Screen sizes and layouts are parameters, not re-renders. We adapt in hours",
       },
     ],
   },
   {
     slug: "offices",
     label: "Offices & lobbies",
-    title: "A lobby wall that stays alive for years.",
-    promise: "Permanent LED walls driven by your data — on brand 24/7, with no content treadmill.",
+    title: "A lobby wall that stays alive for years",
+    promise: "Permanent LED walls driven by your data — on brand 24/7, with no content treadmill",
     description:
-      "Lobby screens usually end up showing last year's video. A generative brand wall never repeats: it follows the time of day, the weather or your own business data, and it is monitored remotely so it simply keeps running.",
+      "Lobby screens usually end up showing last year's video. A generative brand wall never repeats: it follows the time of day, the weather or your own business data, and it is monitored remotely so it simply keeps running",
     matches: ["Office"],
     hero: { work: "lattice", seed: 3 },
     venue: 0.3333,
@@ -128,15 +128,15 @@ const raw: Solution[] = [
     outcomes: [
       {
         title: "Always fresh",
-        body: "No playlist to maintain — the wall composes itself, all day, every day.",
+        body: "No playlist to maintain — the wall composes itself, all day, every day",
       },
       {
         title: "Your data, visible",
-        body: "Sales, energy, sensors or social — turned into a calm, on-brand visual story.",
+        body: "Sales, energy, sensors or social — turned into a calm, on-brand visual story",
       },
       {
         title: "Hands-off",
-        body: "Remote monitoring and support, so facilities never need to touch it.",
+        body: "Remote monitoring and support, so facilities never need to touch it",
       },
     ],
     facts: [
@@ -147,21 +147,21 @@ const raw: Solution[] = [
     faq: [
       {
         q: "Do we need new hardware?",
-        a: "Often not. We run on your existing LED wall or recommend hardware if it is missing.",
+        a: "Often not. We run on your existing LED wall or recommend hardware if it is missing",
       },
       {
         q: "Who maintains it?",
-        a: "We do. The system is monitored remotely and updated without anyone on site.",
+        a: "We do. The system is monitored remotely and updated without anyone on site",
       },
     ],
   },
   {
     slug: "music",
     label: "Music events",
-    title: "Visuals that play with the band.",
-    promise: "Stage backdrops, side screens and festival structures driven live by the music.",
+    title: "Visuals that play with the band",
+    promise: "Stage backdrops, side screens and festival structures driven live by the music",
     description:
-      "Concerts, festivals and club nights need visuals that keep up with the set, not a loop that drifts out of time. Our engine listens to the audio and the lighting desk, so every drop, break and encore looks like it was choreographed — and the same show scales from a club wall to a festival main stage.",
+      "Concerts, festivals and club nights need visuals that keep up with the set, not a loop that drifts out of time. Our engine listens to the audio and the lighting desk, so every drop, break and encore looks like it was choreographed — and the same show scales from a club wall to a festival main stage",
     matches: ["Event", "Brand activation"],
     hero: { work: "lattice", seed: 8 },
     venue: 0.6667,
@@ -173,15 +173,15 @@ const raw: Solution[] = [
     outcomes: [
       {
         title: "In time with the set",
-        body: "Audio and lighting-desk input drive the visuals, so they hit with the music.",
+        body: "Audio and lighting-desk input drive the visuals, so they hit with the music",
       },
       {
         title: "One show, any stage",
-        body: "The system re-lays itself out for each venue's screens — no re-rendering on tour.",
+        body: "The system re-lays itself out for each venue's screens — no re-rendering on tour",
       },
       {
         title: "Sponsor moments",
-        body: "Brand scenes slot into the show on cue without breaking its look.",
+        body: "Brand scenes slot into the show on cue without breaking its look",
       },
     ],
     facts: [
@@ -192,21 +192,21 @@ const raw: Solution[] = [
     faq: [
       {
         q: "Can it work with our lighting designer?",
-        a: "Yes. We take cues over MIDI, OSC or DMX and can follow the lighting desk's timecode.",
+        a: "Yes. We take cues over MIDI, OSC or DMX and can follow the lighting desk's timecode",
       },
       {
         q: "Does it need a VJ every night?",
-        a: "For shows we recommend an operator; for club residencies it can run unattended on audio input.",
+        a: "For shows we recommend an operator; for club residencies it can run unattended on audio input",
       },
     ],
   },
   {
     slug: "museums",
     label: "Museums & interactive parks",
-    title: "Rooms visitors step inside.",
-    promise: "Immersive, interactive rooms for museums, science centres and entertainment parks.",
+    title: "Rooms visitors step inside",
+    promise: "Immersive, interactive rooms for museums, science centres and entertainment parks",
     description:
-      "Projection on every wall and the floor, reacting to the people inside. We design immersive rooms that tell a collection's story or simply make a family stay twice as long — and that run reliably all season with remote monitoring.",
+      "Projection on every wall and the floor, reacting to the people inside. We design immersive rooms that tell a collection's story or simply make a family stay twice as long — and that run reliably all season with remote monitoring",
     matches: ["Exhibition"],
     hero: { work: "contour", seed: 12 },
     venue: 1,
@@ -218,15 +218,15 @@ const raw: Solution[] = [
     outcomes: [
       {
         title: "Longer visits",
-        body: "Rooms that react to visitors keep them exploring instead of passing through.",
+        body: "Rooms that react to visitors keep them exploring instead of passing through",
       },
       {
         title: "Tells the story",
-        body: "Content generated from the collection, the science or the brand — never a looped video.",
+        body: "Content generated from the collection, the science or the brand — never a looped video",
       },
       {
         title: "Runs all season",
-        body: "Unattended operation with remote monitoring and updates between exhibitions.",
+        body: "Unattended operation with remote monitoring and updates between exhibitions",
       },
     ],
     facts: [
@@ -237,21 +237,21 @@ const raw: Solution[] = [
     faq: [
       {
         q: "Can it work in a temporary exhibition?",
-        a: "Yes. The same system installs as a touring module or as a permanent room.",
+        a: "Yes. The same system installs as a touring module or as a permanent room",
       },
       {
         q: "Who updates the content?",
-        a: "We do, remotely, or we give your team a simple control panel for scenes and schedules.",
+        a: "We do, remotely, or we give your team a simple control panel for scenes and schedules",
       },
     ],
   },
   {
     slug: "exhibitions",
     label: "Exhibitions & trade shows",
-    title: "The stand everyone walks towards.",
-    promise: "Interactive floors and walls that pull visitors to your stand and keep them there.",
+    title: "The stand everyone walks towards",
+    promise: "Interactive floors and walls that pull visitors to your stand and keep them there",
     description:
-      "On a trade show floor every stand fights for the same aisle. Interactive generative surfaces respond to the people walking past, turn passers-by into visitors and give your team a reason to start the conversation.",
+      "On a trade show floor every stand fights for the same aisle. Interactive generative surfaces respond to the people walking past, turn passers-by into visitors and give your team a reason to start the conversation",
     matches: ["Exhibition"],
     hero: { work: "contour", seed: 4 },
     venue: 0,
@@ -263,15 +263,15 @@ const raw: Solution[] = [
     outcomes: [
       {
         title: "Footfall",
-        body: "Motion that reacts to visitors pulls people off the aisle and onto your stand.",
+        body: "Motion that reacts to visitors pulls people off the aisle and onto your stand",
       },
       {
         title: "Dwell time",
-        body: "People stay to play with it — and your sales team gets the conversation.",
+        body: "People stay to play with it — and your sales team gets the conversation",
       },
       {
         title: "Leads",
-        body: "Optional photo moments and QR hand-offs turn attention into contacts.",
+        body: "Optional photo moments and QR hand-offs turn attention into contacts",
       },
     ],
     facts: [
@@ -282,11 +282,11 @@ const raw: Solution[] = [
     faq: [
       {
         q: "How much floor space do we need?",
-        a: "Interactive floors work from about 3 × 3 m; walls from a single screen up to the whole stand.",
+        a: "Interactive floors work from about 3 × 3 m; walls from a single screen up to the whole stand",
       },
       {
         q: "Do you handle the stand builder?",
-        a: "We coordinate with your stand builder on power, mounting and sightlines.",
+        a: "We coordinate with your stand builder on power, mounting and sightlines",
       },
     ],
   },

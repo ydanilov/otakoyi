@@ -1,21 +1,21 @@
 ## The idea
 
-A square projection shows a candlestick chart that is always alive — trends, sentiment and volatility run on their own. Step into the marked zone on the floor and you become **the whale**: raise your arm and the market pumps, lower it and it dumps.
+A square projection shows a candlestick chart that is always alive — trends, sentiment and volatility run on their own. Step into the marked zone on the floor and you become **the whale**: raise your arm and the market pumps, lower it and it dumps
 
-But the market pushes back. Your influence fades as the price climbs, the chart keeps its own momentum, and the whale never gets full control. The piece is about the gap between feeling in control and being in control — a story every trader at a crypto conference recognises.
+But the market pushes back. Your influence fades as the price climbs, the chart keeps its own momentum, and the whale never gets full control. The piece is about the gap between feeling in control and being in control — a story every trader at a crypto conference recognises
 
 ## Why it works at a conference
 
-- **One gesture, instant meaning.** Arm up, arm down. Visitors get it in a second and stay to fight the market.
-- **Built-in moments.** When the price hits the ceiling a full-screen *TO THE MOON* event fires; at the floor, a crash and a rebound. Crowds gather for the drama.
-- **Never the same twice** — nine market scenarios rotate every 30–90 seconds, so the wall stays interesting all day.
+- **One gesture, instant meaning.** Arm up, arm down. Visitors get it in a second and stay to fight the market
+- **Built-in moments.** When the price hits the ceiling a full-screen *TO THE MOON* event fires; at the floor, a crash and a rebound. Crowds gather for the drama
+- **Never the same twice** — nine market scenarios rotate every 30–90 seconds, so the wall stays interesting all day
 
 ## How it is built
 
-A single ordinary camera — an iPhone or a webcam, no depth sensor — feeds a tracking process built on MediaPipe Pose. It keeps stable IDs for up to four people, decides who entered the zone first, and measures the raised arm against the torso so a tilted camera or a leaning body doesn't change the reading. The result goes to TouchDesigner over OSC.
+A single ordinary camera — an iPhone or a webcam, no depth sensor — feeds a tracking process built on MediaPipe Pose. It keeps stable IDs for up to four people, decides who entered the zone first, and measures the raised arm against the torso so a tilted camera or a leaning body doesn't change the reading. The result goes to TouchDesigner over OSC
 
-Inside TouchDesigner the market engine draws GPU-instanced candles at four a second. The engine is seeded, so every rehearsal can be replayed exactly — useful when tuning the show with the client.
+Inside TouchDesigner the market engine draws GPU-instanced candles at four a second. The engine is seeded, so every rehearsal can be replayed exactly — useful when tuning the show with the client
 
 ## Status
 
-In development: the browser engine reference and the tracker are complete; the TouchDesigner network is being finished.
+In development: the browser engine reference and the tracker are complete; the TouchDesigner network is being finished

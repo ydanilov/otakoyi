@@ -12,9 +12,9 @@ import { useScrollProgress } from "@/lib/use-scroll-progress"
 const HEADER = 56 // px — sticky site header height (h-14)
 
 const finalStep = {
-  title: "Your turn.",
+  title: "Your turn",
   time: "Today",
-  description: "Venue and date are enough to start. In week one you see it running in your brand.",
+  description: "Venue and date are enough to start. In week one you see it running in your brand",
 } as const
 
 const steps = [...processSteps, finalStep]
@@ -70,10 +70,10 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
             id="process-title"
             className="text-3xl font-medium tracking-tight text-balance md:text-5xl"
           >
-            From brief to opening night.
+            From brief to opening night
           </h2>
           <p className="text-lg text-pretty text-muted-foreground">
-            Fixed milestones, a live prototype in week one, and no surprises on site.
+            Fixed milestones, a live prototype in week one, and no surprises on site
           </p>
         </div>
         <Process />
@@ -106,7 +106,7 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
                   How it works
                 </p>
                 <p className="max-w-md text-2xl font-medium tracking-tight md:text-4xl">
-                  From brief to opening night.
+                  From brief to opening night
                 </p>
               </div>
               <div className="text-right">

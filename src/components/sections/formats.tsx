@@ -7,25 +7,25 @@ export const formatItems = [
     icon: MicVocalIcon,
     title: "Conferences",
     description:
-      "Stage backdrops, sponsor booths and registration zones that make your brand the one people film.",
+      "Stage backdrops, sponsor booths and registration zones that make your brand the one people film",
   },
   {
     icon: PartyPopperIcon,
     title: "Events & launches",
     description:
-      "Touring, audio-reactive installations that rebuild in an afternoon for every venue.",
+      "Touring, audio-reactive installations that rebuild in an afternoon for every venue",
   },
   {
     icon: Building2Icon,
     title: "Offices & lobbies",
     description:
-      "Permanent LED walls that stay alive 24/7 — on brand, driven by your data, no content treadmill.",
+      "Permanent LED walls that stay alive 24/7 — on brand, driven by your data, no content treadmill",
   },
   {
     icon: PresentationIcon,
     title: "Exhibitions & trade shows",
     description:
-      "Interactive floors and walls that pull visitors to your stand and keep them there.",
+      "Interactive floors and walls that pull visitors to your stand and keep them there",
   },
 ] as const
 

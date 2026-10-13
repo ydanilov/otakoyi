@@ -4,8 +4,6 @@ import { expect } from "storybook/test"
 import { solutions, tourStops } from "@/content/solutions"
 import { technologies } from "@/content/technologies"
 import { InNumbers } from "./in-numbers"
-import { LabPlayground } from "./lab-playground"
-import { LabTeaser } from "./lab-teaser"
 import { Occasions } from "./occasions"
 import { SpecMarquee } from "./spec-marquee"
 import { Technologies } from "./technologies"
@@ -65,33 +63,6 @@ export const Numbers: Story = {
       />
     </div>
   ),
-}
-
-export const Lab: Story = {
-  render: () => (
-    <div className="p-8">
-      <LabTeaser />
-    </div>
-  ),
-  play: async ({ canvas, userEvent }) => {
-    const before = canvas.getByText(/seed \d+/).textContent
-    await userEvent.click(canvas.getByRole("button", { name: "New seed" }))
-    await expect(canvas.getByText(/seed \d+/).textContent).not.toBe(before)
-  },
-}
-
-export const LabFull: Story = {
-  render: () => (
-    <div className="p-8">
-      <LabPlayground />
-    </div>
-  ),
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole("radio", { name: "Contour" }))
-    await expect(canvas.getByText(/^contour#/)).toBeInTheDocument()
-    await userEvent.click(canvas.getByRole("button", { name: "Next seed" }))
-    await expect(canvas.getByText(/^contour#22@/)).toBeInTheDocument()
-  },
 }
 
 export const TechnologyList: Story = {

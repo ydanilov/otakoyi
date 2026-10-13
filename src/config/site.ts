@@ -1,14 +1,13 @@
 export const site = {
   name: "Otakoyi",
-  tagline: "Generative installations for conferences, events, offices and exhibitions.",
+  tagline: "Generative installations for conferences, events, offices and exhibitions",
   description:
-    "We design, build and install generative visual installations that stop people in their tracks — customised to your brand, driven by your data, delivered turnkey.",
+    "We design, build and install generative visual installations that stop people in their tracks — customised to your brand, driven by your data, delivered turnkey",
   email: "hello@otakoyi.team",
   cta: { label: "Get a proposal", subject: "Installation proposal" },
   nav: [
     { href: "/works", label: "Installations" },
     { href: "/solutions", label: "Solutions" },
-    { href: "/lab", label: "Lab" },
     { href: "/studio", label: "Studio" },
   ],
   social: [

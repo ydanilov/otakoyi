@@ -9,7 +9,7 @@ import { site } from "@/config/site"
 
 export const metadata: Metadata = {
   title: "Studio",
-  description: `About ${site.name} — the team behind turnkey generative installations for brands.`,
+  description: `About ${site.name} — the team behind turnkey generative installations for brands`,
 }
 
 const included = [
@@ -24,19 +24,19 @@ const included = [
 const principles = [
   {
     title: "Brand first",
-    body: "We start from your identity and goals, not from a piece we want to show off.",
+    body: "We start from your identity and goals, not from a piece we want to show off",
   },
   {
     title: "Live, not rendered",
-    body: "Real-time systems adapt to every screen, venue and moment — no re-renders.",
+    body: "Real-time systems adapt to every screen, venue and moment — no re-renders",
   },
   {
     title: "Measured",
-    body: "We agree on what success looks like — dwell time, leads, reach — and report on it.",
+    body: "We agree on what success looks like — dwell time, leads, reach — and report on it",
   },
   {
     title: "Reliable on the night",
-    body: "Tested on site, with fallbacks and an operator. Opening night is not a beta.",
+    body: "Tested on site, with fallbacks and an operator. Opening night is not a beta",
   },
 ]
 
@@ -83,7 +83,7 @@ export default function StudioPage() {
             Studio
           </p>
           <h1 className="text-5xl font-medium tracking-tighter text-balance md:text-7xl">
-            Designers and engineers who install what they design.
+            Designers and engineers who install what they design
           </h1>
           <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
             {site.description}
@@ -96,7 +96,7 @@ export default function StudioPage() {
         <SectionHeading
           eyebrow="Turnkey"
           title="What's included"
-          description="One team from first call to the last night of the event."
+          description="One team from first call to the last night of the event"
           className="mb-8"
         />
         <ul className="grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -113,7 +113,7 @@ export default function StudioPage() {
         <SectionHeading
           eyebrow="Venue requirements"
           title="What we need from the venue"
-          description="Hand this to your venue or stand builder — it answers most technical questions before the first call."
+          description="Hand this to your venue or stand builder — it answers most technical questions before the first call"
           className="mb-8"
         />
         <dl className="grid gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-2 lg:grid-cols-3">

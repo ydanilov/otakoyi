@@ -2,32 +2,32 @@ export const benefitItems = [
   {
     title: "Stop the crowd",
     description:
-      "Motion beats static. A living installation pulls people to your stand and keeps them there longer.",
+      "Motion beats static. A living installation pulls people to your stand and keeps them there longer",
   },
   {
     title: "Be remembered",
     description:
-      "Visitors don't remember the fifth looped video of the day. They remember the wall that reacted to them.",
+      "Visitors don't remember the fifth looped video of the day. They remember the wall that reacted to them",
   },
   {
     title: "Earn organic reach",
     description:
-      "Every visitor becomes a camera. Installations are made to be filmed and shared — in your colours.",
+      "Every visitor becomes a camera. Installations are made to be filmed and shared — in your colours",
   },
   {
     title: "Show your data, live",
     description:
-      "Sales, markets, social mentions, sensor or visitor data — turned into visuals that explain your story.",
+      "Sales, markets, social mentions, sensor or visitor data — turned into visuals that explain your story",
   },
   {
     title: "Reuse, don't re-render",
     description:
-      "One generative engine runs at every event, in every format. No new video production each time.",
+      "One generative engine runs at every event, in every format. No new video production each time",
   },
   {
     title: "Turnkey",
     description:
-      "Concept, content engine, hardware, installation and on-site operator. You bring the venue.",
+      "Concept, content engine, hardware, installation and on-site operator. You bring the venue",
   },
 ] as const
 
