@@ -29,7 +29,8 @@ export const works = {
   },
   bloom: {
     title: "Bloom",
-    description: "A silk flower unfolds from the dark, then comes undone into smoke and the next one grows",
+    description:
+      "A silk flower unfolds from the dark, then comes undone into smoke and the next one grows",
     fragmentShader: bloom,
     defaults: { seed: 11, density: 0.4 },
   },
