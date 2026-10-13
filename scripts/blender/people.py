@@ -196,7 +196,9 @@ def build(specs, lean=False):
       pos (x, y, z), face (deg, 0 = facing +z / the camera), look (x, y, z) or None,
       body (gender, age, muscle, weight, height in 0..1), pose (model, action, frame),
       optional raise_arm ("left" | "right") and look_weight.
-    Returns (people_object, feet_positions_three_space).
+    Returns (people_object, feet_positions_three_space, shadows), where each shadow is
+    [x, y, z, lean_x, lean_z] in three.js space: the point between the feet on the floor and the
+    horizontal offset from the feet to the head (the lean), for the contact shadows on the site.
     """
     HumanService, TargetService = _load_mpfb(_fetch())
     poses = {s["pose"]: None for s in specs}
@@ -205,6 +207,7 @@ def build(specs, lean=False):
 
     made = []
     feet = []
+    shadows = []
     for i, s in enumerate(specs):
         macro = TargetService.get_default_macro_info_dict()
         for k, v in zip(("gender", "age", "muscle", "weight", "height"), s["body"]):
@@ -249,6 +252,17 @@ def build(specs, lean=False):
         bpy.ops.object.parent_clear(type="CLEAR_KEEP_TRANSFORM")
         bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
         _drop_to_floor(body, B(*s["pos"])[2])
+        vs = [body.matrix_world @ v.co for v in body.data.vertices]
+        lo = min(v.z for v in vs)
+        hi = max(v.z for v in vs)
+        foot = [v for v in vs if v.z < lo + 0.08]
+        head = [v for v in vs if v.z > hi - 0.18]
+        fx = sum(v.x for v in foot) / len(foot)
+        fy = sum(v.y for v in foot) / len(foot)
+        hx = sum(v.x for v in head) / len(head)
+        hy = sum(v.y for v in head) / len(head)
+        # Blender (x, y, z) → three.js (x, z, -y)
+        shadows.append([round(v, 3) for v in (fx, lo, -fy, hx - fx, -(hy - fy))])
         bpy.data.objects.remove(arm, do_unlink=True)
         for vg in list(body.vertex_groups):
             body.vertex_groups.remove(vg)
@@ -266,4 +280,4 @@ def build(specs, lean=False):
     people = bpy.context.object
     people.name = "People"
     people.data.name = "People"
-    return people, feet
+    return people, feet, shadows

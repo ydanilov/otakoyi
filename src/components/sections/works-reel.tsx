@@ -119,7 +119,6 @@ export function WorksReel({ items }: WorksReelProps) {
               <span>
                 <span className="text-foreground">{pad(active + 1)}</span> / {pad(n)}
               </span>
-              <span className="hidden md:inline">Scroll</span>
             </div>
 
             <div className="relative mx-auto grid w-full max-w-7xl flex-1 place-items-center px-4 md:px-8">

@@ -5,14 +5,15 @@ import { Faq } from "@/components/sections/faq"
 import { Hero } from "@/components/sections/hero"
 import { InNumbers } from "@/components/sections/in-numbers"
 import { LabTeaser } from "@/components/sections/lab-teaser"
-import { Occasions } from "@/components/sections/occasions"
 import { PinnedProcess } from "@/components/sections/pinned-process"
 import { SectionHeading } from "@/components/sections/section-heading"
 import { SpecMarquee } from "@/components/sections/spec-marquee"
+import { Technologies } from "@/components/sections/technologies"
 import { VenueTour } from "@/components/sections/venue-tour"
 import { WorksReel } from "@/components/sections/works-reel"
 import { getCases } from "@/content/cases"
-import { solutions, tourStops } from "@/content/solutions"
+import { tourStops } from "@/content/solutions"
+import { technologies } from "@/content/technologies"
 
 function Section({ id, children }: { id?: string; children: React.ReactNode }) {
   return (
@@ -54,14 +55,14 @@ export default function HomePage() {
 
       <VenueTour stops={tourStops} />
 
-      <Section id="solutions">
+      <Section id="technology">
         <SectionHeading
-          eyebrow="Solutions"
-          title="Start from your occasion."
-          description="Four kinds of spaces, four ways to win attention in them."
+          eyebrow="Technology"
+          title="One engine. Every surface in the room."
+          description="Projection, LED, light and screens, driven by music, movement and your data — so every surface tells the same story, live."
           className="mb-12"
         />
-        <Occasions items={solutions} />
+        <Technologies items={technologies} />
       </Section>
 
       <Section id="benefits">

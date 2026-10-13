@@ -1,7 +1,7 @@
 import type { Preview } from "@storybook/nextjs-vite"
 import { withThemeByClassName } from "@storybook/addon-themes"
 
-import { fontMono, fontSans } from "../src/fonts"
+import { fontLogo, fontMono, fontSans } from "../src/fonts"
 import "../src/app/globals.css"
 
 const preview: Preview = {
@@ -16,7 +16,7 @@ const preview: Preview = {
     withThemeByClassName({ themes: { dark: "dark", light: "" }, defaultTheme: "dark" }),
     (Story) => (
       <div
-        className={`${fontSans.variable} ${fontMono.variable} bg-background font-sans text-foreground`}
+        className={`${fontSans.variable} ${fontMono.variable} ${fontLogo.variable} bg-background font-sans text-foreground`}
       >
         <Story />
       </div>

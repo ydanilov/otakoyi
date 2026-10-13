@@ -6,7 +6,8 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber"
 import { Environment, Lightformer, PerformanceMonitor } from "@react-three/drei"
-import { Bloom, EffectComposer, Noise, Vignette } from "@react-three/postprocessing"
+import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from "@react-three/postprocessing"
+import type { DepthOfFieldEffect } from "postprocessing"
 import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js"
@@ -47,10 +48,11 @@ const SCREENS: Record<string, { work: WorkId; seed: number; density: number }> =
 
 // ---------------------------------------------------------------------------------- camera
 /**
- * The rooms stand on an arc around an empty floor (placement from build-venue.py). Each stop is
- * a composed shot in that room's own coordinates — subject on the right third, the copy panel on
- * the left — and each move between stops is its own camera move: crane out, sweep across the
- * dark, push in. Progress holds on a stop for a moment, then eases through the move.
+ * Each room stands on its own floating platform; the platforms step down through a dark void in
+ * a zigzag (placement from build-venue.py). Each stop is a composed shot in that room's own
+ * coordinates — subject on the right third, the copy panel on the left — and each move between
+ * stops is its own camera move: crane out, swing across the void, push in. Progress holds on a
+ * stop for a moment, then eases through the move.
  */
 type ZoneName = keyof typeof venuePeople.zones
 type Shot = { pos: THREE.Vector3Tuple; look: THREE.Vector3Tuple; fov: number }
@@ -68,21 +70,24 @@ const SHOTS: Record<ZoneName, Shot> = {
   museum: { pos: [1.1, 1.5, 4.6], look: [-0.6, 1.9, -3.1], fov: 54 },
 }
 
-/** How each move flies: height of the arc, how far it pulls back, and the bank into the turn. */
+/**
+ * How each move flies: lift above the higher of the two shots, how far it backs out and comes in,
+ * how wide it swings out towards the viewer, and the bank into the turn.
+ */
 const MOVES = [
-  { name: "crane", height: 9.5, pull: 5, approach: 9, inner: 0.35, bank: 0.05 },
-  { name: "track", height: 1.15, pull: 3, approach: 8, inner: 0.12, bank: -0.035 },
-  { name: "rise", height: 8, pull: 2, approach: 6, inner: 0.22, bank: 0.06 },
+  { name: "crane", lift: 6, pull: 5, approach: 9, swing: 6, bank: 0.05 },
+  { name: "glide", lift: 0.6, pull: 3, approach: 8, swing: 5, bank: -0.04 },
+  { name: "rise", lift: 5, pull: 2, approach: 6, swing: 4, bank: 0.06 },
 ] as const
 
 /** Hold on a stop for this share of each segment at both ends. */
 const HOLD = 0.1
 
 function toWorld(zone: ZoneName, [x, y, z]: THREE.Vector3Tuple) {
-  const { x: zx, z: zz, yaw } = venuePeople.zones[zone]
+  const { x: zx, y: zy, z: zz, yaw } = venuePeople.zones[zone]
   const c = Math.cos(yaw)
   const s = Math.sin(yaw)
-  return new THREE.Vector3(zx + x * c + z * s, y, zz - x * s + z * c)
+  return new THREE.Vector3(zx + x * c + z * s, zy + y, zz - x * s + z * c)
 }
 
 function zoneCenter(zone: ZoneName, y: number) {
@@ -101,16 +106,20 @@ const SEGMENTS: Segment[] = ORDER.slice(0, -1).map((from, i) => {
   const move = MOVES[i]!
   const a = toWorld(from, SHOTS[from].pos)
   const b = toWorld(to, SHOTS[to].pos)
-  // Back out along the room's own axis, sweep through the open floor, push in along the next.
+  // Back out along the room's own axis, swing out over the void, push in along the next.
   const outA = toWorld(from, [SHOTS[from].pos[0], 0, SHOTS[from].pos[2] + move.pull])
   const inB = toWorld(to, [SHOTS[to].pos[0] * 0.5, 0, SHOTS[to].pos[2] + move.approach])
-  const mid = a
-    .clone()
-    .lerp(b, 0.5)
-    .multiplyScalar(1 - move.inner)
-  outA.y = THREE.MathUtils.lerp(a.y, move.height, 0.55)
-  mid.y = move.height
-  inB.y = THREE.MathUtils.lerp(b.y, move.height, 0.4)
+  const top = Math.max(a.y, b.y) + move.lift
+  const side = new THREE.Vector3()
+    .subVectors(b, a)
+    .cross(new THREE.Vector3(0, 1, 0))
+    .setY(0)
+  side.normalize()
+  if (side.z < 0) side.negate()
+  const mid = a.clone().lerp(b, 0.5).addScaledVector(side, move.swing)
+  outA.y = THREE.MathUtils.lerp(a.y, top, 0.5)
+  mid.y = top
+  inB.y = THREE.MathUtils.lerp(b.y, top, 0.35)
   return {
     pos: new THREE.CatmullRomCurve3([a, outA, mid, inB, b], false, "centripetal"),
     // Keep the old room in frame while pulling out (a reveal), then turn to the new one.
@@ -149,6 +158,9 @@ function cameraAt(progress: number, pos: THREE.Vector3, look: THREE.Vector3) {
   }
 }
 
+/** Where the lens focuses: the shot's look target, which sits on the room's main screen. */
+const FOCUS = new THREE.Vector3()
+
 const START = toWorld("stand", SHOTS.stand.pos).toArray()
 
 function screenMaterial(work: WorkId, seed: number, density: number, aspect: number) {
@@ -170,7 +182,7 @@ function screenMaterial(work: WorkId, seed: number, density: number, aspect: num
 }
 
 // ---------------------------------------------------------------------------------- people
-/** Standing visitors (scripts/blender/people.py): one mesh, glossy oil-black like sculpture. */
+/** Standing visitors (scripts/blender/people.py): one mesh, satin black like cast sculpture. */
 const PEOPLE_MODEL = "/models/people.glb"
 
 function People() {
@@ -179,20 +191,79 @@ function People() {
   )
   const object = useMemo(() => {
     const root = gltf.scene.clone(true)
-    const oil = new THREE.MeshPhysicalMaterial({
+    const satin = new THREE.MeshPhysicalMaterial({
       color: "black",
-      roughness: 0.16,
+      roughness: 0.62,
       metalness: 0,
-      clearcoat: 1,
-      clearcoatRoughness: 0.035,
-      envMapIntensity: 1.5,
+      clearcoat: 0.12,
+      clearcoatRoughness: 0.55,
+      envMapIntensity: 0.9,
     })
     root.traverse((o) => {
-      if ((o as THREE.Mesh).isMesh) (o as THREE.Mesh).material = oil
+      if ((o as THREE.Mesh).isMesh) (o as THREE.Mesh).material = satin
     })
     return root
   }, [gltf])
   return <primitive object={object} />
+}
+
+/** Soft radial falloff as a greyscale alpha map (white = full shadow). */
+function shadowTexture(size = 64) {
+  const data = new Uint8Array(size * size * 4)
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const dx = (x + 0.5) / size - 0.5
+      const dy = (y + 0.5) / size - 0.5
+      const d = Math.min(1, Math.sqrt(dx * dx + dy * dy) * 2)
+      const a = Math.round(255 * Math.pow(1 - d, 1.4))
+      const k = (y * size + x) * 4
+      data[k] = data[k + 1] = data[k + 2] = a
+      data[k + 3] = 255
+    }
+  }
+  const tex = new THREE.DataTexture(data, size, size)
+  tex.needsUpdate = true
+  return tex
+}
+
+/**
+ * Contact shadows under each visitor. Most of them stand on live screens (not baked), so the
+ * bake can't darken under their feet: a soft ellipse per person, stretched towards where they
+ * lean, sits just above the floor.
+ */
+function Shadows() {
+  const mesh = useMemo(() => {
+    const list = venuePeople.shadows
+    const geo = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2)
+    const mat = new THREE.MeshBasicMaterial({
+      color: "black",
+      alphaMap: shadowTexture(),
+      transparent: true,
+      opacity: 0.95,
+      depthWrite: false,
+      toneMapped: false,
+      polygonOffset: true,
+      polygonOffsetFactor: -2,
+    })
+    const inst = new THREE.InstancedMesh(geo, mat, list.length)
+    const m = new THREE.Matrix4()
+    const q = new THREE.Quaternion()
+    const up = new THREE.Vector3(0, 1, 0)
+    list.forEach(([x, y, z, lx, lz], i) => {
+      const lean = Math.hypot(lx!, lz!)
+      // Centred between the feet and the point under the body's mass, aligned with the lean.
+      q.setFromAxisAngle(up, Math.atan2(lx!, lz!))
+      m.compose(
+        new THREE.Vector3(x! + lx! * 0.15, y! + 0.015, z! + lz! * 0.15),
+        q,
+        new THREE.Vector3(0.95, 1, 1.1 + lean * 0.8),
+      )
+      inst.setMatrixAt(i, m)
+    })
+    inst.renderOrder = 2
+    return inst
+  }, [])
+  return <primitive object={mesh} />
 }
 
 /** Visitors standing on the interactive floor, in its UV space (from the same placement list). */
@@ -287,6 +358,7 @@ function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
       camera.position.y += Math.sin(time * 0.5) * 0.04 + state.pointer.y * 0.22
     }
     camera.lookAt(look.current)
+    FOCUS.copy(look.current)
     camera.rotateZ(shot.roll)
     const lens = camera as THREE.PerspectiveCamera
     if (Math.abs(lens.fov - shot.fov) > 0.01) {
@@ -353,14 +425,32 @@ function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
       <directionalLight position={[4, 6, -8]} intensity={1.2} color={colors["gen-2"]} />
       <primitive object={scene.root} />
       {rippleMesh && <primitive object={rippleMesh.mesh} />}
+      <Shadows />
       <People />
     </>
   )
 }
 
 function Effects({ high }: { high: boolean }) {
+  const dof = useRef<DepthOfFieldEffect>(null)
+  // Autofocus: keep the effect's own target on the shot's focus point every frame.
+  useFrame(() => {
+    dof.current?.target?.copy(FOCUS)
+  })
   return (
     <EffectComposer multisampling={0}>
+      {/* Shallow depth of field on capable devices: the screen sharp, the room falling away. */}
+      {high ? (
+        <DepthOfField
+          ref={dof}
+          target={[0, 0, 0]}
+          focusRange={9}
+          bokehScale={2}
+          resolutionScale={0.5}
+        />
+      ) : (
+        <></>
+      )}
       <Bloom
         mipmapBlur
         luminanceThreshold={0.55}

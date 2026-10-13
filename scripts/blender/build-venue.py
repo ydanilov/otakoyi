@@ -14,9 +14,10 @@ Outputs (public/models/):
   floor-bake.jpg     Cycles-baked lighting for the Floor mesh (UV0)
 
 Coordinates below are written in three.js space (x right, y up, z towards camera) and converted
-to Blender (z up). Each zone is modelled around its own origin, facing +z, then placed on an arc
-around a dark central floor, turned to face its centre (ZONES). The placement is written to
-venue-people.json so the camera path in src/components/works/venue-scene-canvas.tsx follows it.
+to Blender (z up). Each zone is modelled around its own origin, facing +z, on its own floating
+platform, then placed in space (ZONES): the platforms step down in a zigzag through a dark void.
+The placement is written to venue-people.json so the camera path in
+src/components/works/venue-scene-canvas.tsx follows it.
 
 Screens are not baked: the site replaces their material with the live generative shaders. They still
 emit light here, so their glow is baked onto the floor and walls around them.
@@ -38,7 +39,7 @@ OUT = os.path.join(ROOT, "public", "models")
 os.makedirs(OUT, exist_ok=True)
 
 VENUE_RES = 1024 if QUICK else 2048
-FLOOR_RES = 512 if QUICK else 1024
+FLOOR_RES = 1024 if QUICK else 2048
 SAMPLES = 16 if QUICK else 96
 
 
@@ -58,7 +59,7 @@ world = bpy.data.worlds.new("World")
 scene.world = world
 world.use_nodes = True
 world.node_tree.nodes["Background"].inputs[0].default_value = (0.02, 0.022, 0.03, 1)
-world.node_tree.nodes["Background"].inputs[1].default_value = 0.6
+world.node_tree.nodes["Background"].inputs[1].default_value = 0.2
 
 
 def hex_rgb(h):
@@ -92,7 +93,7 @@ M = {
     "seat": material("seat", "#2a2f45", 0.7),
     "leaf": material("leaf", "#2f4d2b", 0.7),
     "pot": material("pot", "#3a3a3d", 0.4),
-    "strip": material("strip", "#c1f354", 0.4, emit="#c1f354", strength=10),
+    "strip": material("strip", "#c1f354", 0.4, emit="#c1f354", strength=6),
     "bezel": material("bezel", "#0c0c0e", 0.3),
 }
 
@@ -210,25 +211,34 @@ def area(pos, size, power, color="#fff4e6"):
 
 
 # --------------------------------------------------------------------------- zones
-# Arc of four rooms around an empty floor, each turned to face the centre (0, 0, 0), so the camera
-# can crane out of one, sweep across the dark and push into the next.
-# angle: degrees around the centre (0 = straight ahead, -z); radius in metres.
+# Floating platforms stepping down through the void in a zigzag (stand high on the left, lobby
+# lower right, stage lower left, museum lowest right), each turned a little towards the path.
+# x, y, z in three.js space; yaw = rotation around y (radians).
 ZONES = {
-    "stand": dict(angle=-62, radius=30),
-    "lobby": dict(angle=-22, radius=35),
-    "music": dict(angle=20, radius=38),
-    "museum": dict(angle=60, radius=30),
+    "stand": dict(x=-15.0, y=10.0, z=0.0, yaw=0.32),
+    "lobby": dict(x=15.0, y=4.0, z=-14.0, yaw=-0.3),
+    "music": dict(x=-14.0, y=-3.0, z=-30.0, yaw=0.28),
+    "museum": dict(x=16.0, y=-9.0, z=-46.0, yaw=-0.3),
 }
-for z in ZONES.values():
-    a = math.radians(z["angle"])
-    z["x"] = round(z["radius"] * math.sin(a), 4)
-    z["z"] = round(-z["radius"] * math.cos(a), 4)
-    z["yaw"] = round(-a, 6)  # three.js rotation around y: local +z points at the centre
+floors = []  # platform tops: their own bake (floor-bake.jpg)
+
+
+def platform(x0, x1, z0, z1):
+    """Zone-local floating slab with its top at y = 0 and a thin light line along the front edge."""
+    w, d = x1 - x0, z1 - z0
+    cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
+    box((w, 0.8, d), (cx, -0.405, cz), M["dark"], bevel=0.02)
+    box((w - 0.4, 0.025, 0.02), (cx, -0.06, z1 + 0.012), M["strip"], bevel=0)
+    bpy.ops.mesh.primitive_plane_add(size=1, location=B(cx, 0, cz))
+    o = bpy.context.object
+    o.scale = (w, d, 1)
+    bpy.ops.object.transform_apply(scale=True)
+    floors.append(o)
 
 
 def zone_matrix(name):
     z = ZONES[name]
-    return Matrix.Translation(B(z["x"], 0, z["z"])) @ Matrix.Rotation(z["yaw"], 4, "Z")
+    return Matrix.Translation(B(z["x"], z["y"], z["z"])) @ Matrix.Rotation(z["yaw"], 4, "Z")
 
 
 class zone:
@@ -252,10 +262,11 @@ def place(name, pos, face):
     z = ZONES[name]
     c, s_ = math.cos(z["yaw"]), math.sin(z["yaw"])
     x, y, zz = pos
-    return (z["x"] + x * c + zz * s_, y, z["z"] - x * s_ + zz * c), face + math.degrees(z["yaw"])
+    return (z["x"] + x * c + zz * s_, z["y"] + y, z["z"] - x * s_ + zz * c), face + math.degrees(z["yaw"])
 
 # --------------------------------------------------------------------------- 3. music events
 with zone("music"):
+    platform(-11, 11, -4.5, 14)
     # Concert stage: deep stage, LED backdrop and side columns, truss with lights, speaker stacks,
     # crowd barrier. The camera reaches it third (exhibition → lobby → music → museum).
     box((13, 1.0, 5), (0, 0.5, -1.1), M["dark"], bevel=0.03)
@@ -278,11 +289,12 @@ with zone("music"):
     box((12, 1.1, 0.12), (0, 0.55, 3.0), M["metal"], bevel=0.01)  # crowd barrier
     # Mixing desk (FOH) far back
     box((2.2, 1.0, 1.0), (0, 0.5, 11.5), M["dark"], bevel=0.03)
-    area((0, 8, 1), 7, 1100, "#c9b8ff")
+    area((0, 8, 1), 7, 320, "#c9b8ff")
 
 # --------------------------------------------------------------------------- 4. museum / interactive park
 MX = 0  # zone-local; the zone is placed by ZONES
 with zone("museum"):
+    platform(-7, 7, -4.2, 7.5)
     # Immersive room: back + side walls and the floor are all projection surfaces.
     box((10.4, 4.6, 0.25), (MX, 2.3, -3.3), M["dark"], bevel=0)
     screen("Screen_MuseumBack", 10, 4.2, (MX, 2.3, -3.15))
@@ -301,11 +313,12 @@ with zone("museum"):
     for x in (MX - 3, MX, MX + 3):
         box((0.35, 0.25, 0.5), (x, 4.48, 2.6), M["panel"], bevel=0.02)  # projectors
     box((2.4, 0.42, 0.6), (MX, 0.21, 2.2), M["wood"], bevel=0.02)  # bench
-    area((MX, 6, 1.5), 5, 250)
+    area((MX, 6, 1.5), 5, 60)
 
 # --------------------------------------------------------------------------- 2. office lobby
 LX = 0  # zone-local; the zone is placed by ZONES
 with zone("lobby"):
+    platform(-9, 9, -3.2, 9.5)
     box((15, 7, 0.3), (LX, 3.5, -2.45), M["concrete"], bevel=0)
     box((4.5, 6.3, 0.12), (LX, 3.1, -2.26), M["bezel"], bevel=0.02)
     screen("Screen_Lobby", 4.2, 6.0, (LX, 3.1, -2.19))
@@ -328,11 +341,12 @@ with zone("lobby"):
         cyl(0.34, 0.62, (px, 0.31, pz), M["pot"], verts=24)
         sphere(0.55, (px, 1.05, pz), M["leaf"])
         sphere(0.38, (px + 0.25, 1.45, pz - 0.1), M["leaf"])
-    area((LX, 8, 1.5), 5, 700)
+    area((LX, 8, 1.5), 5, 200)
 
 # --------------------------------------------------------------------------- 3. exhibition stand
 SX = 0  # zone-local; the zone is placed by ZONES
 with zone("stand"):
+    platform(-7, 7, -4.5, 7.5)
     box((8, 0.12, 7), (SX, 0.06, 0.3), M["white"], bevel=0.01)
     box((8, 0.03, 0.02), (SX, 0.03, 3.81), M["strip"], bevel=0)
     screen("Screen_StandFloor", 6.5, 6.5, (SX, 0.125, 0.5), facing="y")
@@ -348,7 +362,7 @@ with zone("stand"):
     truss(SX + 3.6, -2.6, 4.4, y0=0.12)
     for (px, pz, ph) in ((SX - 1.6, 2.1, 0.9), (SX - 0.9, 2.6, 0.7)):
         box((0.5, ph, 0.5), (px, 0.12 + ph / 2, pz), M["white"], bevel=0.02)
-    area((SX, 6.5, 1), 5, 650)
+    area((SX, 6.5, 1), 5, 190)
 
 # --------------------------------------------------------------------------- visitors
 # Standing, not walking, all in one pose: leaning far back, head to the sky (people._lean_dirs).
@@ -381,37 +395,45 @@ VISITORS = []
 for name, pos, face, body in LOCAL:
     wpos, wface = place(name, pos, face)
     VISITORS.append(dict(pos=wpos, face=wface, body=body, pose=X))
-crowd, feet = people.build(VISITORS, lean=True)
+crowd, feet, shadows = people.build(VISITORS, lean=True)
 crowd.data.materials.clear()
 crowd.data.materials.append(material("person", "#050506", 0.12, 0.0))
 
-# Ripples on the stand's interactive floor (6.5 m square at local (0, 0.5)), in its UV space.
-ripples = [
-    [round(pos[0] / 6.5 + 0.5, 4), round(1 - ((pos[2] - 0.5) / 6.5 + 0.5), 4)]
-    for name, pos, _, _ in LOCAL
-    if name == "stand" and abs(pos[0]) < 3.25 and abs(pos[2] - 0.5) < 3.25
-]
+# Ripples on the stand's interactive floor (6.5 m square at local (0, 0.5)), in its UV space,
+# from where each visitor's feet actually ended up after posing.
+st = ZONES["stand"]
+c_, s_ = math.cos(st["yaw"]), math.sin(st["yaw"])
+ripples = []
+for (name, *_), (fx, _, fz, _, _) in zip(LOCAL, shadows):
+    if name != "stand":
+        continue
+    dx, dz = fx - st["x"], fz - st["z"]
+    lx, lz = dx * c_ - dz * s_, dx * s_ + dz * c_
+    if abs(lx) < 3.25 and abs(lz - 0.5) < 3.25:
+        ripples.append([round(lx / 6.5 + 0.5, 4), round(1 - ((lz - 0.5) / 6.5 + 0.5), 4)])
 with open(os.path.join(ROOT, "src", "components", "works", "venue-people.json"), "w") as fh:
     import json
 
     json.dump(
         {
-            "zones": {k: {"x": v["x"], "z": v["z"], "yaw": v["yaw"]} for k, v in ZONES.items()},
+            "zones": ZONES,
             "ripples": ripples,
+            "shadows": shadows,
         },
         fh,
     )
 
 # --------------------------------------------------------------------------- floor (own bake)
-bpy.ops.mesh.primitive_plane_add(size=1, location=B(0, 0, -16))
+bpy.ops.object.select_all(action="DESELECT")
+for o in floors:
+    o.select_set(True)
+bpy.context.view_layer.objects.active = floors[0]
+bpy.ops.object.join()
 floor = bpy.context.object
 floor.name = "Floor"
 floor.data.name = "Floor"
-floor.scale = (110, 80, 1)
-bpy.ops.object.transform_apply(scale=True)
 floor.data.materials.append(M["floor"])
-area((0, 12, -16), 40, 900, "#9fb4ff")  # dim sky over the whole floor
-
+area((0, 24, -22), 60, 450, "#9fb4ff")  # dim sky over the whole void
 
 # --------------------------------------------------------------------------- join + unwrap
 bpy.ops.object.select_all(action="DESELECT")
@@ -438,7 +460,7 @@ def lightmap_uv(obj, margin):
 
 
 lightmap_uv(venue, 0.003)
-# Floor is a single quad: keep its default 0..1 UVs.
+lightmap_uv(floor, 0.01)
 
 
 # --------------------------------------------------------------------------- bake

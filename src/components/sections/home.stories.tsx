@@ -2,11 +2,13 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect } from "storybook/test"
 
 import { solutions, tourStops } from "@/content/solutions"
+import { technologies } from "@/content/technologies"
 import { InNumbers } from "./in-numbers"
 import { LabPlayground } from "./lab-playground"
 import { LabTeaser } from "./lab-teaser"
 import { Occasions } from "./occasions"
 import { SpecMarquee } from "./spec-marquee"
+import { Technologies } from "./technologies"
 import { VenueTour } from "./venue-tour"
 
 const meta = { title: "Sections/Home v2", parameters: { layout: "fullscreen" } } satisfies Meta
@@ -88,5 +90,23 @@ export const LabFull: Story = {
     await expect(canvas.getByText(/^contour#/)).toBeInTheDocument()
     await userEvent.click(canvas.getByRole("button", { name: "Next seed" }))
     await expect(canvas.getByText(/^contour#22@/)).toBeInTheDocument()
+  },
+}
+
+export const TechnologyList: Story = {
+  render: () => (
+    <div className="p-8">
+      <Technologies items={technologies} />
+    </div>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    await expect(canvas.getByRole("region", { name: "What it shows on" })).toBeInTheDocument()
+    await expect(canvas.getByRole("region", { name: "What drives it" })).toBeInTheDocument()
+    const first = canvas.getByRole("button", { name: /Projection mapping/ })
+    await expect(first).toHaveAttribute("aria-pressed", "true")
+    const tracking = canvas.getByRole("button", { name: /Motion and body tracking/ })
+    await userEvent.click(tracking)
+    await expect(tracking).toHaveAttribute("aria-pressed", "true")
+    await expect(first).toHaveAttribute("aria-pressed", "false")
   },
 }

@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
 import { site } from "@/config/site"
 import { motionScript, themeScript } from "@/lib/init-scripts"
-import { fontMono, fontSans } from "@/fonts"
+import { fontLogo, fontMono, fontSans } from "@/fonts"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`dark ${fontSans.variable} ${fontMono.variable}`}
+      className={`dark ${fontSans.variable} ${fontMono.variable} ${fontLogo.variable}`}
       suppressHydrationWarning
     >
       <head>
