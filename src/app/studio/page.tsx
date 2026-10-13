@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/sections/section-heading"
 import { Separator } from "@/components/ui/separator"
 import { GenerativeWork } from "@/components/works/generative-work"
 import { site } from "@/config/site"
+import { technologies } from "@/content/technologies"
 
 export const metadata: Metadata = {
   title: "Studio",
@@ -38,25 +39,6 @@ const principles = [
     title: "Reliable on the night",
     body: "Tested on site, with fallbacks and an operator. Opening night is not a beta",
   },
-]
-
-/** What we need from the venue — the spec sheet nobody else publishes. */
-const venueNeeds = [
-  { label: "Power", value: "Standard 230 V per render node; LED and projectors per supplier spec" },
-  { label: "Signal", value: "HDMI / SDI / DisplayPort to your screens, or our own media server" },
-  {
-    label: "Network",
-    value: "Wired internet for live data feeds and remote monitoring (optional offline mode)",
-  },
-  {
-    label: "Space",
-    value: "Interactive floors from ~3 × 3 m; mounting and sightlines agreed with your builder",
-  },
-  {
-    label: "Access",
-    value: "One setup day on site for events; calibration night for permanent walls",
-  },
-  { label: "From you", value: "Brand guidelines, logo files, any data you want to show" },
 ]
 
 const team = [
@@ -109,23 +91,23 @@ export default function StudioPage() {
         </ul>
       </section>
 
-      <section id="venue-requirements" className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
+      <section id="any-venue" className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
         <SectionHeading
-          eyebrow="Venue requirements"
-          title="What we need from the venue"
-          description="Hand this to your venue or stand builder — it answers most technical questions before the first call"
+          eyebrow="Any venue"
+          title="Whatever the space, we use everything it has"
+          description="Whatever the venue and whatever the goal, our toolkit is wide enough to fit the installation to the room — and get the most out of every screen, surface and signal already there"
           className="mb-8"
         />
-        <dl className="grid gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-2 lg:grid-cols-3">
-          {venueNeeds.map((v) => (
-            <div key={v.label} className="flex flex-col-reverse bg-background p-6">
-              <dt className="mt-2 font-mono text-xs tracking-widest text-muted-foreground uppercase">
-                {v.label}
-              </dt>
-              <dd className="text-pretty">{v.value}</dd>
-            </div>
+        <ul className="flex flex-wrap gap-2">
+          {technologies.map((t) => (
+            <li
+              key={t.slug}
+              className="rounded-full border px-4 py-2 text-sm text-pretty text-muted-foreground"
+            >
+              {t.name}
+            </li>
           ))}
-        </dl>
+        </ul>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
