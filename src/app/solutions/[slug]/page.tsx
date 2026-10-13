@@ -10,7 +10,7 @@ import { SectionHeading } from "@/components/sections/section-heading"
 import { WorkCard } from "@/components/sections/work-card"
 import { Button } from "@/components/ui/button"
 import { GenerativeWork } from "@/components/works/generative-work"
-import { VenueScene } from "@/components/works/venue-scene"
+import { TourStill } from "@/components/sections/tour-film"
 import { proposalHref, site } from "@/config/site"
 import { casesFor, getSolution, solutions } from "@/content/solutions"
 
@@ -106,9 +106,9 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
             ))}
           </ul>
         </div>
-        <VenueScene
+        <TourStill
           progress={s.venue}
-          label={`3D view of a ${s.label.toLowerCase()} installation`}
+          label={`A ${s.label.toLowerCase()} installation with generative content on its screens`}
           className="aspect-[4/3] rounded-xl"
         />
       </section>

@@ -9,6 +9,7 @@ import { LabTeaser } from "./lab-teaser"
 import { Occasions } from "./occasions"
 import { SpecMarquee } from "./spec-marquee"
 import { Technologies } from "./technologies"
+import { TourFilm, TourStill } from "./tour-film"
 import { VenueTour } from "./venue-tour"
 
 const meta = { title: "Sections/Home v2", parameters: { layout: "fullscreen" } } satisfies Meta
@@ -108,5 +109,29 @@ export const TechnologyList: Story = {
     await userEvent.click(tracking)
     await expect(tracking).toHaveAttribute("aria-pressed", "true")
     await expect(first).toHaveAttribute("aria-pressed", "false")
+  },
+}
+
+export const TourFilmScrub: Story = {
+  render: () => (
+    <div className="relative aspect-video w-full">
+      <TourFilm progress={1 / 3} className="absolute inset-0" />
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const film = canvas.getByRole("img", { name: /Film flying through/ })
+    await expect(film).toHaveAttribute("data-work", "tour-film")
+  },
+}
+
+export const TourStillMuseum: Story = {
+  render: () => (
+    <TourStill progress={1} label="Immersive museum room" className="aspect-[4/3] w-96" />
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("img", { name: "Immersive museum room" })).toHaveAttribute(
+      "src",
+      "/tour/stop-3.jpg",
+    )
   },
 }

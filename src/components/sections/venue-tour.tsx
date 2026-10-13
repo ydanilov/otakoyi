@@ -5,7 +5,7 @@ import { ArrowRightIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { VenueScene } from "@/components/works/venue-scene"
+import { TourFilm, TourStill } from "@/components/sections/tour-film"
 import type { Solution } from "@/content/solutions"
 import { cn } from "@/lib/utils"
 import { useScrollProgress } from "@/lib/use-scroll-progress"
@@ -18,9 +18,9 @@ type VenueTourProps = {
 }
 
 /**
- * Scroll flies a camera through one 3D venue — conference stage, office lobby, exhibition
- * stand — with live works on every screen, so buyers see the format where it would live.
- * Motion off (ADR-006): a still of the venue and the stops as a plain list.
+ * Scroll flies through four spaces — exhibition stand, office lobby, concert, museum room —
+ * as one pre-rendered film, diving into each room's screen and surfacing from the next, so
+ * buyers see the format where it would live. Motion off (ADR-006): a still and the stops as a list.
  */
 export function VenueTour({ stops }: VenueTourProps) {
   const [ref, progress] = useScrollProgress<HTMLDivElement>(HEADER)
@@ -55,8 +55,12 @@ export function VenueTour({ stops }: VenueTourProps) {
 
       {/* Motion off: one still frame and the stops as cards. */}
       <div className="mx-auto hidden max-w-7xl px-4 pb-20 md:px-8 motion-off:block">
-        <VenueScene className="aspect-[16/9] rounded-xl" />
-        <ul className="mt-8 grid gap-6 md:grid-cols-3">
+        <TourStill
+          progress={0}
+          label="An exhibition stand with generative content on its screens"
+          className="aspect-[16/9] rounded-xl"
+        />
+        <ul className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {stops.map((s) => (
             <li key={s.slug}>
               <StopCopy stop={s} />
@@ -71,7 +75,7 @@ export function VenueTour({ stops }: VenueTourProps) {
         className="relative motion-off:hidden"
       >
         <div className="sticky top-14 h-[calc(100svh-3.5rem)] overflow-hidden">
-          <VenueScene progress={progress} className="absolute inset-0" />
+          <TourFilm progress={progress} className="absolute inset-0" />
           <div
             aria-hidden
             className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-transparent"
