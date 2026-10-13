@@ -23,10 +23,10 @@ export const TOUR = {
   fps: 24,
   /** Scroll-scrubbed part of each scene, in film frames [from, to]; the gaps are transitions. */
   scenes: [
-    [1, 66],
-    [110, 146],
-    [190, 226],
-    [270, 336],
+    [1, 146],
+    [226, 322],
+    [402, 498],
+    [578, 724],
   ],
   posters: ["/tour/stop-0.jpg", "/tour/stop-1.jpg", "/tour/stop-2.jpg", "/tour/stop-3.jpg"],
 } as const
