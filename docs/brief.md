@@ -47,7 +47,7 @@ Convert visitors into proposal requests (`Get a proposal` → pre-filled email; 
 
 ## Open items
 
-- Studio name: **Otakoyi.team** (decided 2026-10-12). Still open: domain hookup, logo, confirm `hello@otakoyi.team` mailbox
+- Studio name: **Otakoyi** (wordmark changed from "Otakoyi.team" on 2026-10-13; domain otakoyi.team). Still open: domain hookup, logo, confirm `hello@otakoyi.team` mailbox
 - Real cases, photos/video from site, verified results
 - Lead form + CRM (instead of mailto)
 - Pricing model wording (rental / purchase / licence)

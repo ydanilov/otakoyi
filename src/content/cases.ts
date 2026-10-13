@@ -67,7 +67,7 @@ const raw: z.input<typeof caseSchema>[] = [
   {
     slug: "pump-the-market",
     title: "Pump The Market",
-    client: "Otakoyi.team original",
+    client: "Otakoyi original",
     year: 2026,
     location: "Crypto conference booths · big screen or projection",
     summary:
@@ -128,7 +128,7 @@ const raw: z.input<typeof caseSchema>[] = [
   {
     slug: "the-whale",
     title: "The Whale",
-    client: "Otakoyi.team original",
+    client: "Otakoyi original",
     year: 2026,
     location: "Blockchain and crypto conferences · floor zone + square projection",
     summary:

@@ -1,5 +1,5 @@
 export const site = {
-  name: "Otakoyi.team",
+  name: "Otakoyi",
   tagline: "Generative installations for conferences, events, offices and exhibitions.",
   description:
     "We design, build and install generative visual installations that stop people in their tracks — customised to your brand, driven by your data, delivered turnkey.",

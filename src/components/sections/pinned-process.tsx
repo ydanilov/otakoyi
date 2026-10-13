@@ -20,6 +20,28 @@ const finalStep = {
 const steps = [...processSteps, finalStep]
 const pad = (n: number, len = 2) => String(n).padStart(len, "0")
 
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
+const ease = (v: number) => v * v * (3 - 2 * v)
+
+/**
+ * Where a step sits for x = (scroll position in steps) − its index:
+ * x < 0 waiting below · 0..1 current · then it shrinks, greys out and joins the stack on the
+ * left edge, which keeps climbing with the scroll and fades out after a few rows.
+ */
+export function stepStyle(x: number) {
+  const enter = 1 - ease(clamp01((x + 0.2) / 0.2)) // 1 → still below, 0 → in place
+  const lift = ease(clamp01((x - 0.8) / 0.25)) // 0 → current, 1 → in the stack
+  const climb = Math.max(0, x - 1.05)
+  const fade = clamp01((climb - 2.5) / 1.5)
+  return {
+    enter,
+    lift,
+    climb,
+    scale: 1 - 0.6 * lift,
+    opacity: (1 - enter) * (1 - fade),
+  }
+}
+
 type PinnedProcessProps = {
   /** Where "Skip the steps" jumps to. */
   skipTo?: string
@@ -111,32 +133,57 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
 
             <div className="mt-auto grid items-end gap-8 md:grid-cols-[1fr_auto]">
               <div>
-                <div aria-hidden className="grid">
-                  {steps.map((s, i) => (
-                    <div
-                      key={s.title}
-                      data-active={i === active}
-                      className={cn(
-                        "col-start-1 row-start-1 max-w-2xl transition-[opacity,translate] duration-500 ease-out",
-                        i === active
-                          ? "translate-y-0 opacity-100"
-                          : cn("opacity-0", i < active ? "-translate-y-6" : "translate-y-6"),
-                      )}
-                    >
-                      <p className="flex items-center gap-3 font-mono text-xs text-muted-foreground">
-                        <span className="text-signal">{pad(i + 1)}</span>
-                        <span className="h-px w-8 bg-border" />
-                        <span>{pad(steps.length)}</span>
-                        <span>· {s.time}</span>
-                      </p>
-                      <p className="mt-4 text-4xl font-medium tracking-tighter md:text-7xl">
-                        {s.title}
-                      </p>
-                      <p className="mt-4 max-w-lg text-lg text-pretty text-muted-foreground">
-                        {s.description}
-                      </p>
-                    </div>
-                  ))}
+                {/* --lift: how far a finished step rises above the current one; --row: stack pitch. */}
+                <div
+                  aria-hidden
+                  className="grid [--lift:9.5rem] [--row:1.9rem] md:[--lift:14rem] md:[--row:3rem]"
+                >
+                  {steps.map((s, i) => {
+                    const x = progress * steps.length - i
+                    // The last step (the CTA) never leaves.
+                    const st = stepStyle(i === steps.length - 1 ? Math.min(x, 0.75) : x)
+                    return (
+                      <div
+                        key={s.title}
+                        data-active={i === active}
+                        className="col-start-1 row-start-1 max-w-2xl origin-bottom-left will-change-transform"
+                        style={{
+                          opacity: st.opacity,
+                          transform: `translateY(calc(${st.lift} * var(--lift) * -1 - ${st.climb} * var(--row) + ${st.enter} * 1.5rem)) scale(${st.scale})`,
+                        }}
+                      >
+                        <p
+                          className="flex items-center gap-3 font-mono text-xs text-muted-foreground"
+                          style={{ opacity: 1 - st.lift }}
+                        >
+                          <span className="text-signal">{pad(i + 1)}</span>
+                          <span className="h-px w-8 bg-border" />
+                          <span>{pad(steps.length)}</span>
+                          <span>· {s.time}</span>
+                        </p>
+                        <p
+                          className={cn(
+                            "mt-4 text-4xl font-medium tracking-tighter transition-colors duration-500 md:text-7xl md:whitespace-nowrap",
+                            st.lift > 0.5 && "text-muted-foreground",
+                          )}
+                        >
+                          <span
+                            className="mr-[0.4em] font-mono"
+                            style={{ display: st.lift > 0.5 ? "inline" : "none" }}
+                          >
+                            {pad(i + 1)}
+                          </span>
+                          {s.title}
+                        </p>
+                        <p
+                          className="mt-4 max-w-lg text-lg text-pretty text-muted-foreground"
+                          style={{ opacity: 1 - st.lift }}
+                        >
+                          {s.description}
+                        </p>
+                      </div>
+                    )
+                  })}
                 </div>
                 <div
                   inert={!isLast}
