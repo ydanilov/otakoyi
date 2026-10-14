@@ -5,4 +5,6 @@
 export const themeScript = `try{localStorage.removeItem("theme")}catch(e){}`
 
 /** Motion (ADR-006): on by default, honour a stored "off". */
-export const motionScript = `try{if(localStorage.getItem("motion")==="off")document.documentElement.dataset.motion="off"}catch(e){}`
+// The header toggle is gone, so a visitor's old "motion=off" must not freeze the site: only the
+// test key (set by Playwright) turns motion off; the old key is cleared.
+export const motionScript = `try{localStorage.removeItem("motion");if(localStorage.getItem("motion-test")==="off")document.documentElement.dataset.motion="off"}catch(e){}`

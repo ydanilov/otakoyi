@@ -25,13 +25,14 @@ export function Cta() {
           className="absolute inset-0 -z-10 bg-gradient-to-t from-background/80 via-transparent to-transparent"
         />
         <div className="flex min-h-[28rem] flex-col justify-end gap-10 p-8 md:min-h-[34rem] md:p-14 lg:p-20">
-          <p className="font-mono text-xs tracking-widest text-signal uppercase">Start a project</p>
+          <p className="font-mono text-xs tracking-widest text-signal uppercase">Not sure yet?</p>
           <div className="max-w-3xl space-y-6">
             <h2 className="text-4xl leading-[0.95] font-medium tracking-tighter text-balance md:text-7xl">
-              Planning an event, a stand or a lobby?
+              Not sure exactly what you need?
             </h2>
             <p className="max-w-xl text-lg text-pretty text-muted-foreground md:text-xl">
-              Tell us the venue and the date. Within a week you see a concept running in your brand
+              Write to us and we will work it out together. A space, a date or just an idea is
+              enough to start
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-x-8 gap-y-4">

@@ -120,33 +120,34 @@ const raw: z.input<typeof caseSchema>[] = [
     ],
     cover: {
       src: "/works/pump-the-market/hero.webp",
-      alt: "Red market heatmap with a visitor's silhouette rendered as a cluster of green tiles",
+      alt: "A visitor at a crypto conference booth raises both arms and their silhouette lights up green on the red market wall",
     },
     gallery: [
       {
         src: "/works/pump-the-market/idle.webp",
-        alt: "Idle state: every tile of the heatmap in shades of red",
+        alt: "The booth before the crowd: the market wall in shades of red, attendees walking past",
         caption: "Idle — the market bleeds",
       },
       {
         src: "/works/pump-the-market/entering.webp",
-        alt: "A visitor entering the zone, green growing from their centre",
+        alt: "A visitor steps onto the floor zone and green tiles start to grow on the red wall",
         caption: "A visitor steps in: green grows out from their centre",
       },
       {
         src: "/works/pump-the-market/two-people.webp",
-        alt: "Two visitors as two green silhouettes on the red heatmap",
+        alt: "Two friends play at once, each as their own green silhouette, while the crowd films",
         caption: "Two players, each with their own mask",
       },
       {
         src: "/works/pump-the-market/clusters.webp",
-        alt: "Fine green clusters following the outline of a body",
+        alt: "Close-up of the wall: fine green tiles follow the outline of a raised arm",
         caption: "Tiles split at the silhouette edge to keep the outline sharp",
       },
       {
         src: "/works/pump-the-market/dev-mode.webp",
-        alt: "Developer mode overlaying the live silhouette on the heatmap",
-        caption: "Dev mode: the live silhouette over the map",
+        alt: "Setup in the hall: dev mode shows the live silhouette, tracking grid and skeleton on the wall while a technician tunes the laptop",
+        caption:
+          "Dev mode on site: live silhouette, tracking grid, skeleton and FPS on the wall, the tracker on the laptop",
       },
     ],
     status: "Live-tested",

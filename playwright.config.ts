@@ -27,7 +27,10 @@ export default defineConfig({
     storageState: {
       cookies: [],
       origins: [
-        { origin: `http://localhost:${PORT}`, localStorage: [{ name: "motion", value: "off" }] },
+        {
+          origin: `http://localhost:${PORT}`,
+          localStorage: [{ name: "motion-test", value: "off" }],
+        },
       ],
     },
     trace: "on-first-retry",

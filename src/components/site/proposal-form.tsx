@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { CheckIcon, ArrowRightIcon } from "lucide-react"
+import { CheckIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -157,7 +157,7 @@ export default function ProposalForm({
               </div>
               <div className="grid gap-2 sm:col-span-2">
                 <Label htmlFor="proposal-message">What do you have in mind</Label>
-                <Textarea id="proposal-message" name="message" rows={4} />
+                <Textarea id="proposal-message" name="message" rows={8} className="min-h-40" />
               </div>
               {state === "error" && (
                 <p role="alert" className="text-sm text-destructive sm:col-span-2">
@@ -171,7 +171,7 @@ export default function ProposalForm({
                 disabled={state === "sending"}
                 className="sm:col-span-2"
               >
-                {state === "sending" ? "Sending" : "Send request"} <ArrowRightIcon />
+                {state === "sending" ? "Sending" : "Send request"}
               </Button>
             </form>
           </>
