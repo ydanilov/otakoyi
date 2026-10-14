@@ -8,90 +8,84 @@ import type { Technology } from "@/content/technologies"
 import { cn } from "@/lib/utils"
 
 /**
- * What we build with: a large-type list of technologies — the surfaces we show on, then the
- * inputs that drive them — next to one live preview. Hover, focus or tap a row and the preview
- * switches to it; the row opens to show what it does and where it lives.
+ * A large-type list of technologies (one group: the surfaces we show on, or the inputs that
+ * drive them) next to one live preview. Hover, focus or tap a row and the preview switches to
+ * it; the row opens to show what it does and where it lives. `flip` puts the preview on the left.
  * Small screens: the list alone, every row open.
  */
-const GROUPS = [
-  { kind: "output", label: "What it shows on" },
-  { kind: "input", label: "What drives it" },
-] as const
-
-export function Technologies({ items }: { items: Technology[] }) {
+export function Technologies({ items, flip = false }: { items: Technology[]; flip?: boolean }) {
   const [active, setActive] = useState(0)
   const current = items[active]!
   const layers = [...new Set(items.map((t) => t.preview.work))] as WorkId[]
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-16">
-      <div className="space-y-10">
-        {GROUPS.map((g) => (
-          <section key={g.kind} aria-label={g.label}>
-            <h3 className="mb-3 font-mono text-xs tracking-widest text-muted-foreground uppercase">
-              {g.label}
-            </h3>
-            <ol className="border-t">
-              {items.map((t, i) => {
-                if (t.kind !== g.kind) return null
-                const open = i === active
-                return (
-                  <li key={t.slug} className="border-b">
-                    <button
-                      type="button"
-                      onPointerEnter={() => setActive(i)}
-                      onFocus={() => setActive(i)}
-                      onClick={() => setActive(i)}
-                      aria-pressed={open}
-                      className="group grid w-full cursor-pointer grid-cols-[2.5rem_minmax(0,1fr)] items-baseline gap-x-2 py-5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring md:py-6"
-                    >
-                      <span
-                        className={cn(
-                          "font-mono text-xs tracking-widest transition-colors",
-                          open ? "text-signal" : "text-muted-foreground",
-                        )}
-                      >
-                        {String(i + 1).padStart(2, "0")}
+    <div
+      className={cn(
+        "grid gap-10 lg:gap-16",
+        flip
+          ? "lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]"
+          : "lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]",
+      )}
+    >
+      <div className={cn(flip && "lg:order-2")}>
+        <ol className="border-t">
+          {items.map((t, i) => {
+            const open = i === active
+            return (
+              <li key={t.slug} className="border-b">
+                <button
+                  type="button"
+                  onPointerEnter={() => setActive(i)}
+                  onFocus={() => setActive(i)}
+                  onClick={() => setActive(i)}
+                  aria-pressed={open}
+                  className="group grid w-full cursor-pointer grid-cols-[2.5rem_minmax(0,1fr)] items-baseline gap-x-2 py-5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring md:py-6"
+                >
+                  <span
+                    className={cn(
+                      "font-mono text-xs tracking-widest transition-colors",
+                      open ? "text-signal" : "text-muted-foreground",
+                    )}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-2xl font-medium tracking-tight text-balance transition-colors duration-300 md:text-4xl",
+                      open ? "text-foreground" : "text-foreground lg:text-muted-foreground",
+                      "group-hover:text-foreground",
+                    )}
+                  >
+                    {t.name}
+                  </span>
+                  <span
+                    className={cn(
+                      "col-start-2 grid transition-[grid-template-rows,opacity] duration-500 ease-out",
+                      open
+                        ? "grid-rows-[1fr] opacity-100"
+                        : "grid-rows-[1fr] opacity-100 lg:grid-rows-[0fr] lg:opacity-0",
+                    )}
+                  >
+                    <span className="overflow-hidden">
+                      <span className="mt-3 block max-w-xl text-pretty text-muted-foreground">
+                        {t.line}
                       </span>
-                      <span
-                        className={cn(
-                          "text-2xl font-medium tracking-tight text-balance transition-colors duration-300 md:text-4xl",
-                          open ? "text-foreground" : "text-foreground lg:text-muted-foreground",
-                          "group-hover:text-foreground",
-                        )}
-                      >
-                        {t.name}
+                      <span className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                        {t.where.map((w) => (
+                          <span key={w}>{w}</span>
+                        ))}
                       </span>
-                      <span
-                        className={cn(
-                          "col-start-2 grid transition-[grid-template-rows,opacity] duration-500 ease-out",
-                          open
-                            ? "grid-rows-[1fr] opacity-100"
-                            : "grid-rows-[1fr] opacity-100 lg:grid-rows-[0fr] lg:opacity-0",
-                        )}
-                      >
-                        <span className="overflow-hidden">
-                          <span className="mt-3 block max-w-xl text-pretty text-muted-foreground">
-                            {t.line}
-                          </span>
-                          <span className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs tracking-widest text-muted-foreground uppercase">
-                            {t.where.map((w) => (
-                              <span key={w}>{w}</span>
-                            ))}
-                          </span>
-                        </span>
-                      </span>
-                    </button>
-                  </li>
-                )
-              })}
-            </ol>
-          </section>
-        ))}
+                    </span>
+                  </span>
+                </button>
+              </li>
+            )
+          })}
+        </ol>
       </div>
 
       {/* One live preview, crossfading between the works behind each technology. */}
-      <div aria-hidden className="relative hidden lg:block">
+      <div aria-hidden className={cn("relative hidden lg:block", flip && "lg:order-1")}>
         <div className="sticky top-24 aspect-[4/5] overflow-hidden rounded-xl border">
           {layers.map((work) => {
             const on = current.preview.work === work

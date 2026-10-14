@@ -54,14 +54,24 @@ export default function HomePage() {
 
       <VenueTour stops={tourStops} />
 
-      <Section id="technology">
+      <Section id="surfaces">
         <SectionHeading
-          eyebrow="Technology"
+          eyebrow="What it shows on"
           title="One engine. Every surface in the room"
-          description="Projection, LED, light and screens, driven by music, movement and your data — so every surface tells the same story, live"
+          description="Projection, LED, light and screens, all playing the same live work, in sync"
           className="mb-12"
         />
-        <Technologies items={technologies} />
+        <Technologies items={technologies.filter((t) => t.kind === "output")} />
+      </Section>
+
+      <Section id="inputs">
+        <SectionHeading
+          eyebrow="What drives it"
+          title="The room plays it"
+          description="Music, movement, sensors, phones and your own data shape every frame as it happens"
+          className="mb-12"
+        />
+        <Technologies items={technologies.filter((t) => t.kind === "input")} flip />
       </Section>
 
       <Section id="benefits">

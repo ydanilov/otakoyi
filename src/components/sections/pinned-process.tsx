@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { GenerativeWork } from "@/components/works/generative-work"
 import { proposalHref, site } from "@/config/site"
 import { cn } from "@/lib/utils"
+import { useEased } from "@/lib/use-eased"
+import { useMotion } from "@/lib/motion"
 import { useScrollProgress } from "@/lib/use-scroll-progress"
 
 const HEADER = 56 // px — sticky site header height (h-14)
@@ -21,23 +23,28 @@ const steps = [...processSteps, finalStep]
 const pad = (n: number, len = 2) => String(n).padStart(len, "0")
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
-const ease = (v: number) => v * v * (3 - 2 * v)
+const smooth = (v: number) => v * v * (3 - 2 * v)
+const inOut = (v: number) => (v < 0.5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2)
 
 /**
  * Where a step sits for x = (scroll position in steps) − its index:
- * x < 0 waiting below · 0..1 current · then it shrinks, greys out and joins the stack on the
- * left edge, which keeps climbing with the scroll and fades out after a few rows.
+ * x < 0 waiting below · 0..1 current · then its caption and description fade first, the title
+ * shrinks and greys into the stack on the left edge, which keeps climbing with the scroll and
+ * fades out after a few rows.
  */
 export function stepStyle(x: number) {
-  const enter = 1 - ease(clamp01((x + 0.2) / 0.2)) // 1 → still below, 0 → in place
-  const lift = ease(clamp01((x - 0.8) / 0.25)) // 0 → current, 1 → in the stack
-  const climb = Math.max(0, x - 1.05)
-  const fade = clamp01((climb - 2.5) / 1.5)
+  const enter = 1 - smooth(clamp01((x + 0.1) / 0.25)) // 1 → still below, 0 → in place
+  const lift = inOut(clamp01((x - 0.6) / 0.42)) // 0 → current, 1 → in the stack
+  const details = 1 - smooth(clamp01(lift / 0.4)) // caption + description go first
+  const climb = Math.max(0, x - 1.02)
+  const fade = clamp01((climb - 2.4) / 1.6)
   return {
     enter,
     lift,
+    details,
     climb,
     scale: 1 - 0.6 * lift,
+    blur: enter * 10,
     opacity: (1 - enter) * (1 - fade),
   }
 }
@@ -54,7 +61,9 @@ type PinnedProcessProps = {
  * step grid; that grid is also what assistive tech reads.
  */
 export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
-  const [ref, progress] = useScrollProgress<HTMLDivElement>(HEADER)
+  const [ref, raw] = useScrollProgress<HTMLDivElement>(HEADER)
+  const motion = useMotion()
+  const progress = useEased(raw, motion)
   const active = Math.min(steps.length - 1, Math.floor(progress * steps.length))
   const isLast = active === steps.length - 1
 
@@ -141,7 +150,7 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
                   {steps.map((s, i) => {
                     const x = progress * steps.length - i
                     // The last step (the CTA) never leaves.
-                    const st = stepStyle(i === steps.length - 1 ? Math.min(x, 0.75) : x)
+                    const st = stepStyle(i === steps.length - 1 ? Math.min(x, 0.55) : x)
                     return (
                       <div
                         key={s.title}
@@ -149,12 +158,16 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
                         className="col-start-1 row-start-1 max-w-2xl origin-bottom-left will-change-transform"
                         style={{
                           opacity: st.opacity,
-                          transform: `translateY(calc(${st.lift} * var(--lift) * -1 - ${st.climb} * var(--row) + ${st.enter} * 1.5rem)) scale(${st.scale})`,
+                          filter: st.blur > 0.05 ? `blur(${st.blur}px)` : undefined,
+                          transform: `translateY(calc(${st.lift} * var(--lift) * -1 - ${st.climb} * var(--row) + ${st.enter} * 2.5rem)) scale(${st.scale})`,
                         }}
                       >
                         <p
                           className="flex items-center gap-3 font-mono text-xs text-muted-foreground"
-                          style={{ opacity: 1 - st.lift }}
+                          style={{
+                            opacity: st.details,
+                            transform: `translateY(${(1 - st.details) * -0.5}rem)`,
+                          }}
                         >
                           <span className="text-signal">{pad(i + 1)}</span>
                           <span className="h-px w-8 bg-border" />
@@ -162,22 +175,25 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
                           <span>· {s.time}</span>
                         </p>
                         <p
-                          className={cn(
-                            "mt-4 text-4xl font-medium tracking-tighter transition-colors duration-500 md:text-7xl md:whitespace-nowrap",
-                            st.lift > 0.5 && "text-muted-foreground",
-                          )}
+                          className="mt-4 text-4xl font-medium tracking-tighter md:text-7xl md:whitespace-nowrap"
+                          style={{
+                            color: `color-mix(in oklab, var(--muted-foreground) ${Math.round(st.lift * 100)}%, var(--foreground))`,
+                          }}
                         >
                           <span
-                            className="mr-[0.4em] font-mono"
-                            style={{ display: st.lift > 0.5 ? "inline" : "none" }}
+                            className="inline-block overflow-hidden align-bottom font-mono whitespace-nowrap"
+                            style={{ maxWidth: `${st.lift * 1.6}em`, opacity: st.lift }}
                           >
-                            {pad(i + 1)}
+                            {pad(i + 1)}&nbsp;
                           </span>
                           {s.title}
                         </p>
                         <p
                           className="mt-4 max-w-lg text-lg text-pretty text-muted-foreground"
-                          style={{ opacity: 1 - st.lift }}
+                          style={{
+                            opacity: st.details,
+                            transform: `translateY(${(1 - st.details) * -0.75}rem)`,
+                          }}
                         >
                           {s.description}
                         </p>
