@@ -4,7 +4,6 @@ import { CheckIcon } from "lucide-react"
 import { Cta } from "@/components/sections/cta"
 import { SectionHeading } from "@/components/sections/section-heading"
 import { Separator } from "@/components/ui/separator"
-import { GenerativeWork } from "@/components/works/generative-work"
 import { site } from "@/config/site"
 
 export const metadata: Metadata = {
@@ -44,9 +43,9 @@ const principles = [
 ]
 
 const team = [
-  { name: "Team Member", role: "Creative director" },
-  { name: "Team Member", role: "Creative technologist" },
-  { name: "Team Member", role: "Production & installation" },
+  { name: "Team Member", role: "CEO", image: "/studio/ceo.webp" },
+  { name: "Team Member", role: "CTO", image: "/studio/cto.webp" },
+  { name: "Team Member", role: "COO", image: "/studio/coo.webp" },
 ]
 
 const clients = [
@@ -73,7 +72,12 @@ export default function StudioPage() {
             {site.description}
           </p>
         </div>
-        <GenerativeWork work="lattice" seed={17} className="aspect-square rounded-xl" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/studio/studio.webp"
+          alt="A creative technologist at work in the studio, generative visuals on the monitors"
+          className="aspect-square w-full rounded-xl object-cover"
+        />
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
@@ -124,11 +128,12 @@ export default function StudioPage() {
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {team.map((m, i) => (
             <li key={i}>
-              <GenerativeWork
-                work="contour"
-                seed={100 + i}
-                animate={false}
-                className="aspect-[4/5] rounded-lg"
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={m.image}
+                alt={`${m.role} of ${site.name}`}
+                loading="lazy"
+                className="aspect-[4/5] w-full rounded-lg object-cover"
               />
               <p className="mt-3 font-medium">{m.name}</p>
               <p className="text-sm text-muted-foreground">{m.role}</p>
