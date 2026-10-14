@@ -19,7 +19,7 @@ const promises = [
   {
     value: "24/7",
     title: "Runs on its own",
-    body: "Permanent lobby walls play for years without new content or an operator",
+    body: "Lobby walls play for years and never repeat: live data shapes every frame, with no re-renders",
   },
   {
     value: "Next event",
