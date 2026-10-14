@@ -19,7 +19,7 @@ export function Hero() {
           Generative installations for brands
         </p>
         <ReactiveHeadline
-          text="Installations people stop for"
+          text="Installations that take people's breath away"
           className="max-w-5xl text-5xl leading-[0.95] tracking-tighter md:text-8xl"
         />
         <div className="mt-8 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
