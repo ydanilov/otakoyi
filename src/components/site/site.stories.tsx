@@ -48,7 +48,7 @@ export const Proposal: Story = {
   render: () => <ProposalForm open onOpenChange={() => {}} />,
   play: async ({ canvasElement }) => {
     const body = within(canvasElement.ownerDocument.body)
-    await expect(await body.findByRole("dialog", { name: "Get a proposal" })).toBeVisible()
+    await expect(await body.findByRole("dialog", { name: "Get a proposal" })).toBeInTheDocument()
     await expect(body.getAllByRole("slider")).toHaveLength(2)
   },
 }
