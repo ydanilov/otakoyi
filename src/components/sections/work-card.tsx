@@ -35,11 +35,11 @@ export function WorkCard({ item, className }: { item: Case; className?: string }
         )}
       </div>
       <div className="mt-4 flex items-start justify-between gap-4">
-        <div>
+        <div className="min-w-0">
           <h3 className="text-lg font-medium tracking-tight">{item.title}</h3>
           <p className="text-sm text-muted-foreground">{item.location}</p>
         </div>
-        <div className="flex flex-wrap justify-end gap-1">
+        <div className="flex shrink-0 flex-nowrap justify-end gap-1">
           {item.formats.map((t) => (
             <Badge key={t} variant="secondary">
               {t}

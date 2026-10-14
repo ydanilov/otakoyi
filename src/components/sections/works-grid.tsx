@@ -69,7 +69,7 @@ export function WorksGrid({ items, formats }: WorksGridProps) {
                 <span className="text-muted-foreground">
                   {item.location} · {item.year}
                 </span>
-                <span className="flex flex-wrap gap-1">
+                <span className="flex flex-nowrap gap-1">
                   {item.formats.map((f) => (
                     <Badge key={f} variant="secondary">
                       {f}
