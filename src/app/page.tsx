@@ -6,7 +6,7 @@ import { InNumbers } from "@/components/sections/in-numbers"
 import { PinnedProcess } from "@/components/sections/pinned-process"
 import { SectionHeading } from "@/components/sections/section-heading"
 import { SpecMarquee } from "@/components/sections/spec-marquee"
-import { Technologies } from "@/components/sections/technologies"
+import { TechnologyBento, TechnologySelector } from "@/components/sections/technologies"
 import { VenueTour } from "@/components/sections/venue-tour"
 import { WorksReel } from "@/components/sections/works-reel"
 import { getCases } from "@/content/cases"
@@ -60,7 +60,10 @@ export default function HomePage() {
           description="Projection, LED, light and screens, all playing the same live work, in sync"
           className="mb-12"
         />
-        <Technologies items={technologies.filter((t) => t.kind === "output")} />
+        <TechnologySelector
+          label="Surfaces"
+          items={technologies.filter((t) => t.kind === "output")}
+        />
       </Section>
 
       <Section id="inputs">
@@ -70,7 +73,7 @@ export default function HomePage() {
           description="Music, movement, sensors, phones and your own data shape every frame as it happens"
           className="mb-12"
         />
-        <Technologies items={technologies.filter((t) => t.kind === "input")} flip />
+        <TechnologyBento items={technologies.filter((t) => t.kind === "input")} />
       </Section>
 
       <Section id="benefits">

@@ -8,64 +8,70 @@ import { GenerativeWork } from "@/components/works/generative-work"
 import type { Solution } from "@/content/solutions"
 import { cn } from "@/lib/utils"
 
+const num = (i: number) => String(i + 1).padStart(2, "0")
+
 /**
- * "For your …" — the four buyer situations as a row of panels. The hovered (or focused) panel
- * widens and its work comes alive; each panel leads to that situation's landing page.
- * On small screens the panels stack.
+ * "What are you planning?": big typographic rows, one per occasion. The hovered or focused row
+ * shows its live work and promise beside the list; small screens show the promise under each row.
  */
 export function Occasions({ items }: { items: Solution[] }) {
   const [active, setActive] = useState(0)
-
+  const current = items[active]!
   return (
-    <ul className="flex flex-col gap-3 lg:h-[34rem] lg:flex-row">
-      {items.map((s, i) => {
-        const open = i === active
-        return (
-          <li
-            key={s.slug}
-            onPointerEnter={() => setActive(i)}
-            onFocus={() => setActive(i)}
-            className={cn(
-              "relative min-h-72 overflow-hidden rounded-xl border transition-[flex-grow] duration-700 ease-out lg:min-h-0",
-              open ? "lg:flex-[2.6]" : "lg:flex-1",
-            )}
-          >
+    <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.75fr)] lg:gap-16">
+      <ol className="border-t">
+        {items.map((s, i) => (
+          <li key={s.slug} className="border-b">
             <Link
               href={`/solutions/${s.slug}`}
-              className="group absolute inset-0 flex flex-col justify-end p-6 outline-none focus-visible:ring-2 focus-visible:ring-ring md:p-8"
+              onPointerEnter={() => setActive(i)}
+              onFocus={() => setActive(i)}
+              className="group grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-baseline gap-x-3 py-5 outline-none focus-visible:ring-2 focus-visible:ring-ring md:py-7"
             >
-              <GenerativeWork
-                work={s.hero.work}
-                seed={s.hero.seed}
-                animate={open}
+              <span
                 className={cn(
-                  "absolute inset-0 -z-10 transition-[opacity,transform] duration-700",
-                  open ? "scale-100 opacity-100" : "scale-105 opacity-40",
-                )}
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/60 to-background/10"
-              />
-              <p className="font-mono text-xs tracking-widest text-signal uppercase">
-                0{i + 1} · For your
-              </p>
-              <h3 className="mt-2 flex items-center gap-2 text-2xl font-medium tracking-tight md:text-3xl">
-                {s.label}
-                <ArrowUpRightIcon className="size-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-              </h3>
-              <p
-                className={cn(
-                  "mt-3 max-w-md text-pretty text-muted-foreground transition-opacity duration-500",
-                  open ? "opacity-100" : "lg:opacity-0",
+                  "font-mono text-xs tracking-widest",
+                  i === active ? "text-signal" : "text-muted-foreground",
                 )}
               >
-                {s.promise}
-              </p>
+                {num(i)}
+              </span>
+              <span>
+                <span
+                  className={cn(
+                    "block text-3xl font-medium tracking-tight transition-colors md:text-5xl",
+                    i === active ? "text-foreground" : "text-muted-foreground",
+                  )}
+                >
+                  {s.label}
+                </span>
+                <span className="mt-2 block max-w-xl text-pretty text-muted-foreground lg:hidden">
+                  {s.promise}
+                </span>
+              </span>
+              <ArrowUpRightIcon
+                className={cn(
+                  "size-6 transition-[transform,opacity] group-hover:translate-x-1 group-hover:-translate-y-1",
+                  i === active ? "opacity-100" : "opacity-30",
+                )}
+              />
             </Link>
           </li>
-        )
-      })}
-    </ul>
+        ))}
+      </ol>
+      <div aria-hidden className="relative hidden lg:block">
+        <div className="sticky top-24 overflow-hidden rounded-xl border">
+          <GenerativeWork
+            key={current.slug}
+            work={current.hero.work}
+            seed={current.hero.seed}
+            className="aspect-[4/5]"
+          />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/80 to-transparent p-6">
+            <p className="text-pretty text-muted-foreground">{current.promise}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
