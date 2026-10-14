@@ -81,9 +81,16 @@ export function VenueTour({ stops }: VenueTourProps) {
             aria-hidden
             className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-transparent"
           />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background/80 to-transparent"
+          />
 
           <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col justify-between px-4 py-10 md:px-8">
-            <nav aria-label="Tour stops" className="self-end">
+            <nav
+              aria-label="Tour stops"
+              className="self-end rounded-full border border-foreground/10 bg-background/75 px-2 shadow-lg backdrop-blur-md"
+            >
               <ol className="flex gap-1">
                 {stops.map((s, i) => (
                   <li key={s.slug}>

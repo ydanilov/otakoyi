@@ -103,15 +103,32 @@ export default function StudioPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
-        <SectionHeading eyebrow="Principles" title="How we work" className="mb-8" />
-        <dl className="grid gap-8 md:grid-cols-2">
-          {principles.map((p) => (
-            <div key={p.title}>
-              <dt className="text-xl font-medium">{p.title}</dt>
-              <dd className="mt-2 text-muted-foreground">{p.body}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] md:gap-16">
+          <SectionHeading
+            eyebrow="Principles"
+            title="How we work"
+            description="Four commitments we hold on every project, from the first call to the last night of the event"
+            className="md:sticky md:top-24 md:self-start"
+          />
+          <ol className="border-b">
+            {principles.map((p, i) => (
+              <li
+                key={p.title}
+                className="grid grid-cols-[3rem_minmax(0,1fr)] gap-x-4 border-t py-8 md:grid-cols-[4rem_minmax(0,1fr)] md:py-10"
+              >
+                <span className="pt-2 font-mono text-xs tracking-widest text-signal">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3 className="text-2xl font-medium tracking-tight md:text-4xl">{p.title}</h3>
+                  <p className="mt-3 max-w-xl text-lg text-pretty text-muted-foreground">
+                    {p.body}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">

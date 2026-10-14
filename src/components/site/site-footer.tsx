@@ -1,6 +1,6 @@
-import { Separator } from "@/components/ui/separator"
 import { site } from "@/config/site"
 import { Logo } from "./logo"
+import { socialIcons } from "./social-icons"
 
 export function SiteFooter() {
   return (
@@ -16,20 +16,23 @@ export function SiteFooter() {
             {site.email}
           </a>
         </div>
-        <ul className="space-y-2 text-sm md:justify-self-end">
-          {site.social.map((s) => (
-            <li key={s.href}>
-              <a href={s.href} className="text-muted-foreground hover:text-foreground">
-                {s.label} ↗
-              </a>
-            </li>
-          ))}
+        <ul className="flex gap-2 md:justify-self-end">
+          {site.social.map((s) => {
+            const Icon = socialIcons[s.label]
+            return (
+              <li key={s.href}>
+                <a
+                  href={s.href}
+                  aria-label={s.label}
+                  className="flex size-11 items-center justify-center rounded-full border text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
+                >
+                  {Icon ? <Icon className="size-5" aria-hidden /> : s.label}
+                </a>
+              </li>
+            )
+          })}
         </ul>
       </div>
-      <Separator />
-      <p className="mx-auto max-w-7xl px-4 py-6 text-xs text-muted-foreground md:px-8">
-        © {new Date().getFullYear()} {site.name}. Every image on this site is generated.
-      </p>
     </footer>
   )
 }

@@ -3,7 +3,6 @@
 import Link from "next/link"
 
 import { WorkCard } from "@/components/sections/work-card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import type { Case } from "@/content/cases"
 import { CaseVisual } from "@/components/sections/case-visual"
@@ -102,7 +101,7 @@ export function WorksReel({ items }: WorksReelProps) {
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-background/40" />
                 {/* Centre scrim: keeps title, location and result readable over busy works. */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_50%_50%,var(--background)_0%,transparent_100%)] opacity-80" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,var(--background)_0%,transparent_100%)] opacity-90" />
               </div>
             )
           })}
@@ -133,27 +132,31 @@ export function WorksReel({ items }: WorksReelProps) {
                     )}
                   >
                     <div aria-hidden className="flex flex-col items-center">
-                      <div className="mb-5 flex flex-wrap justify-center gap-1">
-                        {item.formats.map((f) => (
-                          <Badge key={f} variant="secondary">
-                            {f}
-                          </Badge>
-                        ))}
-                      </div>
-                      <p className="text-5xl font-medium tracking-tighter md:text-8xl">
+                      <p className="font-mono text-xs tracking-[0.3em] text-signal uppercase">
+                        {item.formats.join(" · ")}
+                      </p>
+                      <p className="mt-5 text-6xl leading-[0.85] font-medium tracking-tighter text-balance md:text-9xl">
                         {item.title}
                       </p>
-                      <p className="mt-3 text-muted-foreground">{item.location}</p>
+                      <p className="mt-5 max-w-md text-lg text-pretty text-muted-foreground">
+                        {item.location}
+                      </p>
                       {result && (
-                        <p className="mt-8">
-                          <span className="text-4xl font-medium tracking-tight text-signal md:text-6xl">
+                        <div className="mt-10 flex flex-col items-center border-t border-foreground/15 pt-6">
+                          <span className="text-4xl font-medium tracking-tight tabular-nums md:text-5xl">
                             {result.value}
-                          </span>{" "}
-                          <span className="text-muted-foreground">{result.label}</span>
-                        </p>
+                          </span>
+                          <span className="mt-1 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                            {result.label}
+                          </span>
+                        </div>
                       )}
                     </div>
-                    <Button asChild variant="outline" className="mt-8 rounded-full">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="mt-10 rounded-full bg-background/40 backdrop-blur"
+                    >
                       <Link href={`/works/${item.slug}`}>
                         Open the case<span className="sr-only">: {item.title}</span>
                       </Link>
@@ -162,32 +165,9 @@ export function WorksReel({ items }: WorksReelProps) {
                 )
               })}
             </div>
-
-            <div
-              aria-hidden
-              className="mx-auto flex w-full max-w-7xl items-end justify-between gap-6 px-4 pb-8 md:px-8"
-            >
-              <CornerLabel side="prev" item={items[active - 1]} />
-              <CornerLabel side="next" item={items[active + 1]} />
-            </div>
           </div>
         </div>
       </div>
     </section>
-  )
-}
-
-function CornerLabel({ side, item }: { side: "prev" | "next"; item?: Case }) {
-  return (
-    <div className={cn("min-w-0", side === "next" && "text-right")}>
-      {item && (
-        <>
-          <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-            {side === "prev" ? "Prev" : "Next"}
-          </p>
-          <p className="truncate text-sm font-medium md:text-base">{item.title}</p>
-        </>
-      )}
-    </div>
   )
 }
