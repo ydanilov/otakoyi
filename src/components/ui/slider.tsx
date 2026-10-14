@@ -12,10 +12,13 @@ function Slider({
   min = 0,
   max = 100,
   thumbLabels,
+  thumbValueTexts,
   ...props
 }: React.ComponentProps<typeof SliderPrimitive.Root> & {
   /** Accessible name for each thumb (a range slider needs one per thumb). */
   thumbLabels?: string[]
+  /** Spoken value for each thumb, when the raw number isn't meaningful (e.g. a stepped scale). */
+  thumbValueTexts?: string[]
 }) {
   const _values = React.useMemo(
     () => (Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : [min, max]),
@@ -49,6 +52,7 @@ function Slider({
           data-slot="slider-thumb"
           key={index}
           aria-label={thumbLabels?.[index] ?? props["aria-label"]}
+          aria-valuetext={thumbValueTexts?.[index]}
           className="block size-4 shrink-0 rounded-full border border-primary bg-background shadow-sm ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
         />
       ))}
