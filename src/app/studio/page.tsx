@@ -65,7 +65,7 @@ export default function StudioPage() {
             Studio
           </p>
           <h1 className="text-5xl font-medium tracking-tighter text-balance md:text-7xl">
-            Designers and engineers who install what they design
+            Artists with toolboxes. Engineers with taste
           </h1>
           <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
             {site.description}
