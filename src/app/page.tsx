@@ -1,5 +1,11 @@
 import { Benefits } from "@/components/sections/benefits"
 import { Cta } from "@/components/sections/cta"
+import {
+  DeliveryCompare,
+  DeliveryPromises,
+  DeliveryStatement,
+  DeliveryTimeline,
+} from "@/components/sections/delivery-variants"
 import { Faq } from "@/components/sections/faq"
 import { Hero } from "@/components/sections/hero"
 import { InNumbers } from "@/components/sections/in-numbers"
@@ -82,6 +88,22 @@ export default function HomePage() {
           className="mb-12"
         />
         <InNumbers stats={stats} />
+        {/* Temporary: four options for this block, for the owner to pick. */}
+        {(
+          [
+            ["A", "Promises", <DeliveryPromises key="a" />],
+            ["B", "Timeline", <DeliveryTimeline key="b" />],
+            ["C", "Comparison", <DeliveryCompare key="c" />],
+            ["D", "Statement", <DeliveryStatement key="d" />],
+          ] as const
+        ).map(([id, name, node]) => (
+          <div key={id} className="mt-20 border-t pt-8">
+            <p className="mb-8 font-mono text-xs tracking-widest text-signal uppercase">
+              Variant {id} · {name}
+            </p>
+            {node}
+          </div>
+        ))}
       </Section>
 
       <PinnedProcess skipTo="#faq" />

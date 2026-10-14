@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect, within } from "storybook/test"
 
 import { Logo } from "./logo"
+import { socialIcons } from "./social-icons"
 import { SiteFooter } from "./site-footer"
 import { SiteHeader } from "./site-header"
 import { ProposalDialog } from "./proposal-dialog"
@@ -42,3 +43,13 @@ export const Proposal: Story = {
 
 // Listener only; renders nothing until a #proposal link is followed.
 export const ProposalListener: Story = { render: () => <ProposalDialog /> }
+
+export const SocialIcons: Story = {
+  render: () => (
+    <div className="flex gap-4 p-6">
+      {Object.entries(socialIcons).map(([name, Icon]) => (
+        <Icon key={name} className="size-6" aria-label={name} role="img" />
+      ))}
+    </div>
+  ),
+}
