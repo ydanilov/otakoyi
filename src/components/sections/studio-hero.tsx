@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils"
 type StudioHeroProps = {
   first: string
   second: string
-  description: string
   image: { src: string; alt: string }
 }
 
@@ -18,7 +17,7 @@ type StudioHeroProps = {
  * On scroll the phrases drift apart, the photo eases back and the "&" turns. Motion off
  * (ADR-006): the same composition, still.
  */
-export function StudioHero({ first, second, description, image }: StudioHeroProps) {
+export function StudioHero({ first, second, image }: StudioHeroProps) {
   const ref = useRef<HTMLElement>(null)
   const motion = useMotion()
   const [raw, setRaw] = useState(0)
@@ -108,10 +107,6 @@ export function StudioHero({ first, second, description, image }: StudioHeroProp
           style={{ transform: `translateX(${t * 90}px)` }}
         >
           {second}
-        </p>
-
-        <p className="relative z-20 mt-10 max-w-sm text-lg text-pretty text-muted-foreground md:absolute md:bottom-0 md:left-0 md:mt-0">
-          {description}
         </p>
       </div>
     </section>

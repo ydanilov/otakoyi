@@ -55,7 +55,6 @@ export default function StudioPage() {
       <StudioHero
         first="Artists with toolboxes"
         second="Engineers with taste"
-        description={site.description}
         image={{
           src: "/studio/studio.webp",
           alt: "A creative technologist at work in the studio, generative visuals on the monitors",

@@ -10,7 +10,6 @@ const meta = {
   args: {
     first: "Artists with toolboxes",
     second: "Engineers with taste",
-    description: "We design, build and install generative visual installations",
     image: { src: "/studio/studio.webp", alt: "A creative technologist at work in the studio" },
   },
 } satisfies Meta<typeof StudioHero>
