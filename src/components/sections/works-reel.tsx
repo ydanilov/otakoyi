@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRightIcon } from "lucide-react"
 
 import { WorkCard } from "@/components/sections/work-card"
 import { Badge } from "@/components/ui/badge"
@@ -46,9 +45,7 @@ export function WorksReel({ items }: WorksReelProps) {
           </h2>
         </div>
         <Button asChild variant="ghost">
-          <Link href="/works">
-            All installations <ArrowRightIcon />
-          </Link>
+          <Link href="/works">All installations</Link>
         </Button>
       </div>
 
@@ -159,7 +156,6 @@ export function WorksReel({ items }: WorksReelProps) {
                     <Button asChild variant="outline" className="mt-8 rounded-full">
                       <Link href={`/works/${item.slug}`}>
                         Open the case<span className="sr-only">: {item.title}</span>
-                        <ArrowRightIcon />
                       </Link>
                     </Button>
                   </div>

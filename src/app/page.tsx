@@ -6,7 +6,7 @@ import { InNumbers } from "@/components/sections/in-numbers"
 import { PinnedProcess } from "@/components/sections/pinned-process"
 import { SectionHeading } from "@/components/sections/section-heading"
 import { SpecMarquee } from "@/components/sections/spec-marquee"
-import { TechnologyBento, TechnologySelector } from "@/components/sections/technologies"
+import { TechnologyBento } from "@/components/sections/technologies"
 import { VenueTour } from "@/components/sections/venue-tour"
 import { WorksReel } from "@/components/sections/works-reel"
 import { getCases } from "@/content/cases"
@@ -52,19 +52,6 @@ export default function HomePage() {
       <SpecMarquee items={specs} />
 
       <VenueTour stops={tourStops} />
-
-      <Section id="surfaces">
-        <SectionHeading
-          eyebrow="What it shows on"
-          title="One installation. Every surface it meets"
-          description="Projection, LED, light and screens play the same living artwork, re-shaped to every size and proportion, in sync"
-          className="mb-12"
-        />
-        <TechnologySelector
-          label="Surfaces"
-          items={technologies.filter((t) => t.kind === "output")}
-        />
-      </Section>
 
       <Section id="inputs">
         <SectionHeading

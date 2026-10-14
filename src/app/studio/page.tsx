@@ -6,7 +6,6 @@ import { SectionHeading } from "@/components/sections/section-heading"
 import { Separator } from "@/components/ui/separator"
 import { GenerativeWork } from "@/components/works/generative-work"
 import { site } from "@/config/site"
-import { technologies } from "@/content/technologies"
 
 export const metadata: Metadata = {
   title: "Studio",
@@ -106,25 +105,6 @@ export default function StudioPage() {
             </li>
           ))}
         </ol>
-      </section>
-
-      <section id="any-venue" className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
-        <SectionHeading
-          eyebrow="Any venue"
-          title="Whatever the space, we use everything it has"
-          description="Whatever the venue and whatever the goal, our toolkit is wide enough to fit the installation to the room — and get the most out of every screen, surface and signal already there"
-          className="mb-8"
-        />
-        <ul className="flex flex-wrap gap-2">
-          {technologies.map((t) => (
-            <li
-              key={t.slug}
-              className="rounded-full border px-4 py-2 text-sm text-pretty text-muted-foreground"
-            >
-              {t.name}
-            </li>
-          ))}
-        </ul>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">

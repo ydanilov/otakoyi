@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRightIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -172,9 +171,7 @@ function StopCopy({ stop, large }: { stop: Solution; large?: boolean }) {
         ))}
       </div>
       <Button asChild variant="outline" className="rounded-full">
-        <Link href={`/solutions/${stop.slug}`}>
-          {stop.label} <ArrowRightIcon />
-        </Link>
+        <Link href={`/solutions/${stop.slug}`}>{stop.label}</Link>
       </Button>
     </div>
   )
