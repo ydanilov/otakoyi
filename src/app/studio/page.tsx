@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import { CheckIcon } from "lucide-react"
 
 import { Cta } from "@/components/sections/cta"
+import { LogoWall } from "@/components/sections/logo-wall"
 import { SectionHeading } from "@/components/sections/section-heading"
-import { Separator } from "@/components/ui/separator"
 import { site } from "@/config/site"
 
 export const metadata: Metadata = {
@@ -46,15 +46,6 @@ const team = [
   { name: "Team Member", role: "CEO", image: "/studio/ceo.webp" },
   { name: "Team Member", role: "CTO", image: "/studio/cto.webp" },
   { name: "Team Member", role: "COO", image: "/studio/coo.webp" },
-]
-
-const clients = [
-  "Placeholder Capital",
-  "Placeholder Expo",
-  "Placeholder Bank",
-  "Placeholder Telecom",
-  "Placeholder Summit",
-  "Placeholder Museum",
 ]
 
 export default function StudioPage() {
@@ -143,15 +134,8 @@ export default function StudioPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
-        <SectionHeading eyebrow="Clients" title="Brands we've built for" className="mb-8" />
-        <Separator />
-        <ul className="grid grid-cols-2 md:grid-cols-3">
-          {clients.map((c) => (
-            <li key={c} className="border-b py-5 text-lg text-muted-foreground">
-              {c}
-            </li>
-          ))}
-        </ul>
+        <SectionHeading eyebrow="Clients" title="Brands we've built for" className="mb-12" />
+        <LogoWall />
       </section>
 
       <Cta />

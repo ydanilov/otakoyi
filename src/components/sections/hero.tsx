@@ -1,11 +1,9 @@
 "use client"
 
-import Link from "next/link"
 import { ArrowDownIcon } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
 import { ReactiveHeadline } from "@/components/sections/reactive-headline"
-import { proposalHref, site } from "@/config/site"
+import { site } from "@/config/site"
 
 export function Hero() {
   return (
@@ -22,18 +20,10 @@ export function Hero() {
           text="Installations that take people's breath away"
           className="max-w-5xl text-5xl leading-[0.95] tracking-tighter md:text-8xl"
         />
-        <div className="mt-8 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+        <div className="mt-8">
           <p className="max-w-xl text-lg text-pretty text-muted-foreground md:text-xl">
             {site.description}
           </p>
-          <div className="flex flex-wrap gap-3">
-            <Button asChild size="lg" variant="signal">
-              <a href={proposalHref}>{site.cta.label}</a>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/works">See installations</Link>
-            </Button>
-          </div>
         </div>
         <a
           href="#venues"

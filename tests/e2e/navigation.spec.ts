@@ -8,8 +8,7 @@ test("home → works → case → next case", async ({ page, isMobile }) => {
     "Installations that take people's breath away",
   )
 
-  await page.getByRole("link", { name: "See installations" }).click()
-  await expect(page).toHaveURL(/\/works$/)
+  await page.goto("/works")
 
   const first = getCases()[0]!
   await page
