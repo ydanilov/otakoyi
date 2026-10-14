@@ -46,10 +46,35 @@ float fbm(vec2 p) {
   return v;
 }
 
+// Optional shared field: a work on one of several surfaces samples one continuous field
+// (uDomO + vUv.x * uDomU + vUv.y * uDomV), so content flows across walls and floor.
+uniform float uDomOn;
+uniform vec2 uDomO;
+uniform vec2 uDomU;
+uniform vec2 uDomV;
+// Pointer in field coordinates (same space as aspectUv) and how strongly it acts (0 = off).
+uniform vec2 uPointer;
+uniform float uPointerAmt;
+
 vec2 aspectUv() {
+  if (uDomOn > 0.5) return uDomO + vUv.x * uDomU + vUv.y * uDomV;
   vec2 uv = vUv;
   uv.x *= uResolution.x / max(uResolution.y, 1.0);
   return uv;
+}
+
+// The pointer bends the field around it, like a hand in front of a projection.
+vec2 pointerWarp(vec2 uv) {
+  vec2 d = uv - uPointer;
+  float r2 = dot(d, d);
+  float k = uPointerAmt * exp(-r2 * 9.0);
+  float a = k * 1.6;
+  d = mat2(cos(a), -sin(a), sin(a), cos(a)) * d;
+  return uPointer + d * (1.0 + k * 0.35);
+}
+float pointerGlow(vec2 uv) {
+  vec2 d = uv - uPointer;
+  return uPointerAmt * exp(-dot(d, d) * 22.0);
 }
 `
 
@@ -57,7 +82,8 @@ vec2 aspectUv() {
 export const signalField = /* glsl */ `
 ${common}
 void main() {
-  vec2 uv = aspectUv() * (1.5 + uDensity * 3.0);
+  vec2 base = pointerWarp(aspectUv());
+  vec2 uv = base * (1.5 + uDensity * 3.0);
   float t = uTime * 0.06;
   vec2 q = vec2(fbm(uv + t), fbm(uv + vec2(5.2, 1.3) - t));
   vec2 r = vec2(fbm(uv + 4.0 * q + vec2(1.7, 9.2) + t), fbm(uv + 4.0 * q + vec2(8.3, 2.8)));
@@ -66,6 +92,7 @@ void main() {
   col = mix(col, uC3, clamp(length(q) * 0.6, 0.0, 1.0) * 0.55);
   col = mix(col, uC1, smoothstep(0.62, 0.9, f));
   col *= 0.35 + 0.65 * f;
+  col += uC1 * pointerGlow(base) * 0.35;
   gl_FragColor = vec4(col, 1.0);
 }
 `
@@ -74,8 +101,9 @@ void main() {
 export const contour = /* glsl */ `
 ${common}
 void main() {
-  vec2 uv = aspectUv() * (1.0 + uDensity * 2.0);
-  float h = fbm(uv * 1.6 + vec2(uTime * 0.03, -uTime * 0.02));
+  vec2 base = pointerWarp(aspectUv());
+  vec2 uv = base * (1.0 + uDensity * 2.0);
+  float h = fbm(uv * 1.6 + vec2(uTime * 0.03, -uTime * 0.02)) + pointerGlow(base) * 0.25;
   float bands = 10.0 + uDensity * 30.0;
   float l = abs(fract(h * bands) - 0.5) / fwidth(h * bands);
   float line = 1.0 - clamp(l, 0.0, 1.0);
@@ -90,7 +118,7 @@ void main() {
 export const lattice = /* glsl */ `
 ${common}
 void main() {
-  vec2 uv = aspectUv();
+  vec2 uv = pointerWarp(aspectUv());
   float cells = 8.0 + floor(uDensity * 40.0);
   vec2 g = uv * cells;
   vec2 id = floor(g);
