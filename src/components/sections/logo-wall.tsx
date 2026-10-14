@@ -76,16 +76,11 @@ const marks: { name: string; mark: ReactNode }[] = [
 /** A wall of single-colour client logos: grey at rest, full colour on hover. */
 export function LogoWall({ className }: { className?: string }) {
   return (
-    <ul
-      className={cn(
-        "grid grid-cols-2 gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-3",
-        className,
-      )}
-    >
+    <ul className={cn("grid grid-cols-2 gap-2 sm:grid-cols-3", className)}>
       {marks.map((m) => (
         <li
           key={m.name}
-          className="group flex h-32 items-center justify-center gap-3 bg-background text-muted-foreground/60 transition-colors duration-300 hover:bg-card hover:text-foreground md:h-40"
+          className="group flex h-32 items-center justify-center gap-3 rounded-xl bg-background text-muted-foreground/60 transition-colors duration-300 hover:bg-card hover:text-foreground md:h-40"
         >
           {m.mark}
           <span className="text-2xl font-semibold tracking-tight md:text-3xl">{m.name}</span>
