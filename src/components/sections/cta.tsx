@@ -12,7 +12,7 @@ export function Cta() {
             Planning an event, a stand or a lobby?
           </h2>
           <p className="text-lg text-muted-foreground">
-            Tell us the venue and the date. Within a week you get a concept running in your brand.
+            Tell us the venue and the date. Within a week you get a concept running in your brand
           </p>
         </div>
         <div className="flex flex-col items-start gap-3">

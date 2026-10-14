@@ -4,7 +4,7 @@ import { MoonIcon, SunIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
-/** Dark-first theme switch. Persists to localStorage; see `themeScript` for no-flash init. */
+/** Dark-first theme switch. Persists to localStorage; see `themeScript` in `@/lib/init-scripts` for no-flash init. */
 export function ThemeToggle() {
   const toggle = () => {
     const root = document.documentElement
@@ -20,6 +20,3 @@ export function ThemeToggle() {
     </Button>
   )
 }
-
-/** Inline script run before paint: default dark, honour a stored "light". */
-export const themeScript = `try{if(localStorage.getItem("theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}`

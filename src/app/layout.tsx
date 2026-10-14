@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
-import { themeScript } from "@/components/site/theme-toggle"
 import { site } from "@/config/site"
-import { fontMono, fontSans } from "@/fonts"
+import { motionScript, themeScript } from "@/lib/init-scripts"
+import { fontLogo, fontMono, fontSans } from "@/fonts"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -16,11 +16,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`dark ${fontSans.variable} ${fontMono.variable}`}
+      className={`dark ${fontSans.variable} ${fontMono.variable} ${fontLogo.variable}`}
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeScript + motionScript }} />
       </head>
       <body className="flex min-h-svh flex-col">
         <a

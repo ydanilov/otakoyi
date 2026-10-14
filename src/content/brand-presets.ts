@@ -11,3 +11,14 @@ export const brandPresets: { name: string; colors: BrandColors }[] = [
   { name: "Energy", colors: ["#ffd60a", "#0a7d4f", "#00b4d8", "#f8f9fa"] },
   { name: "Luxury", colors: ["#e9d8a6", "#1b1b1f", "#9b2226", "#f1ede4"] },
 ]
+
+/**
+ * Screen palettes of the four venue renders (highlight, base, secondary, ink). They match the
+ * light of each Blender scene so the live screen sits in the photo — content, not tokens.
+ */
+export const venuePalettes: BrandColors[] = [
+  ["#c8fff6", "#0f8f86", "#2fd1c2", "#020b0a"], // exhibition stand — teal
+  ["#ffe2b8", "#b8560f", "#f08a2a", "#0a0502"], // office lobby — amber
+  ["#ffd0f2", "#9c1f7a", "#e04bb5", "#0a0208"], // concert — magenta
+  ["#e2dcff", "#3b2fb8", "#7a5cff", "#04030c"], // museum room — blue-violet
+]

@@ -23,8 +23,13 @@ export default defineConfig({
   },
   use: {
     baseURL: `http://localhost:${PORT}`,
-    // Freezes every generative work (GenerativeWork honours reduced motion) → deterministic frames.
-    reducedMotion: "reduce",
+    // Site motion off (ADR-006) freezes every generative work and scroll scene → deterministic frames.
+    storageState: {
+      cookies: [],
+      origins: [
+        { origin: `http://localhost:${PORT}`, localStorage: [{ name: "motion", value: "off" }] },
+      ],
+    },
     trace: "on-first-retry",
     launchOptions: {
       executablePath,

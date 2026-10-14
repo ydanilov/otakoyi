@@ -1,11 +1,13 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { useEffect, useRef, useState, useSyncExternalStore } from "react"
+import { useState } from "react"
 
+import { useMotion } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 import type { GenerativeMode } from "@/lib/tokens.generated"
 import { works, type WorkId } from "./registry"
+import { useVisibility, useWebGL } from "./runtime"
 import type { BrandColors } from "./shader-canvas"
 
 const ShaderCanvas = dynamic(() => import("./shader-canvas"), { ssr: false })
@@ -25,64 +27,9 @@ export type GenerativeWorkProps = {
   brandColors?: BrandColors
   /** 0..1 — how busy the composition is. */
   density?: number
-  /** Animate over time. Forced off for prefers-reduced-motion and when offscreen. */
+  /** Animate over time. Forced off when site motion is off (ADR-006) and when offscreen. */
   animate?: boolean
   className?: string
-}
-
-const REDUCED = "(prefers-reduced-motion: reduce)"
-
-function useReducedMotion() {
-  return useSyncExternalStore(
-    (cb) => {
-      const mq = window.matchMedia(REDUCED)
-      mq.addEventListener("change", cb)
-      return () => mq.removeEventListener("change", cb)
-    },
-    () => window.matchMedia(REDUCED).matches,
-    () => false,
-  )
-}
-
-let webglSupport: boolean | undefined
-function detectWebGL() {
-  if (webglSupport === undefined) {
-    try {
-      const c = document.createElement("canvas")
-      webglSupport = !!(c.getContext("webgl2") || c.getContext("webgl"))
-    } catch {
-      webglSupport = false
-    }
-  }
-  return webglSupport
-}
-
-function useWebGL(): boolean | null {
-  return useSyncExternalStore(
-    () => () => {},
-    detectWebGL,
-    () => null,
-  )
-}
-
-/** `inView` follows visibility; `seen` latches true the first time the element is visible. */
-function useVisibility<T extends Element>() {
-  const ref = useRef<T>(null)
-  const [state, setState] = useState({ inView: false, seen: false })
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      ([e]) => {
-        const inView = e?.isIntersecting ?? false
-        setState((s) => ({ inView, seen: s.seen || inView }))
-      },
-      { rootMargin: "200px" },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
-  return [ref, state] as const
 }
 
 export function GenerativeWork({
@@ -95,7 +42,7 @@ export function GenerativeWork({
   className,
 }: GenerativeWorkProps) {
   const def = works[work]
-  const reduced = useReducedMotion()
+  const motion = useMotion()
   const [ref, { inView, seen }] = useVisibility<HTMLDivElement>()
   const webgl = useWebGL()
   const [ready, setReady] = useState(false)
@@ -125,7 +72,7 @@ export function GenerativeWork({
             density={density ?? def.defaults.density}
             palette={palette}
             brandColors={brandColors}
-            animate={animate && !reduced && inView}
+            animate={animate && motion && inView}
             frozenTime={12}
             onReady={() => setReady(true)}
           />

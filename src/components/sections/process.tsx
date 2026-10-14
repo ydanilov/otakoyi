@@ -2,27 +2,27 @@ export const processSteps = [
   {
     title: "Brief",
     time: "30-min call",
-    description: "Venue, audience, goals, brand assets, data you'd like to show.",
+    description: "Venue, audience, goals, brand assets, data you'd like to show",
   },
   {
     title: "Concept in your brand",
     time: "≈ 1 week",
-    description: "A live prototype running on your colours and content — not a moodboard.",
+    description: "A live prototype running on your colours and content — not a moodboard",
   },
   {
     title: "Production",
     time: "2–6 weeks",
-    description: "Engine, interaction, hardware plan and on-site tests.",
+    description: "Engine, interaction, hardware plan and on-site tests",
   },
   {
     title: "Install & run",
     time: "Event day",
-    description: "We install, calibrate and operate on site.",
+    description: "We install, calibrate and operate on site",
   },
   {
     title: "Reuse",
     time: "Next event",
-    description: "Same engine, new seed and campaign mode. No re-production.",
+    description: "Same engine, new seed and campaign mode. No re-production",
   },
 ] as const
 

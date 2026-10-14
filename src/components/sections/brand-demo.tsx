@@ -10,19 +10,19 @@ import { brandPresets } from "@/content/brand-presets"
 export const customisationPoints = [
   {
     title: "Your colours & type",
-    description: "Brand palette and typeface drive every frame — nothing off-brand.",
+    description: "Brand palette and typeface drive every frame — nothing off-brand",
   },
   {
     title: "Your shapes",
-    description: "Logo, key visual or product silhouette become generative forms.",
+    description: "Logo, key visual or product silhouette become generative forms",
   },
   {
     title: "Your data",
-    description: "Live feeds from your product, CRM, markets or social set the motion.",
+    description: "Live feeds from your product, CRM, markets or social set the motion",
   },
   {
     title: "Your audience",
-    description: "Motion tracking, touch, sound or phones let visitors play with it.",
+    description: "Motion tracking, touch, sound or phones let visitors play with it",
   },
 ] as const
 
@@ -83,7 +83,7 @@ export function BrandDemo() {
           </ToggleGroup>
         </div>
         <p className="text-sm text-muted-foreground">
-          Same system, different brand. Pick a palette — this is how your installation is tailored.
+          Same system, different brand. Pick a palette — this is how your installation is tailored
         </p>
       </div>
     </div>

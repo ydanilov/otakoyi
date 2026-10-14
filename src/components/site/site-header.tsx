@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { proposalHref, site } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Logo } from "./logo"
+import { MotionToggle } from "./motion-toggle"
 import { ThemeToggle } from "./theme-toggle"
 
 export function SiteHeader() {
@@ -36,9 +37,11 @@ export function SiteHeader() {
           <Button asChild size="sm" variant="signal" className="ml-2">
             <a href={proposalHref}>{site.cta.label}</a>
           </Button>
+          <MotionToggle />
           <ThemeToggle />
         </nav>
         <div className="flex items-center md:hidden">
+          <MotionToggle />
           <ThemeToggle />
           <Sheet>
             <SheetTrigger asChild>

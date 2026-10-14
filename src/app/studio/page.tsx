@@ -6,10 +6,11 @@ import { SectionHeading } from "@/components/sections/section-heading"
 import { Separator } from "@/components/ui/separator"
 import { GenerativeWork } from "@/components/works/generative-work"
 import { site } from "@/config/site"
+import { technologies } from "@/content/technologies"
 
 export const metadata: Metadata = {
   title: "Studio",
-  description: `About ${site.name} — the team behind turnkey generative installations for brands.`,
+  description: `About ${site.name} — the team behind turnkey generative installations for brands`,
 }
 
 const included = [
@@ -24,19 +25,19 @@ const included = [
 const principles = [
   {
     title: "Brand first",
-    body: "We start from your identity and goals, not from a piece we want to show off.",
+    body: "We start from your identity and goals, not from a piece we want to show off",
   },
   {
     title: "Live, not rendered",
-    body: "Real-time systems adapt to every screen, venue and moment — no re-renders.",
+    body: "Real-time systems adapt to every screen, venue and moment — no re-renders",
   },
   {
     title: "Measured",
-    body: "We agree on what success looks like — dwell time, leads, reach — and report on it.",
+    body: "We agree on what success looks like — dwell time, leads, reach — and report on it",
   },
   {
     title: "Reliable on the night",
-    body: "Tested on site, with fallbacks and an operator. Opening night is not a beta.",
+    body: "Tested on site, with fallbacks and an operator. Opening night is not a beta",
   },
 ]
 
@@ -64,7 +65,7 @@ export default function StudioPage() {
             Studio
           </p>
           <h1 className="text-5xl font-medium tracking-tighter text-balance md:text-7xl">
-            Designers and engineers who install what they design.
+            Designers and engineers who install what they design
           </h1>
           <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
             {site.description}
@@ -77,7 +78,7 @@ export default function StudioPage() {
         <SectionHeading
           eyebrow="Turnkey"
           title="What's included"
-          description="One team from first call to the last night of the event."
+          description="One team from first call to the last night of the event"
           className="mb-8"
         />
         <ul className="grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -85,6 +86,25 @@ export default function StudioPage() {
             <li key={i} className="flex gap-3 border-t pt-4 text-lg">
               <CheckIcon aria-hidden className="mt-1 size-5 shrink-0 text-signal" />
               {i}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section id="any-venue" className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
+        <SectionHeading
+          eyebrow="Any venue"
+          title="Whatever the space, we use everything it has"
+          description="Whatever the venue and whatever the goal, our toolkit is wide enough to fit the installation to the room — and get the most out of every screen, surface and signal already there"
+          className="mb-8"
+        />
+        <ul className="flex flex-wrap gap-2">
+          {technologies.map((t) => (
+            <li
+              key={t.slug}
+              className="rounded-full border px-4 py-2 text-sm text-pretty text-muted-foreground"
+            >
+              {t.name}
             </li>
           ))}
         </ul>

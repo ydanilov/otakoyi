@@ -47,7 +47,11 @@ Convert visitors into proposal requests (`Get a proposal` → pre-filled email; 
 
 ## Open items
 
-- Real studio name, domain, logo
+- Studio name: **Otakoyi** (wordmark changed from "Otakoyi.team" on 2026-10-13; domain otakoyi.team). Still open: domain hookup, logo, confirm `hello@otakoyi.team` mailbox
 - Real cases, photos/video from site, verified results
 - Lead form + CRM (instead of mailto)
 - Pricing model wording (rental / purchase / licence)
+
+## Punctuation
+
+- No trailing period at the end of a text block (headlines, descriptions, paragraphs, cards, captions, FAQ answers). Keep periods between sentences inside a block (decided 2026-10-13)

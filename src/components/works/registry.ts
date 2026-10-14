@@ -1,4 +1,4 @@
-import { contour, lattice, signalField } from "./shaders"
+import { bloom, contour, lattice, signalField } from "./shaders"
 
 export type WorkDefinition = {
   title: string
@@ -11,21 +11,28 @@ export type WorkDefinition = {
 export const works = {
   "signal-field": {
     title: "Signal Field",
-    description: "Domain-warped noise drifting like a tide of data.",
+    description: "Domain-warped noise drifting like a tide of data",
     fragmentShader: signalField,
     defaults: { seed: 7, density: 0.35 },
   },
   contour: {
     title: "Contour",
-    description: "A living topographic print — iso-lines over a moving height map.",
+    description: "A living topographic print — iso-lines over a moving height map",
     fragmentShader: contour,
     defaults: { seed: 21, density: 0.4 },
   },
   lattice: {
     title: "Lattice",
-    description: "A grid of cells breathing with noise; rare cells flare in accent.",
+    description: "A grid of cells breathing with noise; rare cells flare in accent",
     fragmentShader: lattice,
     defaults: { seed: 3, density: 0.3 },
+  },
+  bloom: {
+    title: "Bloom",
+    description:
+      "A silk flower unfolds from the dark, then comes undone into smoke and the next one grows",
+    fragmentShader: bloom,
+    defaults: { seed: 11, density: 0.4 },
   },
 } satisfies Record<string, WorkDefinition>
 

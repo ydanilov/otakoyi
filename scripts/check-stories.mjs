@@ -5,7 +5,11 @@ import path from "node:path"
 
 const DIRS = ["src/components/sections", "src/components/site", "src/components/works"]
 // Internal modules rendered only through a covered component.
-const EXEMPT = new Set(["src/components/works/shader-canvas.tsx"])
+const EXEMPT = new Set([
+  "src/components/works/shader-canvas.tsx",
+  "src/components/works/particle-wordmark-canvas.tsx",
+  "src/components/works/venue-scene-canvas.tsx",
+])
 
 let missing = []
 for (const dir of DIRS) {

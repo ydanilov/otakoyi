@@ -51,7 +51,7 @@ Run `pnpm verify` before every commit. Run `pnpm verify:full` before opening a P
 5. **Accessibility is a test, not a review comment.** Storybook a11y runs in `error` mode; Playwright runs axe (WCAG 2.2 AA) on every route.
 6. **Content contract.** Each case = entry in `src/content/cases.ts` + `src/content/cases/<slug>.mdx`. Schema is zod; tests fail on orphans or missing bodies.
 7. **Budget.** Initial JS ≤ 230 KB gzip per route and three.js must be lazy (`pnpm check:budget`).
-8. **Determinism.** Generative works must render identically for the same `seed` under `prefers-reduced-motion: reduce` (used by visual tests). Never use `Math.random()` in shaders or render paths — derive from `seed`.
+8. **Determinism.** Generative works must render identically for the same `seed` with site motion off (`data-motion="off"`, used by visual tests — see ADR-006). Never gate on `prefers-reduced-motion`; use `useMotion()`. Never use `Math.random()` in shaders or render paths — derive from `seed`.
 9. Use the `@/` alias, never `../` imports.
 
 ## Workflow per task (full version: `docs/workflow.md`)

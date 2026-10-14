@@ -3,11 +3,12 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowRightIcon } from "lucide-react"
 
+import Image from "next/image"
+
+import { CaseVisual } from "@/components/sections/case-visual"
 import { Cta } from "@/components/sections/cta"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { GenerativeWork } from "@/components/works/generative-work"
 import { getCase, getCases } from "@/content/cases"
 
 export const dynamicParams = false
@@ -42,18 +43,39 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
         </h1>
         <p className="mt-6 max-w-2xl text-xl text-pretty text-muted-foreground">{item.summary}</p>
         <div className="mt-6 flex flex-wrap gap-2">
+          {item.status !== "Delivered" && (
+            <Badge className="bg-signal text-signal-foreground">{item.status}</Badge>
+          )}
           {item.formats.map((t) => (
             <Badge key={t} variant="outline">
               {t}
             </Badge>
           ))}
         </div>
+        <dl
+          aria-label="Quick facts"
+          className="mt-10 grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {[
+            { label: "Client", value: item.client },
+            { label: "Venue", value: item.location },
+            { label: "Surface", value: item.facts.surface },
+            { label: "Timeline", value: item.facts.timeline },
+          ].map((f) => (
+            <div key={f.label} className="flex flex-col-reverse bg-background p-5">
+              <dt className="mt-1 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                {f.label}
+              </dt>
+              <dd className="font-medium text-pretty">{f.value}</dd>
+            </div>
+          ))}
+        </dl>
       </header>
 
-      <GenerativeWork
-        work={item.hero.work}
-        seed={item.hero.seed}
-        density={item.hero.density}
+      <CaseVisual
+        item={item}
+        priority
+        sizes="(min-width: 1280px) 1280px, 100vw"
         className="mx-auto mt-12 aspect-[16/9] max-w-7xl md:mt-16 md:rounded-xl"
       />
 
@@ -68,6 +90,34 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
           ))}
         </dl>
       </section>
+
+      {item.gallery && (
+        <section aria-label="Gallery" className="mx-auto max-w-7xl px-4 pt-12 md:px-8">
+          <ul className="grid gap-6 md:grid-cols-2">
+            {item.gallery.map((g, i) => (
+              <li
+                key={g.src}
+                className={i === 0 && item.gallery!.length % 2 === 1 ? "md:col-span-2" : undefined}
+              >
+                <figure>
+                  <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-muted">
+                    <Image
+                      src={g.src}
+                      alt={g.alt}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-contain"
+                    />
+                  </div>
+                  <figcaption className="mt-3 text-sm text-muted-foreground">
+                    {g.caption}
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:grid-cols-[1fr_2fr] md:px-8 md:py-24">
         <aside className="space-y-6 md:sticky md:top-24 md:self-start">
@@ -95,16 +145,53 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
         </div>
       </div>
 
-      <Cta />
+      <section aria-labelledby="backstage-title" className="border-y bg-muted/30">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-[1fr_2fr] md:px-8 md:py-20">
+          <div className="space-y-3">
+            <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+              Backstage
+            </p>
+            <h2 id="backstage-title" className="text-3xl font-medium tracking-tight text-balance">
+              What made it reliable on the night
+            </h2>
+          </div>
+          <dl className="grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2">
+            {item.backstage.map((b) => (
+              <div key={b.label} className="flex flex-col-reverse bg-background p-5">
+                <dt className="mt-1 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                  {b.label}
+                </dt>
+                <dd className="text-lg">{b.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      <div className="pt-24">
+        <Cta />
+      </div>
 
       <Separator className="mt-24" />
       <nav aria-label="Next installation" className="mx-auto max-w-7xl px-4 py-16 md:px-8">
-        <p className="mb-3 text-sm text-muted-foreground">Next installation</p>
-        <Button asChild variant="link" className="h-auto p-0 text-3xl font-medium md:text-5xl">
-          <Link href={`/works/${next.slug}`}>
-            {next.title} <ArrowRightIcon className="size-8" />
-          </Link>
-        </Button>
+        <Link
+          href={`/works/${next.slug}`}
+          className="group relative block overflow-hidden rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <CaseVisual
+            item={next}
+            sizes="(min-width: 1280px) 1280px, 100vw"
+            className="aspect-[21/9] transition-transform duration-700 group-hover:scale-[1.02]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 md:p-10">
+            <div>
+              <p className="mb-2 text-sm text-muted-foreground">Next installation</p>
+              <p className="text-3xl font-medium tracking-tight md:text-6xl">{next.title}</p>
+            </div>
+            <ArrowRightIcon className="size-8 shrink-0 transition-transform group-hover:translate-x-2 md:size-12" />
+          </div>
+        </Link>
       </nav>
     </article>
   )

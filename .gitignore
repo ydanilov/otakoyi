@@ -47,3 +47,5 @@ storybook-static
 /test-results
 /playwright-report
 /blob-report
+scripts/blender/.cache/
+__pycache__/
