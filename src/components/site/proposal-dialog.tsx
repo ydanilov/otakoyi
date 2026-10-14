@@ -13,10 +13,15 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Slider } from "@/components/ui/slider"
 import { Textarea } from "@/components/ui/textarea"
 import { proposalForm, proposalHref, proposalMailto, site } from "@/config/site"
 
 type Field = keyof typeof proposalForm.entries
+
+/** Budget range in thousands of euros; the top of the scale means "or more". */
+const BUDGET = { min: 10, max: 200, step: 5, initial: [30, 80] as [number, number] }
+const formatBudget = ([lo, hi]: number[]) => `€${lo}k – €${hi}k${hi === BUDGET.max ? "+" : ""}`
 
 const fields: { name: Field; label: string; type?: string; required?: boolean; wide?: boolean }[] =
   [
@@ -25,7 +30,6 @@ const fields: { name: Field; label: string; type?: string; required?: boolean; w
     { name: "company", label: "Company" },
     { name: "event", label: "Event or venue" },
     { name: "date", label: "Date" },
-    { name: "budget", label: "Budget" },
   ]
 
 /** Sends the answers to the Google Form, or opens a pre-filled email while none is configured. */
@@ -53,6 +57,7 @@ async function send(data: Record<Field, string>) {
  */
 export function ProposalDialog({ defaultOpen = false }: { defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen)
+  const [budget, setBudget] = useState<number[]>(BUDGET.initial)
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle")
 
   useEffect(() => {
@@ -150,6 +155,26 @@ export function ProposalDialog({ defaultOpen = false }: { defaultOpen?: boolean 
                   />
                 </div>
               ))}
+              <div className="grid gap-3 sm:col-span-2">
+                <div className="flex items-baseline justify-between gap-4">
+                  <Label id="proposal-budget-label">Budget</Label>
+                  <output aria-live="polite" className="font-mono text-sm text-signal tabular-nums">
+                    {formatBudget(budget)}
+                  </output>
+                </div>
+                <Slider
+                  aria-labelledby="proposal-budget-label"
+                  thumbLabels={["Budget from, thousand euros", "Budget up to, thousand euros"]}
+                  min={BUDGET.min}
+                  max={BUDGET.max}
+                  step={BUDGET.step}
+                  minStepsBetweenThumbs={1}
+                  value={budget}
+                  onValueChange={setBudget}
+                  className="py-2 [&_[data-slot=slider-range]]:bg-signal [&_[data-slot=slider-thumb]]:size-5 [&_[data-slot=slider-thumb]]:border-signal"
+                />
+                <input type="hidden" name="budget" value={formatBudget(budget)} />
+              </div>
               <div className="grid gap-2 sm:col-span-2">
                 <Label htmlFor="proposal-message">What do you have in mind</Label>
                 <Textarea id="proposal-message" name="message" rows={4} />
