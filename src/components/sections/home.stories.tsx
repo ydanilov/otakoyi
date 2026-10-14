@@ -116,7 +116,7 @@ export const VenueStillMuseum: Story = {
   play: async ({ canvas }) => {
     await expect(canvas.getByRole("img", { name: "Immersive museum room" })).toHaveAttribute(
       "src",
-      "/venues/scene-3.webp",
+      "/venues/photo-3.webp",
     )
   },
 }

@@ -52,13 +52,23 @@ export function TechnologySelector({ items, label }: { items: Technology[]; labe
         aria-labelledby={`tech-tab-${t.slug}`}
         className="relative isolate flex min-h-[28rem] overflow-hidden rounded-xl border lg:min-h-[32rem]"
       >
-        <GenerativeWork
-          key={t.preview.work}
-          work={t.preview.work}
-          seed={t.preview.seed}
-          density={t.preview.density}
-          className="absolute inset-0 -z-10"
-        />
+        {t.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={t.image}
+            src={t.image}
+            alt=""
+            className="absolute inset-0 -z-10 size-full animate-in object-cover duration-700 fade-in-0"
+          />
+        ) : (
+          <GenerativeWork
+            key={t.preview.work}
+            work={t.preview.work}
+            seed={t.preview.seed}
+            density={t.preview.density}
+            className="absolute inset-0 -z-10"
+          />
+        )}
         <div
           aria-hidden
           className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/70 to-transparent md:bg-gradient-to-r md:via-background/60"

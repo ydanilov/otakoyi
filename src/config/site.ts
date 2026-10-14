@@ -23,19 +23,21 @@ export const proposalHref = "#proposal"
 export const proposalMailto = `mailto:${site.email}?subject=${encodeURIComponent(site.cta.subject)}`
 
 /**
- * Google Form that receives proposals. `action` is the form's `…/formResponse` URL; `entries`
+ * Google Form "Otakoyi — Get a proposal" (owner's Drive) that receives proposals; answers land in
+ * its Responses tab. `action` is the form's `…/formResponse` URL; `entries`
  * maps each field to its `entry.<id>`. While `action` is empty the dialog falls back to a
  * pre-filled email.
  */
 export const proposalForm = {
-  action: "",
+  action:
+    "https://docs.google.com/forms/d/e/1FAIpQLSc1pLS-rDA0LYqPFHl6QVqXfo4RR1kYM5caOl41Lcucz1yF_w/formResponse",
   entries: {
-    name: "",
-    email: "",
-    company: "",
-    event: "",
-    date: "",
-    budget: "",
-    message: "",
+    name: "entry.788382960",
+    email: "entry.1554585824",
+    company: "entry.1927853941",
+    event: "entry.762845243",
+    date: "entry.101883593",
+    budget: "entry.443381102",
+    message: "entry.195374643",
   },
 } as const

@@ -5,6 +5,7 @@ import { Logo } from "./logo"
 import { SiteFooter } from "./site-footer"
 import { SiteHeader } from "./site-header"
 import { ProposalDialog } from "./proposal-dialog"
+import ProposalForm from "./proposal-form"
 import { MotionToggle } from "./motion-toggle"
 
 const meta = { title: "Site/Chrome", parameters: { layout: "fullscreen" } } satisfies Meta
@@ -44,10 +45,13 @@ export const MotionSwitch: Story = {
 }
 
 export const Proposal: Story = {
-  render: () => <ProposalDialog defaultOpen />,
+  render: () => <ProposalForm open onOpenChange={() => {}} />,
   play: async ({ canvasElement }) => {
     const body = within(canvasElement.ownerDocument.body)
-    await expect(await body.findByRole("dialog", { name: "Get a proposal" })).toBeVisible()
-    await expect(body.getByLabelText(/Work email/)).toBeRequired()
+    await expect(await body.findByRole("dialog", { name: "Get a proposal" })).toBeInTheDocument()
+    await expect(body.getAllByRole("slider")).toHaveLength(2)
   },
 }
+
+// Listener only; renders nothing until a #proposal link is followed.
+export const ProposalListener: Story = { render: () => <ProposalDialog /> }

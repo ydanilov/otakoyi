@@ -25,3 +25,11 @@
 
 - Lobby: the baked floor reflection is gone. The base still is rendered with the screen off and the floor cut out of the front layer. A mirrored copy of the screen's live work (the screen's corners mirrored in the floor, projected in Blender) sits on the floor, blurred, blended with `screen` and fading with distance. It moves with the content and the cursor.
 - Preloading: live screens of the venue on show and both neighbours stay mounted (only the one on show animates), and they mount 1.5 viewports before the section. A venue never arrives showing its still first. The page holds at most ~9 canvases. Screens have no gradient poster: until WebGL is ready the rendered screen shows through.
+
+## Update — photoreal frames (2026-10-14)
+
+The four venues now show photoreal frames generated in Google Flow (Nano Banana) from text
+prompts, `public/venues/photo-*.webp`. They don't share the Blender camera, so `Venue.photo`
+switches the live screen layers off for that venue; the Blender data stays in `venues.ts` until
+the photo's screens are mapped (new corners + a front mask), which turns them back on.
+Prompts and downloads: `~/Documents/Otakoyi/venue/renders/nanobanana/` on the owner's Mac.

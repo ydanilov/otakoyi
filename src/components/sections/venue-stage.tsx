@@ -206,7 +206,7 @@ export function VenueStage({
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={v.image}
+            src={v.photo ?? v.image}
             alt=""
             className="absolute inset-0 size-full object-cover"
             loading={i === 0 ? "eager" : "lazy"}
@@ -214,7 +214,7 @@ export function VenueStage({
           />
           {/* The venue on show and its neighbours keep live layers mounted (only the one on show
               animates), so a scene never arrives with a still where its live screens should be. */}
-          {motion && geoms && Math.abs(i - active) <= 1 && (
+          {motion && geoms && !v.photo && Math.abs(i - active) <= 1 && (
             <>
               {v.base && (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -311,7 +311,7 @@ export function VenueStill({
     <div className={cn("relative overflow-hidden bg-background", className)}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={v.image}
+        src={v.photo ?? v.image}
         alt={label}
         className="absolute inset-0 size-full object-cover"
         loading="lazy"
