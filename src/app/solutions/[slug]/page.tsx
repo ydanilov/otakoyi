@@ -55,9 +55,7 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Button asChild size="lg" variant="signal">
-              <a href={proposalHref}>
-                {site.cta.label} <ArrowRightIcon />
-              </a>
+              <a href={proposalHref}>{site.cta.label}</a>
             </Button>
             <Button asChild size="lg" variant="outline">
               <a href="#installations">See installations</a>
