@@ -37,7 +37,7 @@ const specs = [
 /** Claims taken from our own delivery model (process, runtime) — not client results. */
 const stats = [
   { value: 1, prefix: "≈", suffix: " wk", label: "to a live prototype in your brand" },
-  { value: 1, suffix: " engine", label: "for every screen, venue and format" },
+  { value: 1, suffix: " artwork", label: "re-shaped for every venue, screen and size" },
   { value: 24, suffix: "/7", label: "runtime for permanent lobby walls" },
   { value: 0, suffix: " re-renders", label: "when the venue or screen changes" },
 ]
@@ -56,8 +56,8 @@ export default function HomePage() {
       <Section id="surfaces">
         <SectionHeading
           eyebrow="What it shows on"
-          title="One engine. Every surface in the room"
-          description="Projection, LED, light and screens, all playing the same live work, in sync"
+          title="One installation. Every surface it meets"
+          description="Projection, LED, light and screens play the same living artwork, re-shaped to every size and proportion, in sync"
           className="mb-12"
         />
         <TechnologySelector

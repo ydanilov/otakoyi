@@ -9,7 +9,6 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { proposalHref, site } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Logo } from "./logo"
-import { MotionToggle } from "./motion-toggle"
 
 export function SiteHeader() {
   const pathname = usePathname()
@@ -36,10 +35,8 @@ export function SiteHeader() {
           <Button asChild size="sm" variant="signal" className="ml-2">
             <a href={proposalHref}>{site.cta.label}</a>
           </Button>
-          <MotionToggle />
         </nav>
         <div className="flex items-center md:hidden">
-          <MotionToggle />
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" aria-label="Open menu">

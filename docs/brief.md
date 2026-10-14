@@ -25,7 +25,7 @@ Convert visitors into proposal requests (`Get a proposal` → pre-filled email; 
 1. **Attention / footfall** — installations stop people; stands get visited; dwell time goes up.
 2. **Customised to your brand** — palette, type, shapes, data and interaction are the client's. "Your brand is the input, not a logo in the corner."
 3. **Measurable outcomes** — reach, dwell time, leads; every case shows results.
-4. **Reuse = lower cost** — one engine across events/formats, no re-rendering video.
+4. **Buy once, keep growing it** — one generative installation that re-shapes itself to any size, proportion and venue, and that we extend for new solutions and platforms. Don't pitch "one engine": the studio has a growing toolkit; the client buys an installation that grows with them.
 5. **Turnkey & reliable** — hardware, install, operator; "opening night is not a beta".
 
 ## Copy rules
