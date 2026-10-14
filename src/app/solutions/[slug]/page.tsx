@@ -4,12 +4,13 @@ import { notFound } from "next/navigation"
 import { CheckIcon } from "lucide-react"
 
 import { Cta } from "@/components/sections/cta"
+import { HeroField } from "@/components/sections/hero-field"
+import { ReactiveHeadline } from "@/components/sections/reactive-headline"
 import { Faq } from "@/components/sections/faq"
 import { Process } from "@/components/sections/process"
 import { SectionHeading } from "@/components/sections/section-heading"
 import { WorkCard } from "@/components/sections/work-card"
 import { Button } from "@/components/ui/button"
-import { GenerativeWork } from "@/components/works/generative-work"
 import { VenueStill } from "@/components/sections/venue-stage"
 import { proposalHref, site } from "@/config/site"
 import { casesFor, getSolution, solutions } from "@/content/solutions"
@@ -38,18 +39,15 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
   return (
     <>
       <section className="relative isolate overflow-hidden">
-        <GenerativeWork work={s.hero.work} seed={s.hero.seed} className="absolute inset-0 -z-10" />
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/70 to-background/30"
-        />
+        <HeroField work={s.hero.work} seed={s.hero.seed} />
         <div className="mx-auto max-w-7xl px-4 pt-24 pb-16 md:px-8 md:pt-40 md:pb-24">
           <p className="mb-4 font-mono text-xs tracking-widest text-signal uppercase">
             For {s.label.toLowerCase()}
           </p>
-          <h1 className="max-w-4xl text-5xl leading-[0.95] font-medium tracking-tighter text-balance md:text-8xl">
-            {s.title}
-          </h1>
+          <ReactiveHeadline
+            text={s.title}
+            className="max-w-4xl text-5xl leading-[0.95] tracking-tighter text-balance md:text-8xl"
+          />
           <p className="mt-6 max-w-2xl text-lg text-pretty text-muted-foreground md:text-xl">
             {s.description}
           </p>
