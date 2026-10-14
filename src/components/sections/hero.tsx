@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowDownIcon, ArrowRightIcon } from "lucide-react"
+import { ArrowDownIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { ReactiveHeadline } from "@/components/sections/reactive-headline"
@@ -28,9 +28,7 @@ export function Hero() {
           </p>
           <div className="flex flex-wrap gap-3">
             <Button asChild size="lg" variant="signal">
-              <a href={proposalHref}>
-                {site.cta.label} <ArrowRightIcon />
-              </a>
+              <a href={proposalHref}>{site.cta.label}</a>
             </Button>
             <Button asChild size="lg" variant="outline">
               <Link href="/works">See installations</Link>

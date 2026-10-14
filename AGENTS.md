@@ -53,6 +53,11 @@ Run `pnpm verify` before every commit. Run `pnpm verify:full` before opening a P
 7. **Budget.** Initial JS ≤ 230 KB gzip per route and three.js must be lazy (`pnpm check:budget`).
 8. **Determinism.** Generative works must render identically for the same `seed` with site motion off (`data-motion="off"`, used by visual tests — see ADR-006). Never gate on `prefers-reduced-motion`; use `useMotion()`. Never use `Math.random()` in shaders or render paths — derive from `seed`.
 9. Use the `@/` alias, never `../` imports.
+10. **Scope of changes (owner's rule).** Change only the layouts, sections, images and components the
+    owner explicitly asks for, exactly where they ask. Never redesign, restyle, re-crop, mirror,
+    add or remove anything else on your own initiative, even if it seems like an improvement —
+    propose it instead and wait. The only thing you may change site-wide on your own is copy
+    (messages and content), and only to keep it consistent with a change the owner asked for.
 
 ## Workflow per task (full version: `docs/workflow.md`)
 
