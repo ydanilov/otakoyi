@@ -145,28 +145,62 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
         </div>
       </div>
 
-      <section aria-labelledby="backstage-title" className="border-y bg-muted/30">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-[1fr_2fr] md:px-8 md:py-20">
-          <div className="space-y-3">
-            <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-              Backstage
-            </p>
-            <h2 id="backstage-title" className="text-3xl font-medium tracking-tight text-balance">
-              What made it reliable on the night
-            </h2>
+      {item.outcomes ? (
+        <section aria-labelledby="outcomes-title" className="border-y bg-muted/30">
+          <div className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
+            <div className="mb-12 max-w-2xl space-y-3">
+              <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                Outcomes
+              </p>
+              <h2
+                id="outcomes-title"
+                className="text-3xl font-medium tracking-tight text-balance md:text-5xl"
+              >
+                What it does for your booth
+              </h2>
+            </div>
+            <ol className="grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2 lg:grid-cols-4">
+              {item.outcomes.map((o, i) => (
+                <li
+                  key={o.title}
+                  className="flex min-h-56 flex-col justify-between gap-10 bg-background p-6 md:p-8"
+                >
+                  <span className="font-mono text-xs tracking-widest text-signal">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span>
+                    <span className="block text-2xl font-medium tracking-tight">{o.title}</span>
+                    <span className="mt-2 block text-pretty text-muted-foreground">{o.body}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
           </div>
-          <dl className="grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2">
-            {item.backstage.map((b) => (
-              <div key={b.label} className="flex flex-col-reverse bg-background p-5">
-                <dt className="mt-1 font-mono text-xs tracking-widest text-muted-foreground uppercase">
-                  {b.label}
-                </dt>
-                <dd className="text-lg">{b.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
+        </section>
+      ) : (
+        <section aria-labelledby="backstage-title" className="border-y bg-muted/30">
+          <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-[1fr_2fr] md:px-8 md:py-20">
+            <div className="space-y-3">
+              <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                Backstage
+              </p>
+              <h2 id="backstage-title" className="text-3xl font-medium tracking-tight text-balance">
+                What made it reliable on the night
+              </h2>
+            </div>
+            <dl className="grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2">
+              {item.backstage.map((b) => (
+                <div key={b.label} className="flex flex-col-reverse bg-background p-5">
+                  <dt className="mt-1 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                    {b.label}
+                  </dt>
+                  <dd className="text-lg">{b.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+      )}
 
       <div className="pt-24">
         <Cta />

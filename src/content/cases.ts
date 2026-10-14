@@ -44,6 +44,15 @@ export const caseSchema = z.object({
     .array(z.object({ label: z.string(), value: z.string() }))
     .min(2)
     .max(6),
+  /**
+   * What the installation does for the brand. When present, the case page shows these
+   * instead of the technical "Backstage" block.
+   */
+  outcomes: z
+    .array(z.object({ title: z.string(), body: z.string() }))
+    .min(2)
+    .max(6)
+    .optional(),
   /** Real imagery (in /public/works/<slug>/). When present it replaces the generative stand-in. */
   cover: z.object({ src: z.string().startsWith("/works/"), alt: z.string().min(10) }).optional(),
   gallery: z
@@ -85,6 +94,24 @@ const raw: z.input<typeof caseSchema>[] = [
       { label: "Tracking", value: "MediaPipe pose + segmentation, one webcam or iPhone" },
       { label: "Protocol", value: "OSC occupancy grid 32 × 18, two-way control" },
       { label: "Performance", value: "60 fps with ~950 tiles on an Apple Silicon Mac" },
+    ],
+    outcomes: [
+      {
+        title: "Stops the aisle",
+        body: "A heatmap every crypto visitor reads at a glance, all red until someone steps in",
+      },
+      {
+        title: "Everyone can play",
+        body: "No app, no controller, no instructions. Walk in and your body turns the market green",
+      },
+      {
+        title: "Made to be filmed",
+        body: "Players pump the market together while their friends record it for the feed",
+      },
+      {
+        title: "Your brand on the board",
+        body: "Tickers and palette carry your brand, so the board shows your market",
+      },
     ],
     results: [
       { value: "60 fps", label: "with ~950 live tiles on screen" },
