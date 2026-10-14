@@ -20,9 +20,9 @@ export const benefitItems = [
       "Sales, markets, social mentions, sensor or visitor data — turned into visuals that explain your story",
   },
   {
-    title: "Reuse, don't re-render",
+    title: "Buy once, keep growing it",
     description:
-      "One generative engine runs at every event, in every format. No new video production each time",
+      "Your installation re-fits itself to new walls, venues and platforms. We extend it for the next show instead of starting from scratch",
   },
   {
     title: "Turnkey",

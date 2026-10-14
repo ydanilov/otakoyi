@@ -12,3 +12,8 @@
 - Visual and e2e tests run with motion off (Playwright `storageState` sets `motion=off`), which freezes every generative work at its fixed time — determinism from 002 is unchanged, only the switch moved.
 
 **Consequences.** Visitors who rely on reduced motion must use the toggle once. The toggle must stay visible on every viewport. Revisit if analytics or feedback show motion sickness complaints.
+
+## Update (2026-10-14)
+
+The header toggle was removed at the owner's request. `data-motion="off"` and the stored
+`localStorage("motion")` value still work (visual tests rely on them); there is just no UI for it.

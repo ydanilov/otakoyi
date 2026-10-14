@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ArrowRightIcon, CheckIcon } from "lucide-react"
+import { CheckIcon } from "lucide-react"
 
 import { Cta } from "@/components/sections/cta"
 import { Faq } from "@/components/sections/faq"

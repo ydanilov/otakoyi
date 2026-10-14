@@ -69,7 +69,7 @@ const raw: z.input<typeof caseSchema>[] = [
     title: "Pump The Market",
     client: "Otakoyi original",
     year: 2026,
-    location: "Crypto conference booths · big screen or projection",
+    location: "Crypto conference booths",
     summary:
       "A market heatmap that bleeds red until a visitor steps in — their silhouette turns the tiles under them green",
     formats: ["Exhibition", "Conference"],
