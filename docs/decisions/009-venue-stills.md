@@ -20,4 +20,3 @@
 - Each screen has a `domain`: its place in a field shared by the whole venue. Walls are unfolded around the room (floor toward the camera), so the museum reads as one 360° projection instead of separate planes (`uDomOn/uDomO/uDomU/uDomV` in the shader contract).
 - The cursor bends the field (`uPointer`, `uPointerAmt`). The page maps it from screen space into field coordinates through the inverse of each screen's homography, so a swirl near a wall edge carries over onto the next wall.
 - Only the venue on show mounts WebGL, so the page holds at most four canvases. Each canvas renders at about its on-screen size.
-
