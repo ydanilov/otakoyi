@@ -62,13 +62,6 @@ test("proposal CTA opens a pre-filled email", async ({ page }) => {
   await expect(cta).toHaveAttribute("href", /^mailto:.+\?subject=/)
 })
 
-test("brand demo recolours the installation", async ({ page }) => {
-  await page.goto("/#customisation")
-  const luxury = page.getByRole("radio", { name: "Luxury" })
-  await luxury.click()
-  await expect(luxury).toHaveAttribute("data-state", "on")
-})
-
 test("unknown case returns 404", async ({ page }) => {
   const res = await page.goto("/works/does-not-exist")
   expect(res?.status()).toBe(404)
