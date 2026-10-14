@@ -39,12 +39,6 @@ export function Cta() {
             <Button asChild size="lg" variant="signal" className="h-12 px-8 text-base">
               <a href={proposalHref}>{site.cta.label}</a>
             </Button>
-            <a
-              href={`mailto:${site.email}`}
-              className="text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-            >
-              or write to <span className="text-foreground">{site.email}</span>
-            </a>
           </div>
         </div>
       </div>
