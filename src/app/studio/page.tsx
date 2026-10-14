@@ -4,6 +4,7 @@ import { CheckIcon } from "lucide-react"
 import { Cta } from "@/components/sections/cta"
 import { LogoWall } from "@/components/sections/logo-wall"
 import { SectionHeading } from "@/components/sections/section-heading"
+import { StudioHero } from "@/components/sections/studio-hero"
 import { site } from "@/config/site"
 
 export const metadata: Metadata = {
@@ -51,34 +52,42 @@ const team = [
 export default function StudioPage() {
   return (
     <>
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
-        <p className="mb-6 font-mono text-xs tracking-widest text-muted-foreground uppercase">
-          Studio
-        </p>
-        <h1 className="sr-only">Artists with toolboxes. Engineers with taste</h1>
-        {/* Two phrases on one screen, set apart: the artist top left, the engineer bottom right. */}
-        <div className="grid gap-8 md:grid-cols-[1fr_minmax(0,0.85fr)_1fr] md:gap-8">
-          <p
-            aria-hidden
-            className="text-5xl leading-[0.9] font-medium tracking-tighter md:col-span-2 md:text-7xl lg:text-8xl"
-          >
-            Artists with toolboxes
-          </p>
-          <p className="max-w-sm text-lg text-pretty text-muted-foreground md:col-start-1 md:row-start-2 md:self-end">
-            {site.description}
-          </p>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/studio/studio.webp"
-            alt="A creative technologist at work in the studio, generative visuals on the monitors"
-            className="aspect-[4/5] w-full rounded-xl object-cover md:col-start-2 md:row-start-2"
+      <StudioHero
+        first="Artists with toolboxes"
+        second="Engineers with taste"
+        description={site.description}
+        image={{
+          src: "/studio/studio.webp",
+          alt: "A creative technologist at work in the studio, generative visuals on the monitors",
+        }}
+      />
+
+      <section className="mx-auto max-w-7xl px-4 pt-16 pb-24 md:px-8 md:pt-24">
+        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] md:gap-16">
+          <SectionHeading
+            eyebrow="Principles"
+            title="How we work"
+            description="Four commitments we hold on every project, from the first call to the last night of the event"
+            className="md:sticky md:top-24 md:self-start"
           />
-          <p
-            aria-hidden
-            className="text-5xl leading-[0.9] font-medium tracking-tighter text-signal md:col-start-3 md:row-start-2 md:self-end md:text-right md:text-7xl lg:text-8xl"
-          >
-            Engineers with taste
-          </p>
+          <ol className="border-b">
+            {principles.map((p, i) => (
+              <li
+                key={p.title}
+                className="grid grid-cols-[3rem_minmax(0,1fr)] gap-x-4 border-t py-8 md:grid-cols-[4rem_minmax(0,1fr)] md:py-10"
+              >
+                <span className="pt-2 font-mono text-xs tracking-widest text-signal">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3 className="text-2xl font-medium tracking-tight md:text-4xl">{p.title}</h3>
+                  <p className="mt-3 max-w-xl text-lg text-pretty text-muted-foreground">
+                    {p.body}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -111,35 +120,6 @@ export default function StudioPage() {
             </li>
           ))}
         </ol>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
-        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] md:gap-16">
-          <SectionHeading
-            eyebrow="Principles"
-            title="How we work"
-            description="Four commitments we hold on every project, from the first call to the last night of the event"
-            className="md:sticky md:top-24 md:self-start"
-          />
-          <ol className="border-b">
-            {principles.map((p, i) => (
-              <li
-                key={p.title}
-                className="grid grid-cols-[3rem_minmax(0,1fr)] gap-x-4 border-t py-8 md:grid-cols-[4rem_minmax(0,1fr)] md:py-10"
-              >
-                <span className="pt-2 font-mono text-xs tracking-widest text-signal">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div>
-                  <h3 className="text-2xl font-medium tracking-tight md:text-4xl">{p.title}</h3>
-                  <p className="mt-3 max-w-xl text-lg text-pretty text-muted-foreground">
-                    {p.body}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
