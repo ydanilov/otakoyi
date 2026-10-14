@@ -20,3 +20,8 @@
 - Each screen has a `domain`: its place in a field shared by the whole venue. Walls are unfolded around the room (floor toward the camera), so the museum reads as one 360° projection instead of separate planes (`uDomOn/uDomO/uDomU/uDomV` in the shader contract).
 - The cursor bends the field (`uPointer`, `uPointerAmt`). The page maps it from screen space into field coordinates through the inverse of each screen's homography, so a swirl near a wall edge carries over onto the next wall.
 - Only the venue on show mounts WebGL, so the page holds at most four canvases. Each canvas renders at about its on-screen size.
+
+## Update 2026-10-14 — live floor reflection, preloading
+
+- Lobby: the baked floor reflection is gone. The base still is rendered with the screen off and the floor cut out of the front layer. A mirrored copy of the screen's live work (the screen's corners mirrored in the floor, projected in Blender) sits on the floor, blurred, blended with `screen` and fading with distance. It moves with the content and the cursor.
+- Preloading: live screens of the venue on show and both neighbours stay mounted (only the one on show animates), and they mount 1.5 viewports before the section. A venue never arrives showing its still first. The page holds at most ~9 canvases. Screens have no gradient poster: until WebGL is ready the rendered screen shows through.

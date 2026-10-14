@@ -19,10 +19,15 @@ export type VenueScreen = {
   domain: { o: [number, number]; u: [number, number]; v: [number, number] }
   /** 0..1 brightness, for surfaces that should stay quieter (floors). */
   dim: number
+  /** The screen mirrored in a glossy floor (image space, TL, TR, BR, BL of the mirrored screen). */
+  reflection?: [number, number][]
 }
 
 export type Venue = {
+  /** The still with rendered screens: motion off, solution pages. */
   image: string
+  /** The still under live screens, when it differs (e.g. no baked floor reflection). */
+  base?: string
   front: string
   seed: number
   colors: (typeof venuePalettes)[number]
@@ -92,6 +97,7 @@ export const venues: Venue[] = [
   },
   {
     image: "/venues/scene-1.webp",
+    base: "/venues/scene-1-base.webp",
     front: "/venues/scene-1-front.webp",
     seed: 21,
     colors: venuePalettes[1]!,
@@ -108,6 +114,12 @@ export const venues: Venue[] = [
         aspect: 0.6667,
         domain: { o: [-0.1333, 0.1], u: [1.2, 0.0], v: [0.0, 1.8] },
         dim: 1,
+        reflection: [
+          [0.41796, 1.38298],
+          [0.6312, 1.3633],
+          [0.62754, 0.79061],
+          [0.42031, 0.79516],
+        ],
       },
     ],
   },
