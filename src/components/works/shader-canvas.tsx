@@ -103,6 +103,9 @@ export default function ShaderCanvas(props: ShaderCanvasProps) {
     <Canvas
       orthographic
       dpr={[1, 1.75]}
+      // Measure the element's own size, not its on-screen box: works warped onto a screen in a
+      // photo (matrix3d) would otherwise render at the shrunken, transformed size.
+      resize={{ offsetSize: true }}
       frameloop={props.animate ? "always" : "demand"}
       gl={{ antialias: false, preserveDrawingBuffer: true, powerPreference: "high-performance" }}
       aria-hidden

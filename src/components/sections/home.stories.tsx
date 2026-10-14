@@ -7,7 +7,7 @@ import { InNumbers } from "./in-numbers"
 import { Occasions } from "./occasions"
 import { SpecMarquee } from "./spec-marquee"
 import { Technologies } from "./technologies"
-import { TourFilm, TourStill } from "./tour-film"
+import { VenueStage, VenueStill } from "./venue-stage"
 import { VenueTour } from "./venue-tour"
 
 const meta = { title: "Sections/Home v2", parameters: { layout: "fullscreen" } } satisfies Meta
@@ -83,26 +83,26 @@ export const TechnologyList: Story = {
   },
 }
 
-export const TourFilmScrub: Story = {
+export const VenueStageLobby: Story = {
   render: () => (
     <div className="relative aspect-video w-full">
-      <TourFilm progress={1 / 3} className="absolute inset-0" />
+      <VenueStage active={1} className="absolute inset-0" />
     </div>
   ),
   play: async ({ canvas }) => {
-    const film = canvas.getByRole("img", { name: /Film flying through/ })
-    await expect(film).toHaveAttribute("data-work", "tour-film")
+    const stage = canvas.getByRole("img", { name: /an office lobby/ })
+    await expect(stage).toHaveAttribute("data-venue", "1")
   },
 }
 
-export const TourStillMuseum: Story = {
+export const VenueStillMuseum: Story = {
   render: () => (
-    <TourStill progress={1} label="Immersive museum room" className="aspect-[4/3] w-96" />
+    <VenueStill index={3} label="Immersive museum room" className="aspect-[4/3] w-96" />
   ),
   play: async ({ canvas }) => {
     await expect(canvas.getByRole("img", { name: "Immersive museum room" })).toHaveAttribute(
       "src",
-      "/tour/stop-3.jpg",
+      "/venues/scene-3.webp",
     )
   },
 }

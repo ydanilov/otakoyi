@@ -10,7 +10,7 @@ import { SectionHeading } from "@/components/sections/section-heading"
 import { WorkCard } from "@/components/sections/work-card"
 import { Button } from "@/components/ui/button"
 import { GenerativeWork } from "@/components/works/generative-work"
-import { TourStill } from "@/components/sections/tour-film"
+import { VenueStill } from "@/components/sections/venue-stage"
 import { proposalHref, site } from "@/config/site"
 import { casesFor, getSolution, solutions } from "@/content/solutions"
 
@@ -106,8 +106,8 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
             ))}
           </ul>
         </div>
-        <TourStill
-          progress={s.venue}
+        <VenueStill
+          index={Math.round(s.venue * 3)}
           label={`A ${s.label.toLowerCase()} installation with generative content on its screens`}
           className="aspect-[4/3] rounded-xl"
         />

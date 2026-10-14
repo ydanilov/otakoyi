@@ -5,9 +5,12 @@ import { ArrowRightIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
-
-import { TourFilm, TourStill, tourScene, tourSceneProgress } from "@/components/sections/tour-film"
+import {
+  VenueStage,
+  VenueStill,
+  venueIndex,
+  venueProgress,
+} from "@/components/sections/venue-stage"
 import type { Solution } from "@/content/solutions"
 import { cn } from "@/lib/utils"
 import { useScrollProgress } from "@/lib/use-scroll-progress"
@@ -20,15 +23,14 @@ type VenueTourProps = {
 }
 
 /**
- * Scroll flies through four spaces — exhibition stand, office lobby, concert, museum room —
- * as one pre-rendered film, diving into each room's screen and surfacing from the next, so
- * buyers see the format where it would live. Motion off (ADR-006): a still and the stops as a list.
+ * Scroll walks through four spaces — exhibition stand, office lobby, concert, museum room — one
+ * at a time, each a Blender still with a live generative work on its main screen, so buyers see
+ * the format where it would live. Motion off (ADR-006): a still and the stops as a list.
  */
 export function VenueTour({ stops }: VenueTourProps) {
   const [ref, progress] = useScrollProgress<HTMLDivElement>(HEADER)
 
-  // The card follows the film: it switches when the transition has landed in the next scene.
-  const [active, setActive] = useState(() => tourScene(progress))
+  const active = venueIndex(progress)
 
   /** Scroll to the middle of a stop's scene; the film plays the transitions on the way. */
   const goTo = (i: number) => {
@@ -36,7 +38,7 @@ export function VenueTour({ stops }: VenueTourProps) {
     if (!el) return
     const top = el.getBoundingClientRect().top + window.scrollY - HEADER
     const travel = el.offsetHeight - (window.innerHeight - HEADER)
-    window.scrollTo({ top: top + tourSceneProgress(i) * travel, behavior: "smooth" })
+    window.scrollTo({ top: top + venueProgress(i) * travel, behavior: "smooth" })
   }
 
   return (
@@ -55,8 +57,8 @@ export function VenueTour({ stops }: VenueTourProps) {
 
       {/* Motion off: one still frame and the stops as cards. */}
       <div className="mx-auto hidden max-w-7xl px-4 pb-20 md:px-8 motion-off:block">
-        <TourStill
-          progress={0}
+        <VenueStill
+          index={0}
           label="An exhibition stand with generative content on its screens"
           className="aspect-[16/9] rounded-xl"
         />
@@ -75,7 +77,7 @@ export function VenueTour({ stops }: VenueTourProps) {
         className="relative motion-off:hidden"
       >
         <div className="sticky top-14 h-[calc(100svh-3.5rem)] overflow-hidden">
-          <TourFilm progress={progress} onSceneChange={setActive} className="absolute inset-0" />
+          <VenueStage active={active} className="absolute inset-0" />
           <div
             aria-hidden
             className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-transparent"
