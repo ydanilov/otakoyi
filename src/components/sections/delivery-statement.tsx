@@ -26,10 +26,15 @@ const promises = [
 export function DeliveryStatement() {
   return (
     <div className="grid gap-10 rounded-xl border bg-card p-6 md:grid-cols-[1.2fr_1fr] md:gap-16 md:p-12">
-      <p className="text-3xl leading-tight font-medium tracking-tight text-balance md:text-5xl">
-        You buy one installation. It plays every venue you take it to, and{" "}
-        <span className="text-signal">keeps growing</span> after opening night
-      </p>
+      <div>
+        <p className="mb-6 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+          How we deliver
+        </p>
+        <h2 className="text-3xl leading-tight font-medium tracking-tight text-balance md:text-5xl">
+          Built to run, not to render. One installation plays every venue you take it to, and{" "}
+          <span className="text-signal">keeps growing</span> long after opening night
+        </h2>
+      </div>
       <ul className="space-y-6 self-end">
         {promises.slice(0, 3).map((p) => (
           <li key={p.title} className="border-t pt-4">
