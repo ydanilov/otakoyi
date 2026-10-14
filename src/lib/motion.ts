@@ -8,7 +8,7 @@ import { useSyncExternalStore } from "react"
  * toggle. The choice lives on `<html data-motion="off">` (set before paint by `motionScript` in `@/lib/init-scripts`)
  * and in localStorage. Visual tests set it off to freeze every generative work.
  */
-export const MOTION_KEY = "motion"
+export const MOTION_KEY = "motion-test"
 
 export function isMotionOn() {
   return typeof document === "undefined" || document.documentElement.dataset.motion !== "off"

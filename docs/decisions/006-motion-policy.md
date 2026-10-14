@@ -7,7 +7,7 @@
 **Decision.**
 
 - The OS `prefers-reduced-motion` setting is not used. Motion is on by default.
-- A header toggle (`MotionToggle`, Pause/Play) turns all motion off: `<html data-motion="off">`, persisted in `localStorage("motion")`, applied before paint by `motionScript` (`@/lib/init-scripts`). This keeps WCAG 2.2.2 (pause/stop/hide).
+- A header toggle (`MotionToggle`, Pause/Play) turns all motion off: `<html data-motion="off">`, persisted in `localStorage("motion-test")` (old `motion` key is cleared), applied before paint by `motionScript` (`@/lib/init-scripts`). This keeps WCAG 2.2.2 (pause/stop/hide).
 - Code reads the flag via `useMotion()` / `isMotionOn()` from `@/lib/motion`; Tailwind variants `motion-off:` / `motion-on:` replace `motion-reduce:` / `motion-safe:`.
 - Visual and e2e tests run with motion off (Playwright `storageState` sets `motion=off`), which freezes every generative work at its fixed time — determinism from 002 is unchanged, only the switch moved.
 
@@ -16,4 +16,4 @@
 ## Update (2026-10-14)
 
 The header toggle was removed at the owner's request. `data-motion="off"` and the stored
-`localStorage("motion")` value still work (visual tests rely on them); there is just no UI for it.
+`localStorage("motion-test")` (old `motion` key is cleared) value still work (visual tests rely on them); there is just no UI for it.
