@@ -180,6 +180,24 @@ const raw: z.input<typeof caseSchema>[] = [
       { value: "1", label: "ordinary camera — no depth sensor" },
       { value: "4", label: "candles a second, always alive" },
     ],
+    outcomes: [
+      {
+        title: "Pulls a crowd",
+        body: "A live crypto chart every visitor reads at a glance, moving on its own until someone steps in",
+      },
+      {
+        title: "One arm, the whole market",
+        body: "Raise an arm to pump, lower it to dump. No app, no controller, no instructions",
+      },
+      {
+        title: "Never quite in control",
+        body: "The market pushes back, so every run ends in a story people retell at the booth",
+      },
+      {
+        title: "Made to be filmed",
+        body: "Crashes and surges hit the whole wall, right when the phones are already up",
+      },
+    ],
     cover: {
       src: "/works/the-whale/whale_pump.webp",
       alt: "At a conference booth a visitor in the floor zone raises an arm and the projected candlestick chart pumps upwards",
