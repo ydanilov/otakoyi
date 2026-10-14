@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 
+import { ProposalDialog } from "@/components/site/proposal-dialog"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
 import { site } from "@/config/site"
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <SiteFooter />
+        <ProposalDialog />
       </body>
     </html>
   )

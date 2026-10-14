@@ -17,4 +17,25 @@ export const site = {
   ],
 } as const
 
-export const proposalHref = `mailto:${site.email}?subject=${encodeURIComponent(site.cta.subject)}`
+/** Every "Get a proposal" link points here; `ProposalDialog` (mounted in the layout) opens on it. */
+export const proposalHref = "#proposal"
+
+export const proposalMailto = `mailto:${site.email}?subject=${encodeURIComponent(site.cta.subject)}`
+
+/**
+ * Google Form that receives proposals. `action` is the form's `…/formResponse` URL; `entries`
+ * maps each field to its `entry.<id>`. While `action` is empty the dialog falls back to a
+ * pre-filled email.
+ */
+export const proposalForm = {
+  action: "",
+  entries: {
+    name: "",
+    email: "",
+    company: "",
+    event: "",
+    date: "",
+    budget: "",
+    message: "",
+  },
+} as const
