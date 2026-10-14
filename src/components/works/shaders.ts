@@ -103,13 +103,18 @@ ${common}
 void main() {
   vec2 base = pointerWarp(aspectUv());
   vec2 uv = base * (1.0 + uDensity * 2.0);
-  float h = fbm(uv * 1.6 + vec2(uTime * 0.03, -uTime * 0.02)) + pointerGlow(base) * 0.25;
+  // The pointer raises a hill in the terrain: iso-lines gather into rings around it and glow.
+  vec2 pd = base - uPointer;
+  float hill = uPointerAmt * exp(-dot(pd, pd) * 14.0);
+  float h0 = fbm(uv * 1.6 + vec2(uTime * 0.03, -uTime * 0.02));
+  float h = h0 + hill * 0.45;
   float bands = 10.0 + uDensity * 30.0;
   float l = abs(fract(h * bands) - 0.5) / fwidth(h * bands);
   float line = 1.0 - clamp(l, 0.0, 1.0);
   vec3 bg = uC4 * 0.04;
   vec3 col = mix(bg, mix(uC2, uC1, h), line);
-  col += uC3 * smoothstep(0.7, 0.75, h) * 0.15;
+  col += uC1 * line * smoothstep(0.1, 0.8, hill) * 0.9;
+  col += uC3 * smoothstep(0.7, 0.75, h0) * 0.15;
   gl_FragColor = vec4(col, 1.0);
 }
 `

@@ -20,7 +20,7 @@ type HeroFieldProps = {
  * reacts to people in front of it. Decorative: hidden from assistive tech. Motion off (ADR-006):
  * a still frame with no pointer reaction.
  */
-export function HeroField({ work = "lattice", seed, density, className }: HeroFieldProps) {
+export function HeroField({ work = "contour", seed, density, className }: HeroFieldProps) {
   const ref = useRef<HTMLDivElement>(null)
   const pointer = useRef<WorkPointer>({ x: 0, y: 0, on: false })
   const motion = useMotion()

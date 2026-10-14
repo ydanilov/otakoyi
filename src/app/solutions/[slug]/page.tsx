@@ -59,26 +59,10 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
               <a href="#installations">See installations</a>
             </Button>
           </div>
-          <dl className="mt-14 grid max-w-3xl gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-3">
-            {s.facts.map((f) => (
-              <div
-                key={f.label}
-                className="flex flex-col-reverse bg-background/80 p-5 backdrop-blur"
-              >
-                <dt className="mt-1 text-sm text-muted-foreground">{f.label}</dt>
-                <dd className="text-2xl font-medium tracking-tight">{f.value}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28">
-        <SectionHeading
-          eyebrow="What you get"
-          title="Built for this exact moment"
-          className="mb-12"
-        />
         <ul className="grid gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-3">
           {s.outcomes.map((o, i) => (
             <li key={o.title} className="bg-background p-6 md:p-8">
