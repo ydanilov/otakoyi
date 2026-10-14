@@ -1,14 +1,8 @@
 import { Benefits } from "@/components/sections/benefits"
 import { Cta } from "@/components/sections/cta"
-import {
-  DeliveryCompare,
-  DeliveryPromises,
-  DeliveryStatement,
-  DeliveryTimeline,
-} from "@/components/sections/delivery-variants"
+import { DeliveryStatement } from "@/components/sections/delivery-statement"
 import { Faq } from "@/components/sections/faq"
 import { Hero } from "@/components/sections/hero"
-import { InNumbers } from "@/components/sections/in-numbers"
 import { PinnedProcess } from "@/components/sections/pinned-process"
 import { SectionHeading } from "@/components/sections/section-heading"
 import { SpecMarquee } from "@/components/sections/spec-marquee"
@@ -39,14 +33,6 @@ const specs = [
   "Remote monitoring",
   "Your palette, your type",
 ] as const
-
-/** Claims taken from our own delivery model (process, runtime) — not client results. */
-const stats = [
-  { value: 1, prefix: "≈", suffix: " wk", label: "to a live prototype in your brand" },
-  { value: 1, suffix: " artwork", label: "re-shaped for every venue, screen and size" },
-  { value: 24, suffix: "/7", label: "runtime for permanent lobby walls" },
-  { value: 0, suffix: " re-renders", label: "when the venue or screen changes" },
-]
 
 export default function HomePage() {
   const featured = getCases().filter((c) => c.featured)
@@ -87,23 +73,7 @@ export default function HomePage() {
           title="Built to run, not to render"
           className="mb-12"
         />
-        <InNumbers stats={stats} />
-        {/* Temporary: four options for this block, for the owner to pick. */}
-        {(
-          [
-            ["A", "Promises", <DeliveryPromises key="a" />],
-            ["B", "Timeline", <DeliveryTimeline key="b" />],
-            ["C", "Comparison", <DeliveryCompare key="c" />],
-            ["D", "Statement", <DeliveryStatement key="d" />],
-          ] as const
-        ).map(([id, name, node]) => (
-          <div key={id} className="mt-20 border-t pt-8">
-            <p className="mb-8 font-mono text-xs tracking-widest text-signal uppercase">
-              Variant {id} · {name}
-            </p>
-            {node}
-          </div>
-        ))}
+        <DeliveryStatement />
       </Section>
 
       <PinnedProcess skipTo="#faq" />
