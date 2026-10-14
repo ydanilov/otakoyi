@@ -19,17 +19,18 @@ import { proposalForm, proposalMailto, site } from "@/config/site"
 
 type Field = keyof typeof proposalForm.entries
 
-/** Budget range in thousands of euros; the top of the scale means "or more". */
-const BUDGET = { min: 10, max: 200, step: 5, initial: [30, 80] as [number, number] }
-const formatBudget = ([lo, hi]: number[]) => `€${lo}k – €${hi}k${hi === BUDGET.max ? "+" : ""}`
+/** Budget stops in thousands of euros (finer at the low end); the last one means "or more". */
+const BUDGET_STOPS = [2, 3, 5, 7.5, 10, 15, 20, 30, 40, 50, 75, 100, 150, 200]
+const BUDGET_INITIAL: [number, number] = [4, 9] // €10k – €50k
+const formatBudget = ([lo, hi]: number[]) => {
+  const k = (i: number) => `€${BUDGET_STOPS[i]}k`
+  return `${k(lo!)} – ${k(hi!)}${hi === BUDGET_STOPS.length - 1 ? "+" : ""}`
+}
 
 const fields: { name: Field; label: string; type?: string; required?: boolean; wide?: boolean }[] =
   [
-    { name: "name", label: "Name", required: true },
     { name: "email", label: "Work email", type: "email", required: true },
-    { name: "company", label: "Company" },
-    { name: "event", label: "Event or venue" },
-    { name: "date", label: "Date" },
+    { name: "event", label: "Event name", required: true },
   ]
 
 /** Sends the answers to the Google Form, or opens a pre-filled email while none is configured. */
@@ -59,7 +60,7 @@ export default function ProposalForm({
   open: boolean
   onOpenChange: (open: boolean) => void
 }) {
-  const [budget, setBudget] = useState<number[]>(BUDGET.initial)
+  const [budget, setBudget] = useState<number[]>(BUDGET_INITIAL)
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle")
 
   const onOpenChange = (v: boolean) => {
@@ -106,7 +107,7 @@ export default function ProposalForm({
             <DialogHeader>
               <DialogTitle className="text-2xl">{site.cta.label}</DialogTitle>
               <DialogDescription>
-                Venue and date are enough to start. We reply within one working day
+                An email and the event are enough to start. We reply within one working day
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={onSubmit} className="grid gap-4 sm:grid-cols-2">
@@ -142,10 +143,11 @@ export default function ProposalForm({
                 </div>
                 <Slider
                   aria-labelledby="proposal-budget-label"
-                  thumbLabels={["Budget from, thousand euros", "Budget up to, thousand euros"]}
-                  min={BUDGET.min}
-                  max={BUDGET.max}
-                  step={BUDGET.step}
+                  thumbLabels={["Budget from", "Budget up to"]}
+                  thumbValueTexts={budget.map((i) => `€${BUDGET_STOPS[i]} thousand`)}
+                  min={0}
+                  max={BUDGET_STOPS.length - 1}
+                  step={1}
                   minStepsBetweenThumbs={1}
                   value={budget}
                   onValueChange={setBudget}
