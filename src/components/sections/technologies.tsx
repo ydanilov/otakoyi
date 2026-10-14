@@ -2,116 +2,119 @@
 
 import { useState } from "react"
 
+import { Badge } from "@/components/ui/badge"
 import { GenerativeWork } from "@/components/works/generative-work"
-import type { WorkId } from "@/components/works/registry"
 import type { Technology } from "@/content/technologies"
 import { cn } from "@/lib/utils"
 
+const num = (i: number) => String(i + 1).padStart(2, "0")
+
 /**
- * A large-type list of technologies (one group: the surfaces we show on, or the inputs that
- * drive them) next to one live preview. Hover, focus or tap a row and the preview switches to
- * it; the row opens to show what it does and where it lives. `flip` puts the preview on the left.
- * Small screens: the list alone, every row open.
+ * Selector: a tab list on the left (a horizontal scroller on small screens) and one big panel on
+ * the right with the selected technology's live work, what it does and where it lives.
  */
-export function Technologies({ items, flip = false }: { items: Technology[]; flip?: boolean }) {
+export function TechnologySelector({ items, label }: { items: Technology[]; label: string }) {
   const [active, setActive] = useState(0)
-  const current = items[active]!
-  const layers = [...new Set(items.map((t) => t.preview.work))] as WorkId[]
-
+  const t = items[active]!
   return (
-    <div
-      className={cn(
-        "grid gap-10 lg:gap-16",
-        flip
-          ? "lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]"
-          : "lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]",
-      )}
-    >
-      <div className={cn(flip && "lg:order-2")}>
-        <ol className="border-t">
-          {items.map((t, i) => {
-            const open = i === active
-            return (
-              <li key={t.slug} className="border-b">
-                <button
-                  type="button"
-                  onPointerEnter={() => setActive(i)}
-                  onFocus={() => setActive(i)}
-                  onClick={() => setActive(i)}
-                  aria-pressed={open}
-                  className="group grid w-full cursor-pointer grid-cols-[2.5rem_minmax(0,1fr)] items-baseline gap-x-2 py-5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring md:py-6"
-                >
-                  <span
-                    className={cn(
-                      "font-mono text-xs tracking-widest transition-colors",
-                      open ? "text-signal" : "text-muted-foreground",
-                    )}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span
-                    className={cn(
-                      "text-2xl font-medium tracking-tight text-balance transition-colors duration-300 md:text-4xl",
-                      open ? "text-foreground" : "text-foreground lg:text-muted-foreground",
-                      "group-hover:text-foreground",
-                    )}
-                  >
-                    {t.name}
-                  </span>
-                  <span
-                    className={cn(
-                      "col-start-2 grid transition-[grid-template-rows,opacity] duration-500 ease-out",
-                      open
-                        ? "grid-rows-[1fr] opacity-100"
-                        : "grid-rows-[1fr] opacity-100 lg:grid-rows-[0fr] lg:opacity-0",
-                    )}
-                  >
-                    <span className="overflow-hidden">
-                      <span className="mt-3 block max-w-xl text-pretty text-muted-foreground">
-                        {t.line}
-                      </span>
-                      <span className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs tracking-widest text-muted-foreground uppercase">
-                        {t.where.map((w) => (
-                          <span key={w}>{w}</span>
-                        ))}
-                      </span>
-                    </span>
-                  </span>
-                </button>
-              </li>
-            )
-          })}
-        </ol>
+    <div className="grid gap-6 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-10">
+      <div
+        role="tablist"
+        aria-label={label}
+        aria-orientation="vertical"
+        className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0"
+      >
+        {items.map((x, i) => (
+          <button
+            key={x.slug}
+            id={`tech-tab-${x.slug}`}
+            type="button"
+            role="tab"
+            aria-selected={i === active}
+            aria-controls="tech-panel"
+            onClick={() => setActive(i)}
+            onPointerEnter={(e) => e.pointerType === "mouse" && setActive(i)}
+            className={cn(
+              "flex shrink-0 cursor-pointer items-baseline gap-3 rounded-lg border px-4 py-3 text-left transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              i === active
+                ? "border-signal/60 bg-muted text-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground lg:border-border",
+            )}
+          >
+            <span className="font-mono text-xs text-signal">{num(i)}</span>
+            {x.name}
+          </button>
+        ))}
       </div>
-
-      {/* One live preview, crossfading between the works behind each technology. */}
-      <div aria-hidden className={cn("relative hidden lg:block", flip && "lg:order-1")}>
-        <div className="sticky top-24 aspect-[4/5] overflow-hidden rounded-xl border">
-          {layers.map((work) => {
-            const on = current.preview.work === work
-            const src = on ? current.preview : items.find((t) => t.preview.work === work)!.preview
-            return (
-              <GenerativeWork
-                key={work}
-                work={work}
-                seed={src.seed}
-                density={src.density}
-                animate={on}
-                className={cn(
-                  "absolute inset-0 transition-[opacity,transform] duration-700",
-                  on ? "scale-100 opacity-100" : "scale-105 opacity-0",
-                )}
-              />
-            )
-          })}
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/90 to-transparent p-6">
-            <p className="font-mono text-xs tracking-widest text-signal uppercase">
-              {String(active + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
-            </p>
-            <p className="mt-1 text-lg font-medium">{current.name}</p>
+      <div
+        id="tech-panel"
+        role="tabpanel"
+        aria-labelledby={`tech-tab-${t.slug}`}
+        className="relative isolate flex min-h-[28rem] overflow-hidden rounded-xl border lg:min-h-[32rem]"
+      >
+        <GenerativeWork
+          key={t.preview.work}
+          work={t.preview.work}
+          seed={t.preview.seed}
+          density={t.preview.density}
+          className="absolute inset-0 -z-10"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/70 to-transparent md:bg-gradient-to-r md:via-background/60"
+        />
+        <div className="mt-auto max-w-xl space-y-5 p-6 md:p-10">
+          <p className="font-mono text-xs tracking-widest text-signal uppercase">
+            {num(active)} / {num(items.length - 1)}
+          </p>
+          <h3 className="text-3xl font-medium tracking-tight text-balance md:text-5xl">{t.name}</h3>
+          <p className="text-lg text-pretty text-muted-foreground">{t.line}</p>
+          <div className="flex flex-wrap gap-1.5">
+            {t.where.map((w) => (
+              <Badge key={w} variant="outline" className="bg-background/60 backdrop-blur">
+                {w}
+              </Badge>
+            ))}
           </div>
         </div>
       </div>
     </div>
+  )
+}
+
+/** Bento: one card per technology, its live work behind, what it does and where it lives. */
+export function TechnologyBento({ items }: { items: Technology[] }) {
+  return (
+    <ul className="grid gap-3 sm:grid-cols-2">
+      {items.map((t, i) => (
+        <li
+          key={t.slug}
+          className="group relative isolate flex min-h-80 flex-col justify-between overflow-hidden rounded-xl border p-6 md:min-h-96 md:p-8"
+        >
+          <GenerativeWork
+            work={t.preview.work}
+            seed={t.preview.seed}
+            density={t.preview.density}
+            className="absolute inset-0 -z-10 opacity-50 transition-opacity duration-500 group-hover:opacity-90"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/70 to-background/20"
+          />
+          <p className="font-mono text-xs tracking-widest text-signal uppercase">{num(i)}</p>
+          <div>
+            <h3 className="text-2xl font-medium tracking-tight md:text-3xl">{t.name}</h3>
+            <p className="mt-2 max-w-md text-pretty text-muted-foreground">{t.line}</p>
+            <div className="mt-4 flex flex-wrap gap-1.5">
+              {t.where.map((w) => (
+                <Badge key={w} variant="outline" className="bg-background/60 backdrop-blur">
+                  {w}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
   )
 }

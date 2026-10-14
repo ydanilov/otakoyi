@@ -6,7 +6,7 @@ import { technologies } from "@/content/technologies"
 import { InNumbers } from "./in-numbers"
 import { Occasions } from "./occasions"
 import { SpecMarquee } from "./spec-marquee"
-import { Technologies } from "./technologies"
+import { TechnologyBento, TechnologySelector } from "./technologies"
 import { VenueStage, VenueStill } from "./venue-stage"
 import { VenueTour } from "./venue-tour"
 
@@ -65,34 +65,35 @@ export const Numbers: Story = {
   ),
 }
 
-export const TechnologyInputsFlipped: Story = {
+export const TechnologyInputsBento: Story = {
   render: () => (
     <div className="p-8">
-      <Technologies items={technologies.filter((t) => t.kind === "input")} flip />
+      <TechnologyBento items={technologies.filter((t) => t.kind === "input")} />
     </div>
   ),
   play: async ({ canvas }) => {
-    await expect(canvas.getByRole("button", { name: /Motion and body tracking/ })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    )
+    await expect(canvas.getByRole("heading", { name: "Motion and body tracking" })).toBeVisible()
+    await expect(canvas.getAllByRole("listitem").length).toBeGreaterThanOrEqual(4)
   },
 }
 
-export const TechnologyList: Story = {
+export const TechnologySurfacesSelector: Story = {
   render: () => (
     <div className="p-8">
-      <Technologies items={technologies.filter((t) => t.kind === "output")} />
+      <TechnologySelector
+        label="Surfaces"
+        items={technologies.filter((t) => t.kind === "output")}
+      />
     </div>
   ),
   play: async ({ canvas, userEvent }) => {
-    const first = canvas.getByRole("button", { name: /Projection mapping/ })
-    await expect(first).toHaveAttribute("aria-pressed", "true")
-    await expect(canvas.queryByRole("button", { name: /Motion and body tracking/ })).toBeNull()
-    const led = canvas.getByRole("button", { name: /^02\s*LED walls/ })
+    const first = canvas.getByRole("tab", { name: /Projection mapping/ })
+    await expect(first).toHaveAttribute("aria-selected", "true")
+    await expect(canvas.queryByRole("tab", { name: /Motion and body tracking/ })).toBeNull()
+    const led = canvas.getByRole("tab", { name: /^02\s*LED walls/ })
     await userEvent.click(led)
-    await expect(led).toHaveAttribute("aria-pressed", "true")
-    await expect(first).toHaveAttribute("aria-pressed", "false")
+    await expect(led).toHaveAttribute("aria-selected", "true")
+    await expect(canvas.getByRole("tabpanel")).toHaveTextContent(/LED walls/)
   },
 }
 
