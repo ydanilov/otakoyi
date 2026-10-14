@@ -1,5 +1,4 @@
 import { Benefits } from "@/components/sections/benefits"
-import { BrandDemo } from "@/components/sections/brand-demo"
 import { Cta } from "@/components/sections/cta"
 import { Faq } from "@/components/sections/faq"
 import { Hero } from "@/components/sections/hero"
@@ -93,16 +92,6 @@ export default function HomePage() {
           className="mb-12"
         />
         <InNumbers stats={stats} />
-      </Section>
-
-      <Section id="customisation">
-        <SectionHeading
-          eyebrow="Customised to your brand"
-          title="Your brand is the input, not a logo in the corner"
-          description="Every installation is built around your identity and your data — so it could only ever be yours"
-          className="mb-12"
-        />
-        <BrandDemo />
       </Section>
 
       <PinnedProcess skipTo="#faq" />

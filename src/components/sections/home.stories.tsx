@@ -89,7 +89,7 @@ export const TechnologyList: Story = {
     const first = canvas.getByRole("button", { name: /Projection mapping/ })
     await expect(first).toHaveAttribute("aria-pressed", "true")
     await expect(canvas.queryByRole("button", { name: /Motion and body tracking/ })).toBeNull()
-    const led = canvas.getByRole("button", { name: /LED walls/ })
+    const led = canvas.getByRole("button", { name: /^02\s*LED walls/ })
     await userEvent.click(led)
     await expect(led).toHaveAttribute("aria-pressed", "true")
     await expect(first).toHaveAttribute("aria-pressed", "false")
