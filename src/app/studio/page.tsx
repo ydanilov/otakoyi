@@ -51,24 +51,35 @@ const team = [
 export default function StudioPage() {
   return (
     <>
-      <section className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:grid-cols-2 md:px-8 md:py-24">
-        <div>
-          <p className="mb-4 font-mono text-xs tracking-widest text-muted-foreground uppercase">
-            Studio
+      <section className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
+        <p className="mb-6 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+          Studio
+        </p>
+        <h1 className="sr-only">Artists with toolboxes. Engineers with taste</h1>
+        {/* Two phrases on one screen, set apart: the artist top left, the engineer bottom right. */}
+        <div className="grid gap-8 md:grid-cols-[1fr_minmax(0,0.85fr)_1fr] md:gap-8">
+          <p
+            aria-hidden
+            className="text-5xl leading-[0.9] font-medium tracking-tighter md:col-span-2 md:text-7xl lg:text-8xl"
+          >
+            Artists with toolboxes
           </p>
-          <h1 className="text-5xl font-medium tracking-tighter text-balance md:text-7xl">
-            Artists with toolboxes. Engineers with taste
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
+          <p className="max-w-sm text-lg text-pretty text-muted-foreground md:col-start-1 md:row-start-2 md:self-end">
             {site.description}
           </p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/studio/studio.webp"
+            alt="A creative technologist at work in the studio, generative visuals on the monitors"
+            className="aspect-[4/5] w-full rounded-xl object-cover md:col-start-2 md:row-start-2"
+          />
+          <p
+            aria-hidden
+            className="text-5xl leading-[0.9] font-medium tracking-tighter text-signal md:col-start-3 md:row-start-2 md:self-end md:text-right md:text-7xl lg:text-8xl"
+          >
+            Engineers with taste
+          </p>
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/studio/studio.webp"
-          alt="A creative technologist at work in the studio, generative visuals on the monitors"
-          className="aspect-square w-full rounded-xl object-cover"
-        />
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">

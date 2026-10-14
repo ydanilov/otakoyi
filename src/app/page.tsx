@@ -68,11 +68,6 @@ export default function HomePage() {
       <WorksReel items={featured} />
 
       <Section id="numbers">
-        <SectionHeading
-          eyebrow="How we deliver"
-          title="Built to run, not to render"
-          className="mb-12"
-        />
         <DeliveryStatement />
       </Section>
 
