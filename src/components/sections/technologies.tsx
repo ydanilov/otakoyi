@@ -101,12 +101,22 @@ export function TechnologyBento({ items }: { items: Technology[] }) {
           key={t.slug}
           className="group relative isolate flex min-h-80 flex-col justify-between overflow-hidden rounded-xl border p-6 md:min-h-96 md:p-8"
         >
-          <GenerativeWork
-            work={t.preview.work}
-            seed={t.preview.seed}
-            density={t.preview.density}
-            className="absolute inset-0 -z-10 opacity-50 transition-opacity duration-500 group-hover:opacity-90"
-          />
+          {t.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={t.image}
+              alt=""
+              loading="lazy"
+              className="absolute inset-0 -z-10 size-full object-cover opacity-80 transition-[opacity,transform] duration-700 group-hover:scale-105 group-hover:opacity-100"
+            />
+          ) : (
+            <GenerativeWork
+              work={t.preview.work}
+              seed={t.preview.seed}
+              density={t.preview.density}
+              className="absolute inset-0 -z-10 opacity-50 transition-opacity duration-500 group-hover:opacity-90"
+            />
+          )}
           <div
             aria-hidden
             className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/70 to-background/20"

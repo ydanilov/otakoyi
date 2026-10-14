@@ -85,6 +85,7 @@ export const technologies: Technology[] = [
   {
     kind: "input",
     slug: "body-tracking",
+    image: "/technologies/body-tracking.webp",
     name: "Motion and body tracking",
     line: "Cameras read how visitors move and turn it into the show — nothing to wear, nothing to learn",
     where: ["Booths", "Immersive rooms", "Activations"],
@@ -93,6 +94,7 @@ export const technologies: Technology[] = [
   {
     kind: "input",
     slug: "sound-show-control",
+    image: "/technologies/sound-show-control.webp",
     name: "Sound and show control",
     line: "The music, the lighting desk and the show caller's cues drive every drop and reveal",
     where: ["Concerts", "Keynotes", "Launches"],
@@ -101,6 +103,7 @@ export const technologies: Technology[] = [
   {
     kind: "input",
     slug: "sensors-data",
+    image: "/technologies/sensors-data.webp",
     name: "Sensors and live data",
     line: "Touch, lidar, weather or your own business numbers, turned into a calm, on-brand picture",
     where: ["Lobbies", "Data walls", "Museums"],
@@ -109,6 +112,7 @@ export const technologies: Technology[] = [
   {
     kind: "input",
     slug: "phones",
+    image: "/technologies/phones.webp",
     name: "Visitors' phones",
     line: "Scan, vote, add your name to the wall — and leave your contact for the sales team",
     where: ["Booths", "Conferences", "Activations"],
