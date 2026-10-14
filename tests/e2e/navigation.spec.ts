@@ -43,13 +43,15 @@ test("mobile menu opens", async ({ page, isMobile }) => {
   await expect(page.getByRole("navigation", { name: "Mobile" })).toBeVisible()
 })
 
-test("proposal CTA opens a pre-filled email", async ({ page }) => {
+test("proposal CTA opens the proposal form", async ({ page }) => {
   await page.goto("/")
   const cta = page
     .getByRole("main")
     .getByRole("link", { name: /Get a proposal/ })
     .first()
-  await expect(cta).toHaveAttribute("href", /^mailto:.+\?subject=/)
+  await expect(cta).toHaveAttribute("href", "#proposal")
+  await cta.click()
+  await expect(page.getByRole("dialog", { name: "Get a proposal" })).toBeVisible()
 })
 
 test("unknown case returns 404", async ({ page }) => {

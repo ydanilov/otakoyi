@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { expect } from "storybook/test"
+import { expect, within } from "storybook/test"
 
 import { Logo } from "./logo"
 import { SiteFooter } from "./site-footer"
 import { SiteHeader } from "./site-header"
+import { ProposalDialog } from "./proposal-dialog"
 import { MotionToggle } from "./motion-toggle"
 
 const meta = { title: "Site/Chrome", parameters: { layout: "fullscreen" } } satisfies Meta
@@ -39,5 +40,14 @@ export const MotionSwitch: Story = {
     await expect(document.documentElement.dataset.motion === "off").toBe(!before)
     await userEvent.click(canvas.getByRole("button"))
     await expect(document.documentElement.dataset.motion === "off").toBe(before)
+  },
+}
+
+export const Proposal: Story = {
+  render: () => <ProposalDialog defaultOpen />,
+  play: async ({ canvasElement }) => {
+    const body = within(canvasElement.ownerDocument.body)
+    await expect(await body.findByRole("dialog", { name: "Get a proposal" })).toBeVisible()
+    await expect(body.getByLabelText(/Work email/)).toBeRequired()
   },
 }
