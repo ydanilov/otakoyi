@@ -28,7 +28,7 @@ export function Cta() {
           <p className="font-mono text-xs tracking-widest text-signal uppercase">Not sure yet?</p>
           <div className="max-w-3xl space-y-6">
             <h2 className="text-4xl leading-[0.95] font-medium tracking-tighter text-balance md:text-7xl">
-              Let's talk it through
+              Let&rsquo;s talk it through
             </h2>
             <p className="max-w-xl text-lg text-pretty text-muted-foreground md:text-xl">
               Tell us about the space, the date or just the idea. We will shape it into an
