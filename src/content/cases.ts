@@ -182,33 +182,33 @@ const raw: z.input<typeof caseSchema>[] = [
     ],
     cover: {
       src: "/works/the-whale/whale_pump.webp",
-      alt: "Candlestick chart climbing steeply while a visitor holds their arm up in whale mode",
+      alt: "At a conference booth a visitor in the floor zone raises an arm and the projected candlestick chart pumps upwards",
     },
     gallery: [
       {
         src: "/works/the-whale/market_live.webp",
-        alt: "Live market chart with no visitor in the zone",
+        alt: "The booth with no whale: the live chart runs on its own while attendees walk past",
         caption: "No whale: scenarios and sentiment run on their own",
       },
       {
         src: "/works/the-whale/whale_dump.webp",
-        alt: "Chart sliding down while the visitor lowers their arm",
+        alt: "A visitor points down and the chart slides in a staircase of red candles",
         caption: "Arm down: the slide is steep, never perfectly clean",
       },
       {
         src: "/works/the-whale/to_the_moon.webp",
-        alt: "Full-screen To the moon event when price hits the ceiling",
+        alt: "A surge event on the projection while the crowd cheers",
         caption: "Moon event: the news explains the correction",
       },
       {
         src: "/works/the-whale/market_crash.webp",
-        alt: "Full-screen crash event when price hits the floor",
+        alt: "A crash event turns the projection red while attendees react",
         caption: "Crash: price hits the floor, the bounce begins",
       },
       {
         src: "/works/the-whale/sandbox_ui.webp",
-        alt: "Tuning sandbox with parameter panels next to the chart",
-        caption: "Tuning sandbox mirroring the TouchDesigner parameters",
+        alt: "Setup in the hall: a technician tunes the parameters on a laptop while a colleague tests the zone",
+        caption: "Setup: tuning the market live while a colleague tests the zone",
       },
     ],
     status: "In development",
