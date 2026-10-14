@@ -33,6 +33,10 @@ export type GenerativeWorkProps = {
   domain?: WorkDomain
   /** React to a pointer given in field coordinates. */
   pointer?: { current: WorkPointer | null }
+  /** How far ahead of the viewport the canvas mounts (IntersectionObserver rootMargin). */
+  preloadMargin?: string
+  /** Show the gradient poster until WebGL is ready. Off where something else shows through. */
+  poster?: boolean
   className?: string
 }
 
@@ -45,11 +49,13 @@ export function GenerativeWork({
   animate = true,
   domain,
   pointer,
+  preloadMargin,
+  poster = true,
   className,
 }: GenerativeWorkProps) {
   const def = works[work]
   const motion = useMotion()
-  const [ref, { inView, seen }] = useVisibility<HTMLDivElement>()
+  const [ref, { inView, seen }] = useVisibility<HTMLDivElement>(preloadMargin)
   const webgl = useWebGL()
   const [ready, setReady] = useState(false)
 
@@ -66,10 +72,12 @@ export function GenerativeWork({
       className={cn("relative overflow-hidden bg-muted", className)}
     >
       {/* Poster: shown until WebGL is ready, and as the fallback when it is unavailable. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,var(--gen-2),transparent_60%),radial-gradient(ellipse_at_80%_80%,var(--gen-3),transparent_55%)] opacity-40"
-      />
+      {poster && (
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,var(--gen-2),transparent_60%),radial-gradient(ellipse_at_80%_80%,var(--gen-3),transparent_55%)] opacity-40"
+        />
+      )}
       {showCanvas && (
         <div className="absolute inset-0">
           <ShaderCanvas

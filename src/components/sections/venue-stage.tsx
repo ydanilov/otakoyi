@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils"
 const IMG_W = 1920
 const IMG_H = 1080
 /** Bounds for the box a work renders into before it is warped onto its screen. */
+/** Live screens mount this far ahead of the viewport, so they are drawn before they are seen. */
+const PRELOAD = "150% 0px"
 const MIN_W = 160
 const MAX_W = 960
 
@@ -100,7 +102,7 @@ function useSize<T extends HTMLElement>() {
   return [ref, size] as const
 }
 
-type ScreenGeom = { w: number; h: number; matrix: string; inverse: M3 }
+type ScreenGeom = { w: number; h: number; matrix: string; inverse: M3; reflection?: string }
 
 /** Size and placement of every screen of a venue in the current container. */
 function screenGeometry(venue: Venue, size: [number, number]): ScreenGeom[] {
@@ -111,7 +113,14 @@ function screenGeometry(venue: Venue, size: [number, number]): ScreenGeom[] {
     const w = Math.round(Math.min(MAX_W, Math.max(MIN_W, span * 1.2)))
     const h = Math.round(Math.min(MAX_W * 1.5, w / sc.aspect))
     const t = quadHomography(w, h, pts)
-    return { w, h, matrix: quadMatrix(w, h, pts), inverse: adj(t) }
+    const mirror = sc.reflection?.map(([u, v]) => coverPoint(u, v, size[0], size[1]))
+    return {
+      w,
+      h,
+      matrix: quadMatrix(w, h, pts),
+      inverse: adj(t),
+      reflection: mirror && quadMatrix(w, h, mirror),
+    }
   })
 }
 
@@ -155,7 +164,9 @@ export function VenueStage({
   const motion = useMotion()
   const [ref, size] = useSize<HTMLDivElement>()
   const pointer = useRef<WorkPointer>({ x: 0, y: 0, on: false })
-  const geom = useMemo(() => (size ? screenGeometry(venues[active]!, size) : null), [size, active])
+  // Geometry for every venue, so neighbours can be mounted ahead of time.
+  const geoms = useMemo(() => (size ? venues.map((v) => screenGeometry(v, size)) : null), [size])
+  const geom = geoms?.[active] ?? null
 
   useEffect(() => {
     if (!motion || !geom) return
@@ -201,16 +212,59 @@ export function VenueStage({
             loading={i === 0 ? "eager" : "lazy"}
             decoding="async"
           />
-          {motion && geom && i === active && (
+          {/* The venue on show and its neighbours keep live layers mounted (only the one on show
+              animates), so a scene never arrives with a still where its live screens should be. */}
+          {motion && geoms && Math.abs(i - active) <= 1 && (
             <>
+              {v.base && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={v.base}
+                  alt=""
+                  className="absolute inset-0 size-full object-cover"
+                  decoding="async"
+                />
+              )}
+              {/* Live floor reflections: the same field, mirrored, blurred and fading away. */}
+              {v.screens.map((sc, k) =>
+                geoms[i]![k]!.reflection ? (
+                  <div
+                    key={`${sc.name}-reflection`}
+                    className="absolute top-0 left-0 origin-top-left mix-blend-screen"
+                    style={{
+                      width: geoms[i]![k]!.w,
+                      height: geoms[i]![k]!.h,
+                      transform: geoms[i]![k]!.reflection,
+                      filter: "blur(14px) brightness(1.5) saturate(1.15)",
+                      opacity: 0.7,
+                      // Fades with distance from the screen, and softly at the sides.
+                      maskImage:
+                        "linear-gradient(to bottom, transparent 35%, black 100%), linear-gradient(to right, transparent, black 18%, black 82%, transparent)",
+                      maskComposite: "intersect",
+                    }}
+                  >
+                    <GenerativeWork
+                      work={sc.work}
+                      seed={v.seed}
+                      brandColors={v.colors}
+                      domain={sc.domain}
+                      pointer={i === active ? pointer : undefined}
+                      animate={i === active}
+                      preloadMargin={PRELOAD}
+                      poster={false}
+                      className="size-full bg-transparent"
+                    />
+                  </div>
+                ) : null,
+              )}
               {v.screens.map((sc, k) => (
                 <div
                   key={sc.name}
                   className="absolute top-0 left-0 origin-top-left saturate-125"
                   style={{
-                    width: geom[k]!.w,
-                    height: geom[k]!.h,
-                    transform: geom[k]!.matrix,
+                    width: geoms[i]![k]!.w,
+                    height: geoms[i]![k]!.h,
+                    transform: geoms[i]![k]!.matrix,
                     filter: `brightness(${1.5 * sc.dim})`,
                   }}
                 >
@@ -219,8 +273,11 @@ export function VenueStage({
                     seed={v.seed}
                     brandColors={v.colors}
                     domain={sc.domain}
-                    pointer={pointer}
-                    className="size-full bg-background"
+                    pointer={i === active ? pointer : undefined}
+                    animate={i === active}
+                    preloadMargin={PRELOAD}
+                    poster={false}
+                    className="size-full bg-transparent"
                   />
                 </div>
               ))}
