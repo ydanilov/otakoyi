@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 import type { GenerativeMode } from "@/lib/tokens.generated"
 import { works, type WorkId } from "./registry"
 import { useVisibility, useWebGL } from "./runtime"
-import type { BrandColors } from "./shader-canvas"
+import type { BrandColors, WorkDomain, WorkPointer } from "./shader-canvas"
 
 const ShaderCanvas = dynamic(() => import("./shader-canvas"), { ssr: false })
 
@@ -29,6 +29,10 @@ export type GenerativeWorkProps = {
   density?: number
   /** Animate over time. Forced off when site motion is off (ADR-006) and when offscreen. */
   animate?: boolean
+  /** Sample a field shared with other surfaces (several screens showing one continuous work). */
+  domain?: WorkDomain
+  /** React to a pointer given in field coordinates. */
+  pointer?: { current: WorkPointer | null }
   className?: string
 }
 
@@ -39,6 +43,8 @@ export function GenerativeWork({
   brandColors,
   density,
   animate = true,
+  domain,
+  pointer,
   className,
 }: GenerativeWorkProps) {
   const def = works[work]
@@ -74,6 +80,8 @@ export function GenerativeWork({
             brandColors={brandColors}
             animate={animate && motion && inView}
             frozenTime={12}
+            domain={domain}
+            pointer={pointer}
             onReady={() => setReady(true)}
           />
         </div>

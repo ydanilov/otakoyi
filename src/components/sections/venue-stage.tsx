@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 import { GenerativeWork } from "@/components/works/generative-work"
+import type { WorkPointer } from "@/components/works/shader-canvas"
 import { venues, type Venue } from "@/content/venues"
 import { useMotion } from "@/lib/motion"
 import { cn } from "@/lib/utils"
@@ -10,8 +11,9 @@ import { cn } from "@/lib/utils"
 /** Source size of the Blender stills. */
 const IMG_W = 1920
 const IMG_H = 1080
-/** Width of the box the generative work renders into before it is warped onto the screen. */
-const WORK_W = 960
+/** Bounds for the box a work renders into before it is warped onto its screen. */
+const MIN_W = 160
+const MAX_W = 960
 
 /** Which venue a scroll position belongs to: scroll is split into equal parts, one per venue. */
 export function venueIndex(progress: number) {
@@ -59,15 +61,20 @@ function basis(p: [number, number][]): M3 {
   const v = mulv(adj(m), [p[3]![0], p[3]![1], 1])
   return mul(m, [v[0]!, 0, 0, 0, v[1]!, 0, 0, 0, v[2]!])
 }
-/** matrix3d() for a w×h box (origin top-left) onto points TL, TR, BR, BL. */
-export function quadMatrix(w: number, h: number, to: [number, number][]) {
+/** 3×3 projective map from a w×h box (origin top-left) onto points TL, TR, BR, BL. */
+function quadHomography(w: number, h: number, to: [number, number][]): M3 {
   const from: [number, number][] = [
     [0, 0],
     [w, 0],
     [w, h],
     [0, h],
   ]
-  const t = mul(basis(to), adj(basis(from)))
+  return mul(basis(to), adj(basis(from)))
+}
+
+/** matrix3d() for a w×h box (origin top-left) onto points TL, TR, BR, BL. */
+export function quadMatrix(w: number, h: number, to: [number, number][]) {
+  const t = quadHomography(w, h, to)
   const n = t.map((x) => x / t[8]!)
   return `matrix3d(${[n[0], n[3], 0, n[6], n[1], n[4], 0, n[7], 0, 0, 1, 0, n[2], n[5], 0, n[8]].join(",")})`
 }
@@ -93,34 +100,36 @@ function useSize<T extends HTMLElement>() {
   return [ref, size] as const
 }
 
-/** The live generative work, warped onto the venue's screen. */
-function LiveScreen({
-  venue,
-  size,
-  live,
-}: {
-  venue: Venue
-  size: [number, number]
-  live: boolean
-}) {
-  const w = WORK_W
-  const h = Math.round(WORK_W / venue.aspect)
-  const pts = venue.corners.map(([u, v]) => coverPoint(u, v, size[0], size[1]))
-  return (
-    <div
-      aria-hidden
-      className="absolute top-0 left-0 origin-top-left brightness-150 saturate-125"
-      style={{ width: w, height: h, transform: quadMatrix(w, h, pts) }}
-    >
-      <GenerativeWork
-        work={venue.work}
-        seed={venue.seed}
-        brandColors={venue.colors}
-        animate={live}
-        className="size-full bg-background"
-      />
-    </div>
-  )
+type ScreenGeom = { w: number; h: number; matrix: string; inverse: M3 }
+
+/** Size and placement of every screen of a venue in the current container. */
+function screenGeometry(venue: Venue, size: [number, number]): ScreenGeom[] {
+  return venue.screens.map((sc) => {
+    const pts = sc.corners.map(([u, v]) => coverPoint(u, v, size[0], size[1]))
+    // Render each work at about its on-screen size: small totems stay cheap, big walls sharp.
+    const span = Math.hypot(pts[1]![0] - pts[0]![0], pts[1]![1] - pts[0]![1])
+    const w = Math.round(Math.min(MAX_W, Math.max(MIN_W, span * 1.2)))
+    const h = Math.round(Math.min(MAX_W * 1.5, w / sc.aspect))
+    const t = quadHomography(w, h, pts)
+    return { w, h, matrix: quadMatrix(w, h, pts), inverse: adj(t) }
+  })
+}
+
+/** Container point → field coordinates of the first screen under it, or null. */
+function pointToField(venue: Venue, geom: ScreenGeom[], x: number, y: number) {
+  for (let i = 0; i < geom.length; i++) {
+    const g = geom[i]!
+    const [a, b, c] = mulv(g.inverse, [x, y, 1])
+    if (!c) continue
+    const bx = a! / c
+    const by = b! / c
+    if (bx < 0 || by < 0 || bx > g.w || by > g.h) continue
+    const u = bx / g.w
+    const v = 1 - by / g.h
+    const d = venue.screens[i]!.domain
+    return [d.o[0] + u * d.u[0] + v * d.v[0], d.o[1] + u * d.u[1] + v * d.v[1]] as const
+  }
+  return null
 }
 
 type VenueStageProps = {
@@ -131,18 +140,41 @@ type VenueStageProps = {
 }
 
 /**
- * Four venues — exhibition stand, office lobby, concert, museum room — as Blender stills with a
- * live generative work on each main screen. Layers per venue: the still, the live screen, then
- * the still again with the screen cut out, so people in front of the screen stay in front.
- * Venues crossfade. Motion off (ADR-006): the stills alone, with their rendered screens.
+ * Four venues — exhibition stand, office lobby, concert, museum room — as Blender stills with
+ * live generative works on every screen. Layers per venue: the still, the live screens, then the
+ * still again with the screens cut out, so people in front of a screen stay in front.
+ * All screens of a venue sample one shared field (walls unfold around the room), and the cursor
+ * bends that field wherever it points. Venues crossfade; only the venue on show runs WebGL.
+ * Motion off (ADR-006): the stills alone, with their rendered screens.
  */
 export function VenueStage({
   active,
-  label = "An exhibition stand, an office lobby, a concert and an immersive museum room, each with a live generative work on its main screen",
+  label = "An exhibition stand, an office lobby, a concert and an immersive museum room, with live generative works on their screens that react to the cursor",
   className,
 }: VenueStageProps) {
   const motion = useMotion()
   const [ref, size] = useSize<HTMLDivElement>()
+  const pointer = useRef<WorkPointer>({ x: 0, y: 0, on: false })
+  const geom = useMemo(() => (size ? screenGeometry(venues[active]!, size) : null), [size, active])
+
+  useEffect(() => {
+    if (!motion || !geom) return
+    const el = ref.current
+    if (!el) return
+    const move = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect()
+      const hit = pointToField(venues[active]!, geom, e.clientX - r.left, e.clientY - r.top)
+      if (hit) pointer.current = { x: hit[0], y: hit[1], on: true }
+      else pointer.current = { ...pointer.current, on: false }
+    }
+    const leave = () => (pointer.current = { ...pointer.current, on: false })
+    window.addEventListener("pointermove", move, { passive: true })
+    document.addEventListener("pointerleave", leave)
+    return () => {
+      window.removeEventListener("pointermove", move)
+      document.removeEventListener("pointerleave", leave)
+    }
+  }, [motion, geom, active, ref])
 
   return (
     <div
@@ -169,15 +201,34 @@ export function VenueStage({
             loading={i === 0 ? "eager" : "lazy"}
             decoding="async"
           />
-          {motion && size && (
+          {motion && geom && i === active && (
             <>
-              <LiveScreen venue={v} size={size} live={i === active} />
+              {v.screens.map((sc, k) => (
+                <div
+                  key={sc.name}
+                  className="absolute top-0 left-0 origin-top-left saturate-125"
+                  style={{
+                    width: geom[k]!.w,
+                    height: geom[k]!.h,
+                    transform: geom[k]!.matrix,
+                    filter: `brightness(${1.5 * sc.dim})`,
+                  }}
+                >
+                  <GenerativeWork
+                    work={sc.work}
+                    seed={v.seed}
+                    brandColors={v.colors}
+                    domain={sc.domain}
+                    pointer={pointer}
+                    className="size-full bg-background"
+                  />
+                </div>
+              ))}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={v.front}
                 alt=""
                 className="absolute inset-0 size-full object-cover"
-                loading={i === 0 ? "eager" : "lazy"}
                 decoding="async"
               />
             </>
