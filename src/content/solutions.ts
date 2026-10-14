@@ -17,6 +17,8 @@ export const solutionSchema = z.object({
   /** Case formats that count as this solution (drives "matching installations"). */
   matches: z.array(z.enum(formats)).min(1),
   hero: z.object({ work: z.enum(workIds as [WorkId, ...WorkId[]]), seed: z.number().int() }),
+  /** Photoreal still of the installation in this kind of venue (Solutions index preview). */
+  image: z.string().optional(),
   /** Where the 3D venue camera sits (0 stand → 1/3 lobby → 2/3 music stage → 1 museum room). */
   venue: z.number().min(0).max(1),
   surfaces: z.array(z.string()).min(2),
@@ -33,6 +35,7 @@ export type Solution = z.infer<typeof solutionSchema>
 const raw: Solution[] = [
   {
     slug: "conferences",
+    image: "/solutions/conferences.webp",
     label: "Conferences",
     title: "A stage people film, not a slide people skip",
     promise:
@@ -75,6 +78,7 @@ const raw: Solution[] = [
   },
   {
     slug: "launches",
+    image: "/solutions/launches.webp",
     label: "Events & launches",
     title: "One launch moment, then the same engine on tour",
     promise: "Audio-reactive, touring installations that rebuild in an afternoon for every venue",
@@ -116,6 +120,7 @@ const raw: Solution[] = [
   },
   {
     slug: "offices",
+    image: "/solutions/offices.webp",
     label: "Offices & lobbies",
     title: "A lobby wall that stays alive for years",
     promise: "Permanent LED walls driven by your data — on brand 24/7, with no content treadmill",
@@ -157,6 +162,7 @@ const raw: Solution[] = [
   },
   {
     slug: "music",
+    image: "/solutions/music.webp",
     label: "Music events",
     title: "Visuals that play with the band",
     promise: "Stage backdrops, side screens and festival structures driven live by the music",
@@ -202,6 +208,7 @@ const raw: Solution[] = [
   },
   {
     slug: "museums",
+    image: "/solutions/museums.webp",
     label: "Museums & interactive parks",
     title: "Rooms visitors step inside",
     promise: "Immersive, interactive rooms for museums, science centres and entertainment parks",
@@ -247,6 +254,7 @@ const raw: Solution[] = [
   },
   {
     slug: "exhibitions",
+    image: "/solutions/exhibitions.webp",
     label: "Exhibitions & trade shows",
     title: "The stand everyone walks towards",
     promise: "Interactive floors and walls that pull visitors to your stand and keep them there",
