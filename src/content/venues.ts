@@ -24,6 +24,12 @@ export type VenueScreen = {
 }
 
 export type Venue = {
+  /**
+   * Photoreal frame (Nano Banana, see docs/decisions/009). When set it replaces the Blender still
+   * everywhere and the live screens are off until its screens are mapped (their corners differ
+   * from the render's).
+   */
+  photo?: string
   /** The still with rendered screens: motion off, solution pages. */
   image: string
   /** The still under live screens, when it differs (e.g. no baked floor reflection). */
@@ -36,6 +42,7 @@ export type Venue = {
 
 export const venues: Venue[] = [
   {
+    photo: "/venues/photo-0.webp",
     image: "/venues/scene-0.webp",
     front: "/venues/scene-0-front.webp",
     seed: 7,
@@ -96,6 +103,7 @@ export const venues: Venue[] = [
     ],
   },
   {
+    photo: "/venues/photo-1.webp",
     image: "/venues/scene-1.webp",
     base: "/venues/scene-1-base.webp",
     front: "/venues/scene-1-front.webp",
@@ -124,6 +132,7 @@ export const venues: Venue[] = [
     ],
   },
   {
+    photo: "/venues/photo-2.webp",
     image: "/venues/scene-2.webp",
     front: "/venues/scene-2-front.webp",
     seed: 42,
@@ -171,6 +180,7 @@ export const venues: Venue[] = [
     ],
   },
   {
+    photo: "/venues/photo-3.webp",
     image: "/venues/scene-3.webp",
     front: "/venues/scene-3-front.webp",
     seed: 64,

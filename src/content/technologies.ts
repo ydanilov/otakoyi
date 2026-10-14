@@ -14,12 +14,15 @@ export type Technology = {
   /** Where it typically lives. */
   where: string[]
   preview: { work: WorkId; seed: number; density?: number }
+  /** Behind-the-scenes photo of the hardware; replaces the live preview where set. */
+  image?: string
 }
 
 export const technologies: Technology[] = [
   {
     kind: "output",
     slug: "projection-mapping",
+    image: "/technologies/projection-mapping.webp",
     name: "Projection mapping",
     line: "Any surface becomes a screen — facades, stage sets, walls, even the product itself",
     where: ["Facades", "Stage sets", "Product reveals"],
@@ -28,6 +31,7 @@ export const technologies: Technology[] = [
   {
     kind: "output",
     slug: "led-walls",
+    image: "/technologies/led-walls.webp",
     name: "LED walls",
     line: "Bright enough for daylight and main stages, built to any size and shape",
     where: ["Stages", "Lobbies", "Outdoor"],
@@ -36,6 +40,7 @@ export const technologies: Technology[] = [
   {
     kind: "output",
     slug: "led-strips",
+    image: "/technologies/led-strips.webp",
     name: "LED strips and pixel mapping",
     line: "Lines of light on architecture, trusses and furniture, driven pixel by pixel",
     where: ["Architecture", "Trusses", "Stand edges"],
@@ -44,6 +49,7 @@ export const technologies: Technology[] = [
   {
     kind: "output",
     slug: "displays",
+    image: "/technologies/displays.webp",
     name: "Displays and video walls",
     line: "LCD and OLED walls for lobbies, stands and kiosks — touch-enabled when people should play",
     where: ["Lobbies", "Kiosks", "Meeting floors"],
@@ -52,6 +58,7 @@ export const technologies: Technology[] = [
   {
     kind: "output",
     slug: "interactive-floors",
+    image: "/technologies/interactive-floors.webp",
     name: "Interactive floors",
     line: "Projection or LED floors that answer every step",
     where: ["Trade show stands", "Museums", "Parks"],
@@ -60,6 +67,7 @@ export const technologies: Technology[] = [
   {
     kind: "output",
     slug: "transparent",
+    image: "/technologies/transparent.webp",
     name: "Transparent and holographic displays",
     line: "Transparent LED, holo fans and mesh: images that float in the room",
     where: ["Shop windows", "Stages", "Product displays"],
@@ -68,6 +76,7 @@ export const technologies: Technology[] = [
   {
     kind: "output",
     slug: "light-lasers",
+    image: "/technologies/light-lasers.webp",
     name: "Lasers and kinetic light",
     line: "Moving heads, lasers and kinetic pieces cued by the same engine as the screens",
     where: ["Concerts", "Launches", "Festivals"],
