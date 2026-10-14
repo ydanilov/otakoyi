@@ -1,5 +1,4 @@
 import { Benefits } from "@/components/sections/benefits"
-import { BrandDemo } from "@/components/sections/brand-demo"
 import { Cta } from "@/components/sections/cta"
 import { Faq } from "@/components/sections/faq"
 import { Hero } from "@/components/sections/hero"
@@ -54,14 +53,24 @@ export default function HomePage() {
 
       <VenueTour stops={tourStops} />
 
-      <Section id="technology">
+      <Section id="surfaces">
         <SectionHeading
-          eyebrow="Technology"
+          eyebrow="What it shows on"
           title="One engine. Every surface in the room"
-          description="Projection, LED, light and screens, driven by music, movement and your data — so every surface tells the same story, live"
+          description="Projection, LED, light and screens, all playing the same live work, in sync"
           className="mb-12"
         />
-        <Technologies items={technologies} />
+        <Technologies items={technologies.filter((t) => t.kind === "output")} />
+      </Section>
+
+      <Section id="inputs">
+        <SectionHeading
+          eyebrow="What drives it"
+          title="The room plays it"
+          description="Music, movement, sensors, phones and your own data shape every frame as it happens"
+          className="mb-12"
+        />
+        <Technologies items={technologies.filter((t) => t.kind === "input")} flip />
       </Section>
 
       <Section id="benefits">
@@ -83,16 +92,6 @@ export default function HomePage() {
           className="mb-12"
         />
         <InNumbers stats={stats} />
-      </Section>
-
-      <Section id="customisation">
-        <SectionHeading
-          eyebrow="Customised to your brand"
-          title="Your brand is the input, not a logo in the corner"
-          description="Every installation is built around your identity and your data — so it could only ever be yours"
-          className="mb-12"
-        />
-        <BrandDemo />
       </Section>
 
       <PinnedProcess skipTo="#faq" />

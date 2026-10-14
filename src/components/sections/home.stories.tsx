@@ -65,20 +65,33 @@ export const Numbers: Story = {
   ),
 }
 
+export const TechnologyInputsFlipped: Story = {
+  render: () => (
+    <div className="p-8">
+      <Technologies items={technologies.filter((t) => t.kind === "input")} flip />
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("button", { name: /Motion and body tracking/ })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    )
+  },
+}
+
 export const TechnologyList: Story = {
   render: () => (
     <div className="p-8">
-      <Technologies items={technologies} />
+      <Technologies items={technologies.filter((t) => t.kind === "output")} />
     </div>
   ),
   play: async ({ canvas, userEvent }) => {
-    await expect(canvas.getByRole("region", { name: "What it shows on" })).toBeInTheDocument()
-    await expect(canvas.getByRole("region", { name: "What drives it" })).toBeInTheDocument()
     const first = canvas.getByRole("button", { name: /Projection mapping/ })
     await expect(first).toHaveAttribute("aria-pressed", "true")
-    const tracking = canvas.getByRole("button", { name: /Motion and body tracking/ })
-    await userEvent.click(tracking)
-    await expect(tracking).toHaveAttribute("aria-pressed", "true")
+    await expect(canvas.queryByRole("button", { name: /Motion and body tracking/ })).toBeNull()
+    const led = canvas.getByRole("button", { name: /^02\s*LED walls/ })
+    await userEvent.click(led)
+    await expect(led).toHaveAttribute("aria-pressed", "true")
     await expect(first).toHaveAttribute("aria-pressed", "false")
   },
 }
