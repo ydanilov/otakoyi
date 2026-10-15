@@ -13,7 +13,12 @@ type ReactiveHeadlineProps = {
   peakWeight?: number
   /** Influence radius in px. */
   radius?: number
+  /** Element to render. Defaults to h1. */
+  as?: "h1" | "h2" | "p"
+  /** Visual duplicate of text given elsewhere (e.g. an sr-only h1): hidden from assistive tech. */
+  decorative?: boolean
   className?: string
+  style?: React.CSSProperties
 }
 
 const FINE_POINTER = "(pointer: fine)"
@@ -28,9 +33,12 @@ export function ReactiveHeadline({
   restWeight = 500,
   peakWeight = 800,
   radius = 220,
+  as: Tag = "h1",
+  decorative = false,
   className,
+  style,
 }: ReactiveHeadlineProps) {
-  const ref = useRef<HTMLHeadingElement>(null)
+  const ref = useRef<HTMLHeadingElement & HTMLParagraphElement>(null)
   const motion = useMotion()
 
   useEffect(() => {
@@ -60,6 +68,8 @@ export function ReactiveHeadline({
 
     const paint = () => {
       frame = 0
+      // Re-measure every frame: headlines may move (scroll parallax), and it is only a few spans.
+      measure()
       letters.forEach((el, i) => {
         const c = centers[i]
         let w = restWeight
@@ -107,7 +117,14 @@ export function ReactiveHeadline({
   return (
     // Letters are split into spans for the effect; the heading's text content stays the plain
     // sentence once (copy, SEO, tests) and aria-label keeps screen readers from spelling it out.
-    <h1 ref={ref} className={className} aria-label={text} data-reactive-headline>
+    <Tag
+      ref={ref}
+      className={className}
+      style={style}
+      aria-label={decorative || Tag === "p" ? undefined : text}
+      aria-hidden={decorative || undefined}
+      data-reactive-headline
+    >
       <span aria-hidden>
         {words.map((word, wi) => (
           <Fragment key={`${word}-${wi}`}>
@@ -130,6 +147,6 @@ export function ReactiveHeadline({
           </Fragment>
         ))}
       </span>
-    </h1>
+    </Tag>
   )
 }

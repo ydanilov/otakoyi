@@ -1,5 +1,3 @@
-import Link from "next/link"
-
 import { site } from "@/config/site"
 import { Logo } from "./logo"
 import { socialIcons } from "./social-icons"
@@ -24,25 +22,11 @@ export function SiteFooter() {
           </p>
         </div>
 
-        <div className="grid gap-10 py-10 md:grid-cols-[1.4fr_1fr_auto] md:items-center">
+        <div className="grid gap-10 py-10 md:grid-cols-[1fr_auto] md:items-center">
           <div className="space-y-3">
             <Logo />
             <p className="max-w-xs text-sm text-pretty text-muted-foreground">{site.tagline}</p>
           </div>
-          <nav aria-label="Footer">
-            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-              {site.nav.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
           <ul className="flex gap-2">
             {site.social.map((s) => {
               const Icon = socialIcons[s.label]

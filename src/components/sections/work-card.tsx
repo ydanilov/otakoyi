@@ -6,7 +6,6 @@ import type { Case } from "@/content/cases"
 import { cn } from "@/lib/utils"
 
 export function WorkCard({ item, className }: { item: Case; className?: string }) {
-  const headline = item.results[0]
   return (
     <Link
       href={`/works/${item.slug}`}
@@ -26,12 +25,6 @@ export function WorkCard({ item, className }: { item: Case; className?: string }
           <Badge className="absolute top-3 left-3 bg-background/80 text-foreground backdrop-blur">
             {item.status}
           </Badge>
-        )}
-        {headline && (
-          <p className="absolute bottom-3 left-3 rounded-md bg-background/80 px-3 py-2 backdrop-blur">
-            <span className="text-lg font-medium">{headline.value}</span>{" "}
-            <span className="text-sm text-muted-foreground">{headline.label}</span>
-          </p>
         )}
       </div>
       <div className="mt-4 flex items-start justify-between gap-4">

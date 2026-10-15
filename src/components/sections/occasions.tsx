@@ -61,12 +61,22 @@ export function Occasions({ items }: { items: Solution[] }) {
       </ol>
       <div aria-hidden className="relative hidden lg:block">
         <div className="sticky top-24 overflow-hidden rounded-xl border">
-          <GenerativeWork
-            key={current.slug}
-            work={current.hero.work}
-            seed={current.hero.seed}
-            className="aspect-[4/5]"
-          />
+          {current.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={current.image}
+              src={current.image}
+              alt=""
+              className="aspect-[4/5] w-full animate-in object-cover duration-700 fade-in-0"
+            />
+          ) : (
+            <GenerativeWork
+              key={current.slug}
+              work={current.hero.work}
+              seed={current.hero.seed}
+              className="aspect-[4/5]"
+            />
+          )}
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/80 to-transparent p-6">
             <p className="text-pretty text-muted-foreground">{current.promise}</p>
           </div>

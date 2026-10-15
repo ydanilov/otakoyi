@@ -58,6 +58,9 @@ Run `pnpm verify` before every commit. Run `pnpm verify:full` before opening a P
     add or remove anything else on your own initiative, even if it seems like an improvement —
     propose it instead and wait. The only thing you may change site-wide on your own is copy
     (messages and content), and only to keep it consistent with a change the owner asked for.
+11. **Deploy budget.** Vercel Hobby allows 100 deployments a day across the account. Batch several
+    edits into one branch and one PR; push rarely. Storybook builds only from `main`
+    (`vercel.json` → `scripts/vercel-ignore.sh`).
 
 ## Workflow per task (full version: `docs/workflow.md`)
 

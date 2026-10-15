@@ -28,11 +28,11 @@ export function Cta() {
           <p className="font-mono text-xs tracking-widest text-signal uppercase">Not sure yet?</p>
           <div className="max-w-3xl space-y-6">
             <h2 className="text-4xl leading-[0.95] font-medium tracking-tighter text-balance md:text-7xl">
-              Not sure exactly what you need?
+              Let&rsquo;s talk it through
             </h2>
             <p className="max-w-xl text-lg text-pretty text-muted-foreground md:text-xl">
-              Write to us and we will work it out together. A space, a date or just an idea is
-              enough to start
+              Tell us about the space, the date or just the idea. We will shape it into an
+              installation together
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-x-8 gap-y-4">

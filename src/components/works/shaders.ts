@@ -103,13 +103,18 @@ ${common}
 void main() {
   vec2 base = pointerWarp(aspectUv());
   vec2 uv = base * (1.0 + uDensity * 2.0);
-  float h = fbm(uv * 1.6 + vec2(uTime * 0.03, -uTime * 0.02)) + pointerGlow(base) * 0.25;
+  // The pointer raises a hill in the terrain: iso-lines gather into rings around it and glow.
+  vec2 pd = base - uPointer;
+  float hill = uPointerAmt * exp(-dot(pd, pd) * 14.0);
+  float h0 = fbm(uv * 1.6 + vec2(uTime * 0.03, -uTime * 0.02));
+  float h = h0 + hill * 0.45;
   float bands = 10.0 + uDensity * 30.0;
   float l = abs(fract(h * bands) - 0.5) / fwidth(h * bands);
   float line = 1.0 - clamp(l, 0.0, 1.0);
   vec3 bg = uC4 * 0.04;
   vec3 col = mix(bg, mix(uC2, uC1, h), line);
-  col += uC3 * smoothstep(0.7, 0.75, h) * 0.15;
+  col += uC1 * line * smoothstep(0.1, 0.8, hill) * 0.9;
+  col += uC3 * smoothstep(0.7, 0.75, h0) * 0.15;
   gl_FragColor = vec4(col, 1.0);
 }
 `
@@ -124,11 +129,15 @@ void main() {
   vec2 id = floor(g);
   vec2 f = fract(g) - 0.5;
   float n = noise(id * 0.15 + uTime * 0.08);
-  float size = 0.08 + 0.38 * n;
+  // Cells near the pointer swell and light up in accent, like people stepping in front of a wall.
+  vec2 c = (id + 0.5) / cells - uPointer;
+  float near = uPointerAmt * exp(-dot(c, c) * 18.0);
+  float size = min(0.46, 0.08 + 0.38 * n + near * 0.32);
   float d = max(abs(f.x), abs(f.y));
   float sq = 1.0 - smoothstep(size, size + 0.02, d);
   vec3 col = mix(uC4 * 0.03, mix(uC2, uC1, step(0.72, n)), sq);
   col = mix(col, uC3, sq * step(0.9, hash(id)) * 0.8);
+  col = mix(col, uC1, sq * smoothstep(0.25, 0.75, near));
   gl_FragColor = vec4(col, 1.0);
 }
 `
