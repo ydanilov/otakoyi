@@ -6,11 +6,14 @@ import { LogoWall } from "@/components/sections/logo-wall"
 import { SectionHeading } from "@/components/sections/section-heading"
 import { StudioHero } from "@/components/sections/studio-hero"
 import { site } from "@/config/site"
+import { JsonLd, breadcrumbs, orgId } from "@/lib/json-ld"
+import { absoluteUrl, pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Studio",
-  description: `About ${site.name} — the team behind turnkey generative installations for brands`,
-}
+  description: `About ${site.name} — artists and engineers who design, build and install interactive generative installations, turnkey, from concept to opening night`,
+  path: "/studio",
+})
 
 const included = [
   { title: "Concept", body: "A concept and a live prototype in your brand, within a week" },
@@ -52,6 +55,15 @@ const team = [
 export default function StudioPage() {
   return (
     <>
+      <JsonLd
+        data={[
+          { "@type": "AboutPage", url: absoluteUrl("/studio"), about: { "@id": orgId } },
+          breadcrumbs([
+            { name: "Home", path: "/" },
+            { name: "Studio", path: "/studio" },
+          ]),
+        ]}
+      />
       <StudioHero
         first="Artists with toolboxes"
         second="Engineers with taste"

@@ -14,6 +14,8 @@ import { Button } from "@/components/ui/button"
 import { VenueStill } from "@/components/sections/venue-stage"
 import { proposalHref, site } from "@/config/site"
 import { casesFor, getSolution, solutions } from "@/content/solutions"
+import { JsonLd, breadcrumbs, faqPage, orgId } from "@/lib/json-ld"
+import { absoluteUrl, pageMetadata } from "@/lib/seo"
 
 export const dynamicParams = false
 
@@ -26,7 +28,13 @@ export async function generateMetadata({
 }: PageProps<"/solutions/[slug]">): Promise<Metadata> {
   const { slug } = await params
   const s = getSolution(slug)
-  return s ? { title: `${s.label} installations`, description: s.promise } : {}
+  return s
+    ? pageMetadata({
+        title: `${s.label} installations`,
+        description: s.promise,
+        path: `/solutions/${slug}`,
+      })
+    : {}
 }
 
 export default async function SolutionPage({ params }: PageProps<"/solutions/[slug]">) {
@@ -38,6 +46,27 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
 
   return (
     <>
+      <JsonLd
+        data={[
+          {
+            "@type": "Service",
+            name: `${s.label} installations`,
+            serviceType: "Interactive generative installation",
+            description: s.description,
+            url: absoluteUrl(`/solutions/${s.slug}`),
+            image: s.image ? absoluteUrl(s.image) : undefined,
+            provider: { "@id": orgId },
+            areaServed: "Worldwide",
+            audience: { "@type": "BusinessAudience", name: s.label },
+          },
+          faqPage(s.faq),
+          breadcrumbs([
+            { name: "Home", path: "/" },
+            { name: "Solutions", path: "/solutions" },
+            { name: s.label, path: `/solutions/${s.slug}` },
+          ]),
+        ]}
+      />
       <section className="relative isolate overflow-hidden">
         <HeroField work={s.hero.work} seed={s.hero.seed} />
         <div className="mx-auto max-w-7xl px-4 pt-24 pb-16 md:px-8 md:pt-40 md:pb-24">

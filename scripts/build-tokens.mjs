@@ -26,9 +26,17 @@ const palette = (mode) =>
     2,
   )
 
+// Theme colors as hex for renderers without oklch support (OG images via next/og).
+const theme = (mode) =>
+  JSON.stringify(
+    Object.fromEntries(Object.entries(t.color).map(([k, v]) => [k, hex(v[mode])])),
+    null,
+    2,
+  )
+
 const ts =
   HEADER +
-  `export const generativePalette = {\n  dark: ${palette("dark")},\n  light: ${palette("light")},\n} as const\n\nexport type GenerativeMode = keyof typeof generativePalette\n`
+  `export const generativePalette = {\n  dark: ${palette("dark")},\n  light: ${palette("light")},\n} as const\n\nexport type GenerativeMode = keyof typeof generativePalette\n\nexport const themeHex = {\n  dark: ${theme("dark")},\n  light: ${theme("light")},\n} as const\n`
 
 const out = { "src/app/tokens.css": css, "src/lib/tokens.generated.ts": ts }
 let stale = false

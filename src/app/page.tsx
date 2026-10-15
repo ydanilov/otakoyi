@@ -1,7 +1,9 @@
+import type { Metadata } from "next"
+
 import { Benefits } from "@/components/sections/benefits"
 import { Cta } from "@/components/sections/cta"
 import { DeliveryStatement } from "@/components/sections/delivery-statement"
-import { Faq } from "@/components/sections/faq"
+import { Faq, faqItems } from "@/components/sections/faq"
 import { Hero } from "@/components/sections/hero"
 import { PinnedProcess } from "@/components/sections/pinned-process"
 import { SectionHeading } from "@/components/sections/section-heading"
@@ -12,6 +14,23 @@ import { WorksReel } from "@/components/sections/works-reel"
 import { getCases } from "@/content/cases"
 import { tourStops } from "@/content/solutions"
 import { technologies } from "@/content/technologies"
+import { site } from "@/config/site"
+import { JsonLd, faqPage } from "@/lib/json-ld"
+import { seoDescription } from "@/lib/seo"
+
+const homeTitle = `${site.name} — Interactive generative installations for events and brands`
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: site.name,
+    title: homeTitle,
+    description: seoDescription,
+  },
+}
 
 function Section({ id, children }: { id?: string; children: React.ReactNode }) {
   return (
@@ -39,6 +58,7 @@ export default function HomePage() {
 
   return (
     <>
+      <JsonLd data={faqPage(faqItems)} />
       <Hero />
 
       <SpecMarquee items={specs} />
