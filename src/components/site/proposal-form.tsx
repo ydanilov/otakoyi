@@ -30,7 +30,7 @@ const formatBudget = ([lo, hi]: number[]) => {
 const fields: { name: Field; label: string; type?: string; required?: boolean; wide?: boolean }[] =
   [
     { name: "email", label: "Work email", type: "email", required: true },
-    { name: "event", label: "Event name", required: true },
+    { name: "event", label: "Event name" },
   ]
 
 /** Sends the answers to the Google Form, or opens a pre-filled email while none is configured. */
@@ -107,7 +107,7 @@ export default function ProposalForm({
             <DialogHeader>
               <DialogTitle className="text-2xl">{site.cta.label}</DialogTitle>
               <DialogDescription>
-                An email and the event are enough to start. We reply within one working day
+                An email is enough to start. We reply within one working day
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={onSubmit} className="grid gap-4 sm:grid-cols-2">
