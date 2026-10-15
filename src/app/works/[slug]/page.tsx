@@ -146,7 +146,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
       </div>
 
       {item.outcomes ? (
-        <section aria-labelledby="outcomes-title" className="border-y bg-muted/30">
+        <section aria-labelledby="outcomes-title" className="bg-muted/30">
           <div className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
             <div className="mb-12 max-w-2xl space-y-3">
               <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
@@ -178,7 +178,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
           </div>
         </section>
       ) : (
-        <section aria-labelledby="backstage-title" className="border-y bg-muted/30">
+        <section aria-labelledby="backstage-title" className="bg-muted/30">
           <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-[1fr_2fr] md:px-8 md:py-20">
             <div className="space-y-3">
               <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
