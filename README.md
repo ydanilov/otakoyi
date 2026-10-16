@@ -4,7 +4,7 @@
 on-brand, accessible UI without being able to break it.**
 
 [Live site](https://studio-portfolio-navy.vercel.app) · [Storybook](https://studio-portfolio-storybook.vercel.app) ·
-[Figma](https://www.figma.com/design/7fyYBxvBHHEK4IKO6ZTkXN/Draft) · [Metrics](docs/metrics.md) ·
+[Figma](https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoyi) · [Metrics](docs/metrics.md) ·
 [Decisions](docs/decisions/README.md)
 
 > Design engineering by Yura Danilov — positioning, Figma library, design system, code, CI and the

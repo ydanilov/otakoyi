@@ -1,9 +1,9 @@
 {
   "$description": "Snapshot of the Figma side of the token contract, written by `pnpm tokens:figma:pull`. Do not edit by hand. `pnpm tokens:figma:check` compares it with tokens/tokens.json.",
   "$source": {
-    "fileKey": "7fyYBxvBHHEK4IKO6ZTkXN",
-    "figmaVersion": "2407622176931102350",
-    "lastModified": "2026-10-08T03:45:56Z",
+    "fileKey": "IS3HHVFfnJ6b4BC8jf9TNS",
+    "figmaVersion": "2410868020635149651",
+    "lastModified": "2026-10-16T08:04:17Z",
     "pulledAt": "2026-10-16",
     "via": "Figma REST /files/:key/nodes (token swatches bound to Theme variables)"
   },
