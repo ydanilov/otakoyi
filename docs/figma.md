@@ -2,14 +2,21 @@
 
 File: **otakoyi** — https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoyi
 
-| Figma page | Purpose                                                                | Code counterpart                        |
-| ---------- | ---------------------------------------------------------------------- | --------------------------------------- |
-| Tokens     | Variables collection _Theme_ (modes Dark / Light)                      | `tokens/tokens.json`                    |
-| Components | Button, Badge, Card, ToggleGroup, Accordion, Header, Footer, WorkCard… | `src/components/ui`, `sections`, `site` |
-| Pages      | Every live route, desktop 1440 + mobile 390 (captured from production) | `src/app/**/page.tsx`                   |
+| Figma page | Purpose                                                                                 | Code counterpart                  |
+| ---------- | --------------------------------------------------------------------------------------- | --------------------------------- |
+| Tokens     | Variables collection _Theme_ (modes Dark / Light)                                       | `tokens/tokens.json`              |
+| shadcn/ui  | The shadcn primitives the site uses, 1:1 with the source, bound to Theme variables      | `src/components/ui`               |
+| Components | Site building blocks (header, footer, CTA, icons…) and _Sections_ built from primitives | `src/components/sections`, `site` |
+| Pages      | Every live route, desktop 1440 + mobile 390 (captured from production)                  | `src/app/**/page.tsx`             |
 
 The file "otakoyi" (account yura.danilov.official) replaced "Draft" on 2026-10-16. It is a recovered
 copy, so node IDs are unchanged (token frames 5:41/5:116, components in `figma/components.json`).
+
+**shadcn/ui page.** Button (all variants + `signal`), Badge, Toggle (ToggleGroupItem), Label, Input,
+Textarea, Slider, Separator, Accordion, Card, Dialog and Sheet, drawn from the classes in
+`src/components/ui` (new-york) and bound to the Theme variables, so our tokens are the shadcn theme.
+Section components on the Components page are composed from instances of these primitives, never
+from detached copies. A new primitive is copied from shadcn into code first, then drawn here.
 
 **Pages page.** Section _Live site_ holds one frame per route and breakpoint, named
 `<Page> — Desktop 1440` / `<Page> — Mobile 390`, filled with section-by-section captures of production

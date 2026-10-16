@@ -6,10 +6,18 @@ import figma from "figma"
 const variant = figma.selectedInstance.getEnum("Variant", {
   signal: "signal",
   default: "default",
+  secondary: "secondary",
   outline: "outline",
   ghost: "ghost",
+  link: "link",
+  destructive: "destructive",
 })
-const size = figma.selectedInstance.getEnum("Size", { lg: "lg", default: "default", sm: "sm" })
+const size = figma.selectedInstance.getEnum("Size", {
+  lg: "lg",
+  default: "default",
+  sm: "sm",
+  icon: "icon",
+})
 
 export default {
   id: "Button",

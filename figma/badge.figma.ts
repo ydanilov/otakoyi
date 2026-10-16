@@ -4,8 +4,10 @@
 import figma from "figma"
 
 const variant = figma.selectedInstance.getEnum("Variant", {
+  default: "default",
   secondary: "secondary",
   outline: "outline",
+  destructive: "destructive",
 })
 
 export default {
