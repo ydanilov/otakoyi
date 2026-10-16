@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 
 import { ProposalDialog } from "@/components/site/proposal-dialog"
 import { SiteFooter } from "@/components/site/site-footer"
@@ -7,6 +7,7 @@ import { site } from "@/config/site"
 import { motionScript, themeScript } from "@/lib/init-scripts"
 import { JsonLd, organization, website } from "@/lib/json-ld"
 import { keywords, seoDescription, siteUrl } from "@/lib/seo"
+import { themeHex } from "@/lib/tokens.generated"
 import { fontLogo, fontMono, fontSans } from "@/fonts"
 import "./globals.css"
 
@@ -33,6 +34,8 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, "max-image-preview": "large" },
   category: "design",
 }
+
+export const viewport: Viewport = { themeColor: themeHex.dark.background, colorScheme: "dark" }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

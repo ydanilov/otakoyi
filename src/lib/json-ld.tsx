@@ -24,6 +24,8 @@ export const organization: Thing = {
   description: seoDescription,
   slogan: site.tagline,
   areaServed: "Worldwide",
+  // Only profiles that really exist; placeholder links stay out of structured data.
+  sameAs: site.social.map((s) => s.href).filter((h) => new URL(h).pathname.length > 1),
   knowsAbout: [
     "Generative art",
     "Interactive installations",
