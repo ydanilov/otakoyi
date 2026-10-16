@@ -110,13 +110,13 @@
       "template": "faq-item"
     },
     {
-      "figma": "ToggleChip",
+      "figma": "BrandDemoToggle",
       "node": "9-73",
       "status": "connected",
       "template": "toggle-chip"
     },
     {
-      "figma": "CTA",
+      "figma": "Cta",
       "node": "9-77",
       "status": "connected",
       "template": "cta"
@@ -236,7 +236,7 @@
       "template": "venue-tour"
     },
     {
-      "figma": "WorksReelSlide",
+      "figma": "WorksReel",
       "node": "45-136",
       "status": "connected",
       "template": "works-reel"
@@ -272,31 +272,31 @@
       "template": "logo-wall"
     },
     {
-      "figma": "FormatCard",
+      "figma": "FormatsItem",
       "node": "8-119",
       "status": "inline",
       "code": "src/components/sections/formats.tsx"
     },
     {
-      "figma": "BenefitTile",
+      "figma": "BenefitsItem",
       "node": "8-128",
       "status": "inline",
       "code": "src/components/sections/benefits.tsx"
     },
     {
-      "figma": "StatTile",
+      "figma": "InNumbersItem",
       "node": "8-133",
       "status": "inline",
       "code": "src/components/sections/in-numbers.tsx"
     },
     {
-      "figma": "ProcessStep",
+      "figma": "ProcessItem",
       "node": "8-136",
       "status": "inline",
       "code": "src/components/sections/process.tsx"
     },
     {
-      "figma": "CustomisationPoint",
+      "figma": "BrandDemoPoint",
       "node": "9-74",
       "status": "inline",
       "code": "src/components/sections/brand-demo.tsx"
@@ -308,13 +308,13 @@
       "code": "src/components/site/social-icons.tsx"
     },
     {
-      "figma": "TechnologyCard",
+      "figma": "TechnologyBentoItem",
       "node": "43-69",
       "status": "inline",
       "code": "src/components/sections/technologies.tsx"
     },
     {
-      "figma": "VenueStopCard",
+      "figma": "StopCopy",
       "node": "45-77",
       "status": "inline",
       "code": "src/components/sections/venue-tour.tsx"
@@ -326,25 +326,25 @@
       "code": "src/components/sections/venue-tour.tsx"
     },
     {
-      "figma": "OccasionRow",
+      "figma": "OccasionsItem",
       "node": "47-166",
       "status": "inline",
       "code": "src/components/sections/occasions.tsx"
     },
     {
-      "figma": "WorksFilterBar",
+      "figma": "WorksGridFilter",
       "node": "47-216",
       "status": "inline",
       "code": "src/components/sections/works-grid.tsx"
     },
     {
-      "figma": "WorkListRow",
+      "figma": "WorksGridListItem",
       "node": "47-306",
       "status": "inline",
       "code": "src/components/sections/works-grid.tsx"
     },
     {
-      "figma": "CaseFact",
+      "figma": "CaseQuickFact",
       "node": "47-317",
       "status": "inline",
       "code": "src/app/works/[slug]/page.tsx"
@@ -368,7 +368,7 @@
       "code": "src/app/works/[slug]/page.tsx"
     },
     {
-      "figma": "OutcomeTile",
+      "figma": "OutcomeItem",
       "node": "47-350",
       "status": "inline",
       "code": "src/app/works/[slug]/page.tsx"
@@ -380,58 +380,64 @@
       "code": "src/app/works/[slug]/page.tsx"
     },
     {
-      "figma": "PrincipleRow",
+      "figma": "StudioPrinciple",
       "node": "50-261",
       "status": "inline",
       "code": "src/app/studio/page.tsx"
     },
     {
-      "figma": "TeamMember",
+      "figma": "StudioTeamMember",
       "node": "50-267",
       "status": "inline",
       "code": "src/app/studio/page.tsx"
     },
     {
-      "figma": "Mark/Lumen",
+      "figma": "LogoMark/Lumen",
       "node": "50-273",
       "status": "inline",
       "code": "src/components/sections/logo-wall.tsx"
     },
     {
-      "figma": "Mark/Halden",
+      "figma": "LogoMark/Halden",
       "node": "50-277",
       "status": "inline",
       "code": "src/components/sections/logo-wall.tsx"
     },
     {
-      "figma": "Mark/Meridian",
+      "figma": "LogoMark/Meridian",
       "node": "50-280",
       "status": "inline",
       "code": "src/components/sections/logo-wall.tsx"
     },
     {
-      "figma": "Mark/Vertex",
+      "figma": "LogoMark/Vertex",
       "node": "50-284",
       "status": "inline",
       "code": "src/components/sections/logo-wall.tsx"
     },
     {
-      "figma": "Mark/Orbita",
+      "figma": "LogoMark/Orbita",
       "node": "50-288",
       "status": "inline",
       "code": "src/components/sections/logo-wall.tsx"
     },
     {
-      "figma": "Mark/Strata",
+      "figma": "LogoMark/Strata",
       "node": "50-293",
       "status": "inline",
       "code": "src/components/sections/logo-wall.tsx"
     },
     {
-      "figma": "LogoTile",
+      "figma": "LogoWallItem",
       "node": "50-299",
       "status": "inline",
       "code": "src/components/sections/logo-wall.tsx"
+    },
+    {
+      "figma": "DialogOverlay",
+      "node": "56-106",
+      "status": "connected",
+      "template": "dialog-overlay"
     }
   ]
 }

@@ -27,7 +27,19 @@ the _Archive_ section.
 Rules:
 
 - Variable names = token names (`background`, `muted-foreground`, `signal`, `gen-1`…).
-- Component names = React component names; variant props = React prop names.
+- Naming follows shadcn/ui and the code, not Figma habits:
+  - **Components** are named like their React export (`Button`, `AccordionItem`, `DialogContent`,
+    `StopCopy`). Parts without their own export use shadcn's Parent+Part style
+    (`TechnologyBentoItem`, `WorksGridFilter`, `CaseQuickFact`); icon and mark sets use a slash
+    group (`Icon/arrow-right`, `LogoMark/Lumen`).
+  - **Layers** inside a primitive carry the shadcn slot names (`CardHeader`, `CardTitle`,
+    `AccordionTrigger`, `DialogFooter`, `SheetDescription`).
+  - **Properties** are the React prop names in camelCase: `variant`, `size`, `orientation`,
+    `children` for slotted text, `title`/`description` etc. for named props, `showX` for optional
+    parts, `icon` for instance swaps. Values are the code values (`outline`, `icon-sm`,
+    `signal-field`).
+  - **`state`** mirrors Radix `data-state` (`open`/`closed`, `on`/`off`) or, for fields, the CSS
+    state being shown (`default`, `focus`, `invalid`, `disabled`). Code Connect ignores it.
 - Generative imagery in Figma is a placeholder fill (screenshots of `GenerativeWork` at a fixed seed); the real thing lives in code.
 - Code Connect: every library component is listed in `figma/components.json`; connected ones have a
   template in `figma/<name>.figma.ts` (ADR-010). New Figma component → add a template (or mark it

@@ -3,7 +3,7 @@
 // Code Connect template: what Figma Dev Mode shows for this component instead of generated CSS.
 import figma from "figma"
 
-const variant = figma.selectedInstance.getEnum("Variant", {
+const variant = figma.selectedInstance.getEnum("variant", {
   signal: "signal",
   default: "default",
   secondary: "secondary",
@@ -12,11 +12,15 @@ const variant = figma.selectedInstance.getEnum("Variant", {
   link: "link",
   destructive: "destructive",
 })
-const size = figma.selectedInstance.getEnum("Size", {
-  lg: "lg",
-  default: "default",
+const size = figma.selectedInstance.getEnum("size", {
+  xs: "xs",
   sm: "sm",
+  default: "default",
+  lg: "lg",
+  "icon-xs": "icon-xs",
+  "icon-sm": "icon-sm",
   icon: "icon",
+  "icon-lg": "icon-lg",
 })
 
 export default {
