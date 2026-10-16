@@ -23,6 +23,10 @@ jobs:
         with: { node-version: 22, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm tokens:check
+      - name: Tokens match Figma
+        run: pnpm tokens:figma:check
+      - name: Code Connect templates parse
+        run: pnpm figma:check
       - run: pnpm lint
       - run: pnpm format:check
       - run: pnpm typecheck

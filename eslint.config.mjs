@@ -70,6 +70,11 @@ const eslintConfig = defineConfig([
       "no-restricted-syntax": ["error", ...noRawColors["no-restricted-syntax"].slice(1, 3)],
     },
   },
+  // Code Connect templates follow Figma's file shape (anonymous default export).
+  {
+    files: ["figma/**/*.figma.ts"],
+    rules: { "import/no-anonymous-default-export": "off" },
+  },
   // The generative engine is the only place allowed to touch three / R3F.
   {
     files: ["src/components/works/**/*.{ts,tsx}"],

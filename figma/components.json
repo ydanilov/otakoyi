@@ -1,0 +1,95 @@
+{
+  "$description": "Every component in the Figma library (file Draft, page Components) and how it maps to code. `connected` entries must have a Code Connect template in figma/; `inline` entries are Figma-only building blocks rendered inside a section component in code. Checked by scripts/code-connect.test.ts.",
+  "components": [
+    { "figma": "Button", "node": "6-26", "status": "connected", "template": "button" },
+    { "figma": "Badge", "node": "6-31", "status": "connected", "template": "badge" },
+    {
+      "figma": "GenerativeWork",
+      "node": "7-7",
+      "status": "connected",
+      "template": "generative-work"
+    },
+    {
+      "figma": "SectionHeading",
+      "node": "7-8",
+      "status": "connected",
+      "template": "section-heading"
+    },
+    {
+      "figma": "Icon/mic-vocal",
+      "node": "8-6",
+      "status": "connected",
+      "template": "icon-mic-vocal"
+    },
+    {
+      "figma": "Icon/party-popper",
+      "node": "8-17",
+      "status": "connected",
+      "template": "icon-party-popper"
+    },
+    {
+      "figma": "Icon/building-2",
+      "node": "8-24",
+      "status": "connected",
+      "template": "icon-building-2"
+    },
+    {
+      "figma": "Icon/presentation",
+      "node": "8-29",
+      "status": "connected",
+      "template": "icon-presentation"
+    },
+    {
+      "figma": "Icon/arrow-right",
+      "node": "8-33",
+      "status": "connected",
+      "template": "icon-arrow-right"
+    },
+    {
+      "figma": "Icon/chevron-down",
+      "node": "8-36",
+      "status": "connected",
+      "template": "icon-chevron-down"
+    },
+    { "figma": "Icon/check", "node": "8-39", "status": "connected", "template": "icon-check" },
+    { "figma": "Icon/sun", "node": "8-50", "status": "connected", "template": "icon-sun" },
+    { "figma": "Icon/menu", "node": "8-55", "status": "connected", "template": "icon-menu" },
+    { "figma": "Logo", "node": "8-56", "status": "connected", "template": "logo" },
+    { "figma": "SiteHeader", "node": "8-102", "status": "connected", "template": "site-header" },
+    { "figma": "SiteFooter", "node": "8-103", "status": "connected", "template": "site-footer" },
+    { "figma": "WorkCard", "node": "9-39", "status": "connected", "template": "work-card" },
+    { "figma": "FAQItem", "node": "9-66", "status": "connected", "template": "faq-item" },
+    { "figma": "ToggleChip", "node": "9-73", "status": "connected", "template": "toggle-chip" },
+    { "figma": "CTA", "node": "9-77", "status": "connected", "template": "cta" },
+    {
+      "figma": "FormatCard",
+      "node": "8-119",
+      "status": "inline",
+      "code": "src/components/sections/formats.tsx"
+    },
+    {
+      "figma": "BenefitTile",
+      "node": "8-128",
+      "status": "inline",
+      "code": "src/components/sections/benefits.tsx"
+    },
+    {
+      "figma": "StatTile",
+      "node": "8-133",
+      "status": "inline",
+      "code": "src/components/sections/in-numbers.tsx"
+    },
+    {
+      "figma": "ProcessStep",
+      "node": "8-136",
+      "status": "inline",
+      "code": "src/components/sections/process.tsx"
+    },
+    {
+      "figma": "CustomisationPoint",
+      "node": "9-74",
+      "status": "inline",
+      "code": "src/components/sections/brand-demo.tsx"
+    }
+  ]
+}
