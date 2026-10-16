@@ -1,0 +1,31 @@
+name: Publish Code Connect
+
+# Publishes the templates in figma/ to the Figma library so Dev Mode shows real
+# design-system code for each component. Runs when templates change on main, or by hand.
+# Needs the FIGMA_ACCESS_TOKEN secret (scopes: code_connect:write, file_content:read) and a
+# Figma plan with Dev Mode + Code Connect (Organization or Enterprise).
+on:
+  push:
+    branches: [main]
+    paths: ["figma/**", "figma.config.json"]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Publish
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$FIGMA_ACCESS_TOKEN" ]; then
+            echo "::warning::FIGMA_ACCESS_TOKEN secret is not set — templates were validated but not published."
+            pnpm figma:check
+            exit 0
+          fi
+          pnpm figma:publish

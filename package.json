@@ -8,6 +8,11 @@
     "start": "next start",
     "tokens": "node scripts/build-tokens.mjs",
     "tokens:check": "node scripts/build-tokens.mjs --check",
+    "tokens:figma:pull": "node scripts/figma-tokens.mjs pull",
+    "tokens:figma:check": "node scripts/figma-tokens.mjs check",
+    "tokens:figma:plan": "node scripts/figma-tokens.mjs plan",
+    "figma:check": "figma connect parse --exit-on-unreadable-files --skip-update-check --outFile .figma-connect.json",
+    "figma:publish": "figma connect publish --exit-on-unreadable-files --skip-update-check",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -21,7 +26,7 @@
     "check:budget": "node scripts/check-budget.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "verify": "pnpm tokens:check && pnpm lint && pnpm format:check && pnpm typecheck && pnpm check:stories && pnpm test && pnpm test:stories",
+    "verify": "pnpm tokens:check && pnpm tokens:figma:check && pnpm figma:check && pnpm lint && pnpm format:check && pnpm typecheck && pnpm check:stories && pnpm test && pnpm test:stories",
     "verify:full": "pnpm verify && pnpm build && pnpm check:budget && pnpm test:e2e"
   },
   "dependencies": {
@@ -47,6 +52,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
+    "@figma/code-connect": "2.0.2",
     "@playwright/test": "^1.63.0",
     "@storybook/addon-a11y": "^10.6.1",
     "@storybook/addon-docs": "^10.6.1",

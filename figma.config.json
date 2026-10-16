@@ -1,0 +1,10 @@
+{
+  "codeConnect": {
+    "include": ["figma/**/*.figma.ts"],
+    "language": "jsx",
+    "label": "React",
+    "documentUrlSubstitutions": {
+      "<FIGMA_DRAFT>": "https://www.figma.com/design/7fyYBxvBHHEK4IKO6ZTkXN/Draft"
+    }
+  }
+}
