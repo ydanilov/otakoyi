@@ -126,18 +126,24 @@ export function VenueTour({ stops }: VenueTourProps) {
               </ol>
             </nav>
 
-            <div className="relative max-w-md">
+            {/*
+              One glass panel that never fades: only the copy inside it swaps. Fading whole glass
+              cards stacked two translucent panels (with their backdrop blur) mid-transition, so
+              the text, background and border changed with scroll position. All stops share one
+              grid cell, so the panel keeps the tallest stop's height; the outgoing copy is gone
+              before the incoming one appears, so two texts never overlap.
+            */}
+            <div className="grid max-w-md rounded-2xl border border-border/60 bg-background/55 p-6 shadow-2xl backdrop-blur-xl md:p-8">
               {stops.map((s, i) => (
                 <div
                   key={s.slug}
                   aria-hidden={i !== active}
                   inert={i !== active}
                   className={cn(
-                    "transition-all duration-700 ease-out",
-                    i === 0 ? "relative" : "absolute inset-x-0 bottom-0",
+                    "transition-[opacity,translate] ease-out [grid-area:1/1]",
                     i === active
-                      ? "translate-y-0 opacity-100"
-                      : "pointer-events-none translate-y-6 opacity-0",
+                      ? "translate-y-0 opacity-100 delay-200 duration-500"
+                      : "pointer-events-none translate-y-3 opacity-0 duration-200",
                   )}
                 >
                   <StopCopy stop={s} large />
@@ -153,13 +159,8 @@ export function VenueTour({ stops }: VenueTourProps) {
 
 function StopCopy({ stop, large }: { stop: Solution; large?: boolean }) {
   return (
-    <div
-      className={cn(
-        "space-y-4",
-        large &&
-          "rounded-2xl border border-border/60 bg-background/55 p-6 shadow-2xl backdrop-blur-xl md:p-8",
-      )}
-    >
+    // `large` copy sits inside the tour's shared glass panel, which supplies the surface.
+    <div className="space-y-4">
       <p className="font-mono text-xs tracking-widest text-signal uppercase">{stop.label}</p>
       <h3
         className={cn(
@@ -172,7 +173,12 @@ function StopCopy({ stop, large }: { stop: Solution; large?: boolean }) {
       <p className="text-pretty text-muted-foreground">{stop.promise}</p>
       <div className="flex flex-wrap gap-1.5">
         {stop.surfaces.map((x) => (
-          <Badge key={x} variant="outline" className="bg-background/60 backdrop-blur">
+          <Badge
+            key={x}
+            variant="outline"
+            // A backdrop blur inside a fading element re-samples mid-fade; the panel already blurs.
+            className={cn("bg-background/60", !large && "backdrop-blur")}
+          >
             {x}
           </Badge>
         ))}
