@@ -1,6 +1,6 @@
 # Figma ↔ code
 
-File: **Draft** — https://www.figma.com/design/7fyYBxvBHHEK4IKO6ZTkXN/Draft
+File: **otakoyi** — https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoyi
 
 | Figma page | Purpose                                                                | Code counterpart                        |
 | ---------- | ---------------------------------------------------------------------- | --------------------------------------- |

@@ -1,5 +1,5 @@
 {
-  "$description": "Every component in the Figma library (file Draft, page Components) and how it maps to code. `connected` entries must have a Code Connect template in figma/; `inline` entries are Figma-only building blocks rendered inside a section component in code. Checked by scripts/code-connect.test.ts.",
+  "$description": "Every component in the Figma library (file otakoyi, page Components) and how it maps to code. `connected` entries must have a Code Connect template in figma/; `inline` entries are Figma-only building blocks rendered inside a section component in code. Checked by scripts/code-connect.test.ts.",
   "components": [
     { "figma": "Button", "node": "6-26", "status": "connected", "template": "button" },
     { "figma": "Badge", "node": "6-31", "status": "connected", "template": "badge" },

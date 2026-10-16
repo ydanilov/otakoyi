@@ -27,7 +27,7 @@ Code (git) is the final truth. Storybook is the living contract for every compon
 
 1. **Brief** — GitHub issue with acceptance criteria (template: _Task_). 🧑 checkpoint
 2. **Reference** — 3–5 Mobbin references, what we take from each → `docs/research/<topic>.md`. 🧑 checkpoint on direction
-3. **Design** — Figma frame in "Draft", built only from library components and Variables.
+3. **Design** — Figma frame in "otakoyi", built only from library components and Variables.
 4. **Build** — agent reads the frame via Figma MCP, composes from `ui/` + `sections/`.
 5. **Story** — every new/changed component: states (default, hover, empty, loading, mobile) + `play` tests.
 6. **Local sensors** — `pnpm verify` (fast) → `pnpm verify:full`.
