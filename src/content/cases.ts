@@ -350,3 +350,16 @@ export function getCases(): Case[] {
 export function getCase(slug: string): Case | undefined {
   return getCases().find((c) => c.slug === slug)
 }
+
+/**
+ * Placeholder cases (invented clients and numbers) stay out of search and AI feeds: noindex,
+ * no sitemap entry, no llms.txt entry. Replace them with real work, then this returns false.
+ */
+export function isPlaceholderCase(c: Case) {
+  return c.client.startsWith("Placeholder")
+}
+
+/** Cases that may be presented to search engines and AI answer engines as real work. */
+export function getIndexableCases(): Case[] {
+  return getCases().filter((c) => !isPlaceholderCase(c))
+}

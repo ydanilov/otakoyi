@@ -7,16 +7,42 @@ import { SectionHeading } from "@/components/sections/section-heading"
 import { TechnologySelector } from "@/components/sections/technologies"
 import { solutions } from "@/content/solutions"
 import { technologies } from "@/content/technologies"
+import { JsonLd, breadcrumbs, orgId } from "@/lib/json-ld"
+import { absoluteUrl, pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Solutions",
   description:
-    "Generative installations for conferences, launches, office lobbies and exhibitions — pick your occasion",
-}
+    "Interactive installations for conferences, trade show stands, product launches, music events, museums and office lobbies — what you get, how long it takes and examples",
+  path: "/solutions",
+})
 
 export default function SolutionsPage() {
   return (
     <>
+      <JsonLd
+        data={[
+          {
+            "@type": "ItemList",
+            name: "Installation solutions",
+            itemListElement: solutions.map((s, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              item: {
+                "@type": "Service",
+                name: `${s.label} installations`,
+                description: s.promise,
+                url: absoluteUrl(`/solutions/${s.slug}`),
+                provider: { "@id": orgId },
+              },
+            })),
+          },
+          breadcrumbs([
+            { name: "Home", path: "/" },
+            { name: "Solutions", path: "/solutions" },
+          ]),
+        ]}
+      />
       <section className="relative isolate overflow-hidden">
         <HeroField seed={29} />
         <div className="mx-auto max-w-7xl px-4 pt-16 pb-12 md:px-8 md:pt-24">

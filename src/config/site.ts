@@ -11,7 +11,7 @@ export const site = {
     { href: "/studio", label: "Studio" },
   ],
   social: [
-    { href: "https://instagram.com", label: "Instagram" },
+    { href: "https://www.instagram.com/otakoyi.team/", label: "Instagram" },
     { href: "https://linkedin.com", label: "LinkedIn" },
     { href: "https://vimeo.com", label: "Vimeo" },
   ],

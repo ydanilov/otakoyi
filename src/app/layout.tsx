@@ -1,17 +1,41 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 
 import { ProposalDialog } from "@/components/site/proposal-dialog"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
 import { site } from "@/config/site"
 import { motionScript, themeScript } from "@/lib/init-scripts"
+import { JsonLd, organization, website } from "@/lib/json-ld"
+import { keywords, seoDescription, siteUrl } from "@/lib/seo"
+import { themeHex } from "@/lib/tokens.generated"
 import { fontLogo, fontMono, fontSans } from "@/fonts"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: { default: `${site.name} — Generative design studio`, template: `%s — ${site.name}` },
-  description: site.description,
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `${site.name} — Interactive generative installations for events and brands`,
+    template: `%s — ${site.name}`,
+  },
+  description: seoDescription,
+  applicationName: site.name,
+  keywords,
+  authors: [{ name: site.name, url: siteUrl }],
+  creator: site.name,
+  publisher: site.name,
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: site.name,
+    title: `${site.name} — Interactive generative installations for events and brands`,
+    description: seoDescription,
+  },
+  twitter: { card: "summary_large_image" },
+  robots: { index: true, follow: true, "max-image-preview": "large" },
+  category: "design",
 }
+
+export const viewport: Viewport = { themeColor: themeHex.dark.background, colorScheme: "dark" }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -22,6 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript + motionScript }} />
+        <JsonLd data={[organization, website]} />
       </head>
       <body className="flex min-h-svh flex-col">
         <a

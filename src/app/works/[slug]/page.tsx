@@ -9,7 +9,9 @@ import { CaseVisual } from "@/components/sections/case-visual"
 import { Cta } from "@/components/sections/cta"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { getCase, getCases } from "@/content/cases"
+import { getCase, getCases, isPlaceholderCase } from "@/content/cases"
+import { JsonLd, breadcrumbs, orgId } from "@/lib/json-ld"
+import { absoluteUrl, pageMetadata } from "@/lib/seo"
 
 export const dynamicParams = false
 
@@ -20,7 +22,17 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/works/[slug]">): Promise<Metadata> {
   const { slug } = await params
   const item = getCase(slug)
-  return item ? { title: item.title, description: item.summary } : {}
+  return item
+    ? {
+        ...pageMetadata({
+          title: item.title,
+          description: item.summary,
+          path: `/works/${slug}`,
+          type: "article",
+        }),
+        ...(isPlaceholderCase(item) && { robots: { index: false, follow: true } }),
+      }
+    : {}
 }
 
 export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
@@ -34,6 +46,28 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
 
   return (
     <article>
+      <JsonLd
+        data={[
+          {
+            "@type": "CreativeWork",
+            name: item.title,
+            description: item.summary,
+            url: absoluteUrl(`/works/${slug}`),
+            image: absoluteUrl(item.cover?.src ?? `/works/${slug}/opengraph-image`),
+            genre: "Interactive generative installation",
+            keywords: item.formats.join(", "),
+            dateCreated: String(item.year),
+            locationCreated: { "@type": "Place", name: item.location },
+            creator: { "@id": orgId },
+            creativeWorkStatus: item.status,
+          },
+          breadcrumbs([
+            { name: "Home", path: "/" },
+            { name: "Installations", path: "/works" },
+            { name: item.title, path: `/works/${slug}` },
+          ]),
+        ]}
+      />
       <header className="mx-auto max-w-7xl px-4 pt-16 md:px-8 md:pt-24">
         <p className="mb-4 font-mono text-xs tracking-widest text-muted-foreground uppercase">
           {item.client} · {item.year}
@@ -146,7 +180,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
       </div>
 
       {item.outcomes ? (
-        <section aria-labelledby="outcomes-title" className="border-y bg-muted/30">
+        <section aria-labelledby="outcomes-title" className="bg-muted/30">
           <div className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
             <div className="mb-12 max-w-2xl space-y-3">
               <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
@@ -178,7 +212,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
           </div>
         </section>
       ) : (
-        <section aria-labelledby="backstage-title" className="border-y bg-muted/30">
+        <section aria-labelledby="backstage-title" className="bg-muted/30">
           <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-[1fr_2fr] md:px-8 md:py-20">
             <div className="space-y-3">
               <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">

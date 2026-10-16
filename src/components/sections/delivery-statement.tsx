@@ -31,8 +31,8 @@ export function DeliveryStatement() {
           How we deliver
         </p>
         <h2 className="text-3xl leading-tight font-medium tracking-tight text-balance md:text-5xl">
-          Built to run, not to render. One installation plays every venue you take it to, and{" "}
-          <span className="text-signal">keeps growing</span> long after opening night
+          Built to run, not to render. It <span className="text-signal">keeps growing</span> long
+          after opening night
         </h2>
       </div>
       <ul className="space-y-6 self-end">
