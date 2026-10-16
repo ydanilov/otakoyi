@@ -61,6 +61,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <SiteFooter />
         <ProposalDialog />
+        {/* Vercel Web Analytics + Speed Insights as plain deferred scripts: no client bundle cost. */}
+        <script defer src="/_vercel/insights/script.js" />
+        <script defer src="/_vercel/speed-insights/script.js" />
       </body>
     </html>
   )

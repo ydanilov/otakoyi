@@ -35,6 +35,8 @@ Humans own direction and approval; agents do the work between checkpoints.
 pnpm dev                 # Next dev server
 pnpm storybook           # component workshop on :6006
 pnpm tokens              # regenerate CSS/TS from tokens/tokens.json
+pnpm tokens:figma:check  # tokens.json vs the Figma snapshot (pull: tokens:figma:pull, needs FIGMA_ACCESS_TOKEN)
+pnpm figma:check         # parse Code Connect templates in figma/
 pnpm verify              # fast sensors: tokens, lint, format, types, story coverage, unit + story tests
 pnpm verify:full         # + production build, JS budget, Playwright e2e/a11y
 pnpm test:visual         # screenshot regression (baselines are generated in CI only)
@@ -86,7 +88,8 @@ docs/workflow.md         ← the harness loop: guides, sensors, constraints, cle
 docs/decisions/          ← ADRs. Don't relitigate — propose a new ADR instead
 docs/research/           ← Mobbin / reference findings
 docs/figma.md            ← Figma file structure and code ↔ design mapping
-tokens/tokens.json       ← design tokens source of truth
+figma/                   ← Code Connect templates + components.json (Figma ↔ code registry)
+tokens/tokens.json       ← design tokens source of truth (tokens/figma.json = Figma snapshot)
 src/app/                 ← routes (/, /works, /works/[slug], /studio)
 src/components/ui/       ← shadcn primitives (+ `signal` button variant)
 src/components/sections/ ← page sections composed from ui

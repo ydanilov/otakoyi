@@ -91,7 +91,10 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28">
+      <section aria-labelledby="outcomes" className="mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28">
+        <h2 id="outcomes" className="sr-only">
+          What it does for you
+        </h2>
         <ul className="grid gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-3">
           {s.outcomes.map((o, i) => (
             <li key={o.title} className="bg-background p-6 md:p-8">

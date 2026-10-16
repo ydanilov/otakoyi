@@ -23,6 +23,9 @@ for (const file of htmlFiles(APP)) {
   let total = 0
   let hasThree = false
   for (const src of srcs) {
+    // Only the app's own bundle counts. Platform scripts (/_vercel/* analytics, ~1–2 KB each)
+    // are deferred and served by Vercel, not built here.
+    if (!src.startsWith("/_next/")) continue
     const local = path.join(".next", src.replace(/^\/_next\//, ""))
     const buf = readFileSync(local)
     total += gzipSync(buf).length

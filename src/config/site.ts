@@ -10,11 +10,7 @@ export const site = {
     { href: "/solutions", label: "Solutions" },
     { href: "/studio", label: "Studio" },
   ],
-  social: [
-    { href: "https://www.instagram.com/otakoyi.team/", label: "Instagram" },
-    { href: "https://linkedin.com", label: "LinkedIn" },
-    { href: "https://vimeo.com", label: "Vimeo" },
-  ],
+  social: [{ href: "https://www.instagram.com/otakoyi.team/", label: "Instagram" }],
 } as const
 
 /** Every "Get a proposal" link points here; `ProposalDialog` (mounted in the layout) opens on it. */
