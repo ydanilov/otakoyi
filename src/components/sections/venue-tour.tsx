@@ -94,12 +94,13 @@ export function VenueTour({ stops }: VenueTourProps) {
               <ol className="flex gap-1">
                 {stops.map((s, i) => (
                   <li key={s.slug}>
-                    <button
-                      type="button"
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => goTo(i)}
                       aria-current={i === active ? "step" : undefined}
                       aria-label={`Go to ${s.label}`}
-                      className="group flex cursor-pointer items-center gap-2 rounded-full px-2 py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      className="group h-auto px-2 py-2 hover:bg-transparent active:scale-100"
                     >
                       <span
                         aria-hidden
@@ -120,7 +121,7 @@ export function VenueTour({ stops }: VenueTourProps) {
                       >
                         {s.label}
                       </span>
-                    </button>
+                    </Button>
                   </li>
                 ))}
               </ol>
@@ -183,7 +184,7 @@ function StopCopy({ stop, large }: { stop: Solution; large?: boolean }) {
           </Badge>
         ))}
       </div>
-      <Button asChild variant="outline" className="rounded-full">
+      <Button asChild variant="outline">
         <Link href={`/solutions/${stop.slug}`}>{stop.label}</Link>
       </Button>
     </div>
