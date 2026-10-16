@@ -28,7 +28,8 @@ export function SiteFooter() {
             <p className="max-w-xs text-sm text-pretty text-muted-foreground">{site.tagline}</p>
           </div>
           <ul className="flex gap-2">
-            {site.social.map((s) => {
+            {site.social.flatMap((s) => {
+              if (!s.href) return []
               const Icon = socialIcons[s.label]
               return (
                 <li key={s.href}>

@@ -15,3 +15,51 @@ export const generativePalette = {
 } as const
 
 export type GenerativeMode = keyof typeof generativePalette
+
+/** UI colors as hex, for renderers that can't read CSS variables (OG images, manifest, theme-color). */
+export const colorHex = {
+  dark: {
+  "background": "#070707",
+  "foreground": "#f5f5f5",
+  "card": "#0f0f0f",
+  "card-foreground": "#f5f5f5",
+  "popover": "#0f0f0f",
+  "popover-foreground": "#f5f5f5",
+  "primary": "#f5f5f5",
+  "primary-foreground": "#070707",
+  "secondary": "#1b1b1b",
+  "secondary-foreground": "#f5f5f5",
+  "muted": "#1b1b1b",
+  "muted-foreground": "#a4a4a4",
+  "accent": "#1b1b1b",
+  "accent-foreground": "#f5f5f5",
+  "signal": "#c1f354",
+  "signal-foreground": "#070707",
+  "destructive": "#ff6367",
+  "border": "#ffffff",
+  "input": "#ffffff",
+  "ring": "#c1f354"
+},
+  light: {
+  "background": "#fafafa",
+  "foreground": "#0b0b0b",
+  "card": "#ffffff",
+  "card-foreground": "#0b0b0b",
+  "popover": "#ffffff",
+  "popover-foreground": "#0b0b0b",
+  "primary": "#0b0b0b",
+  "primary-foreground": "#fafafa",
+  "secondary": "#ebebeb",
+  "secondary-foreground": "#0b0b0b",
+  "muted": "#ebebeb",
+  "muted-foreground": "#555555",
+  "accent": "#ebebeb",
+  "accent-foreground": "#0b0b0b",
+  "signal": "#4f8300",
+  "signal-foreground": "#fafafa",
+  "destructive": "#df2225",
+  "border": "#000000",
+  "input": "#000000",
+  "ring": "#4f8300"
+},
+} as const

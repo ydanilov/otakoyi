@@ -6,11 +6,13 @@ import { LogoWall } from "@/components/sections/logo-wall"
 import { SectionHeading } from "@/components/sections/section-heading"
 import { StudioHero } from "@/components/sections/studio-hero"
 import { site } from "@/config/site"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Studio",
   description: `About ${site.name} — the team behind turnkey generative installations for brands`,
-}
+  path: "/studio",
+})
 
 const included = [
   { title: "Concept", body: "A concept and a live prototype in your brand, within a week" },

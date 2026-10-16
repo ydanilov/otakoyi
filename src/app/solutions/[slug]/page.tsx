@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import { VenueStill } from "@/components/sections/venue-stage"
 import { proposalHref, site } from "@/config/site"
 import { casesFor, getSolution, solutions } from "@/content/solutions"
+import { JsonLd, absoluteUrl, breadcrumbs, faqPage, orgId, pageMetadata } from "@/lib/seo"
 
 export const dynamicParams = false
 
@@ -26,7 +27,13 @@ export async function generateMetadata({
 }: PageProps<"/solutions/[slug]">): Promise<Metadata> {
   const { slug } = await params
   const s = getSolution(slug)
-  return s ? { title: `${s.label} installations`, description: s.promise } : {}
+  return s
+    ? pageMetadata({
+        title: `${s.label} installations`,
+        description: s.promise,
+        path: `/solutions/${s.slug}`,
+      })
+    : {}
 }
 
 export default async function SolutionPage({ params }: PageProps<"/solutions/[slug]">) {
@@ -36,8 +43,30 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
   const matching = casesFor(s)
   const others = solutions.filter((o) => o.slug !== s.slug)
 
+  const path = `/solutions/${s.slug}`
+
   return (
     <>
+      <JsonLd
+        data={[
+          {
+            "@type": "Service",
+            "@id": absoluteUrl(`${path}#service`),
+            name: `Generative installations for ${s.label.toLowerCase()}`,
+            serviceType: "Generative visual installation",
+            description: s.description,
+            url: absoluteUrl(path),
+            provider: { "@id": orgId },
+            areaServed: "Europe",
+            ...(s.image ? { image: absoluteUrl(s.image) } : {}),
+          },
+          faqPage(s.faq, path),
+          breadcrumbs([
+            { name: "Solutions", path: "/solutions" },
+            { name: s.label, path },
+          ]),
+        ]}
+      />
       <section className="relative isolate overflow-hidden">
         <HeroField work={s.hero.work} seed={s.hero.seed} />
         <div className="mx-auto max-w-7xl px-4 pt-24 pb-16 md:px-8 md:pt-40 md:pb-24">

@@ -1,3 +1,27 @@
+type SocialLink = { label: "Instagram" | "LinkedIn" | "Vimeo"; href: string | null }
+
+/** Studio profiles. A link shows in the footer (and in structured data) only once it has a real URL. */
+const social: SocialLink[] = [
+  { label: "Instagram", href: null },
+  { label: "LinkedIn", href: null },
+  { label: "Vimeo", href: null },
+]
+
+/**
+ * Absolute origin for canonical URLs, sitemap, Open Graph and structured data.
+ * `NEXT_PUBLIC_SITE_URL` wins; otherwise Vercel's production domain (it switches to the custom
+ * domain on its own once one is attached), then localhost.
+ */
+export const siteUrl = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000"),
+)
+
+/** Only the production deployment may be indexed; previews and local builds stay out of search. */
+export const indexable = process.env.VERCEL_ENV === "production"
+
 export const site = {
   name: "Otakoyi",
   tagline: "Generative installations for conferences, events, offices and exhibitions",
@@ -10,11 +34,7 @@ export const site = {
     { href: "/solutions", label: "Solutions" },
     { href: "/studio", label: "Studio" },
   ],
-  social: [
-    { href: "https://instagram.com", label: "Instagram" },
-    { href: "https://linkedin.com", label: "LinkedIn" },
-    { href: "https://vimeo.com", label: "Vimeo" },
-  ],
+  social,
 } as const
 
 /** Every "Get a proposal" link points here; `ProposalDialog` (mounted in the layout) opens on it. */

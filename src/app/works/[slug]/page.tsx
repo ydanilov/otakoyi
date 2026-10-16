@@ -10,6 +10,7 @@ import { Cta } from "@/components/sections/cta"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { getCase, getCases } from "@/content/cases"
+import { JsonLd, absoluteUrl, breadcrumbs, orgId, pageMetadata } from "@/lib/seo"
 
 export const dynamicParams = false
 
@@ -20,7 +21,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/works/[slug]">): Promise<Metadata> {
   const { slug } = await params
   const item = getCase(slug)
-  return item ? { title: item.title, description: item.summary } : {}
+  return item
+    ? pageMetadata({
+        title: item.title,
+        description: item.summary,
+        path: `/works/${item.slug}`,
+        type: "article",
+      })
+    : {}
 }
 
 export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
@@ -32,8 +40,31 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
   const all = getCases()
   const next = all[(all.findIndex((c) => c.slug === slug) + 1) % all.length]!
 
+  const path = `/works/${item.slug}`
+
   return (
     <article>
+      <JsonLd
+        data={[
+          {
+            "@type": "CreativeWork",
+            "@id": absoluteUrl(`${path}#work`),
+            name: item.title,
+            description: item.summary,
+            url: absoluteUrl(path),
+            creator: { "@id": orgId },
+            dateCreated: String(item.year),
+            locationCreated: item.location,
+            genre: item.formats,
+            keywords: item.customisation.join(", "),
+            ...(item.cover ? { image: absoluteUrl(item.cover.src) } : {}),
+          },
+          breadcrumbs([
+            { name: "Installations", path: "/works" },
+            { name: item.title, path },
+          ]),
+        ]}
+      />
       <header className="mx-auto max-w-7xl px-4 pt-16 md:px-8 md:pt-24">
         <p className="mb-4 font-mono text-xs tracking-widest text-muted-foreground uppercase">
           {item.client} · {item.year}

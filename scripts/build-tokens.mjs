@@ -26,9 +26,17 @@ const palette = (mode) =>
     2,
   )
 
+const colors = (mode) =>
+  JSON.stringify(
+    Object.fromEntries(Object.entries(t.color).map(([k, v]) => [k, hex(v[mode])])),
+    null,
+    2,
+  )
+
 const ts =
   HEADER +
-  `export const generativePalette = {\n  dark: ${palette("dark")},\n  light: ${palette("light")},\n} as const\n\nexport type GenerativeMode = keyof typeof generativePalette\n`
+  `export const generativePalette = {\n  dark: ${palette("dark")},\n  light: ${palette("light")},\n} as const\n\nexport type GenerativeMode = keyof typeof generativePalette\n` +
+  `\n/** UI colors as hex, for renderers that can't read CSS variables (OG images, manifest, theme-color). */\nexport const colorHex = {\n  dark: ${colors("dark")},\n  light: ${colors("light")},\n} as const\n`
 
 const out = { "src/app/tokens.css": css, "src/lib/tokens.generated.ts": ts }
 let stale = false

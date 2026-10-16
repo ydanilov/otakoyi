@@ -1,7 +1,8 @@
+import { JsonLd, faqPage } from "@/lib/seo"
 import { Benefits } from "@/components/sections/benefits"
 import { Cta } from "@/components/sections/cta"
 import { DeliveryStatement } from "@/components/sections/delivery-statement"
-import { Faq } from "@/components/sections/faq"
+import { Faq, faqItems } from "@/components/sections/faq"
 import { Hero } from "@/components/sections/hero"
 import { PinnedProcess } from "@/components/sections/pinned-process"
 import { SectionHeading } from "@/components/sections/section-heading"
@@ -39,6 +40,7 @@ export default function HomePage() {
 
   return (
     <>
+      <JsonLd data={faqPage(faqItems, "/")} />
       <Hero />
 
       <SpecMarquee items={specs} />

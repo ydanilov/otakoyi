@@ -5,12 +5,14 @@ import { HeroField } from "@/components/sections/hero-field"
 import { SectionHeading } from "@/components/sections/section-heading"
 import { WorksGrid } from "@/components/sections/works-grid"
 import { formats, getCases } from "@/content/cases"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Installations",
   description:
     "Generative installations for conferences, events, offices and exhibitions — customised to each client's brand",
-}
+  path: "/works",
+})
 
 export default function WorksPage() {
   return (

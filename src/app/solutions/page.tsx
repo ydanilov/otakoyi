@@ -7,12 +7,14 @@ import { SectionHeading } from "@/components/sections/section-heading"
 import { TechnologySelector } from "@/components/sections/technologies"
 import { solutions } from "@/content/solutions"
 import { technologies } from "@/content/technologies"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Solutions",
   description:
     "Generative installations for conferences, launches, office lobbies and exhibitions — pick your occasion",
-}
+  path: "/solutions",
+})
 
 export default function SolutionsPage() {
   return (
