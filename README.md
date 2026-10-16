@@ -131,8 +131,7 @@ Full numbers and how to reproduce them: [docs/metrics.md](docs/metrics.md).
 
 - Pump The Market and The Whale are the studio's own R&D installations; the other cases are
   placeholders until real projects ship. Visuals on the site are generated or rendered.
-- Code Connect templates are validated in CI; publishing them to Figma Dev Mode needs a Figma
-  plan with Code Connect, which the studio doesn't have yet.
+- Code Connect templates are validated in CI and published from `main` by a workflow.
 
 ## Run it
 
