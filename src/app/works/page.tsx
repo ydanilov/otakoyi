@@ -29,6 +29,7 @@ export default function WorksPage() {
         </div>
       </section>
       <div className="mx-auto max-w-7xl px-4 pb-16 md:px-8 md:pb-24">
+        <h2 className="sr-only">All installations</h2>
         <WorksGrid items={getCases()} formats={formats} />
       </div>
       <Cta />

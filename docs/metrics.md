@@ -5,36 +5,45 @@ Measured on 2026-10-16 on branch `feat/design-engineering` (production build,
 
 ## Sensors
 
-| Sensor                             | Result                                               | Command                         |
-| ---------------------------------- | ---------------------------------------------------- | ------------------------------- |
-| Tokens generated in sync           | ✓ 24 tokens × 2 modes                                | `pnpm tokens:check`             |
-| Tokens match Figma                 | ✓ 24 / 24 (ΔE ≤ 1, alpha ±0.02)                      | `pnpm tokens:figma:check`       |
-| Code Connect                       | ✓ 20 connected + 5 inline = 25 / 25 Figma components | `pnpm figma:check`, `pnpm test` |
-| Lint (incl. 5 harness rules)       | ✓ 0 errors                                           | `pnpm lint`                     |
-| Types (strict, route types)        | ✓                                                    | `pnpm typecheck`                |
-| Story coverage                     | ✓ every section / site / works file                  | `pnpm check:stories`            |
-| Unit + contract tests              | ✓ 35 / 35                                            | `pnpm test`                     |
-| Storybook interaction + a11y       | ✓ 60 / 60 (axe in `error` mode)                      | `pnpm test:stories`             |
-| E2E + axe WCAG 2.2 AA, 3 viewports | ✓ 61 passed, 2 skipped                               | `pnpm test:e2e`                 |
-| Initial JS budget (≤ 230 KB gzip)  | ✓ max 227.4 KB (`/`), three.js lazy                  | `pnpm check:budget`             |
+| Sensor                                              | Result                                               | Command                         |
+| --------------------------------------------------- | ---------------------------------------------------- | ------------------------------- |
+| Tokens generated in sync                            | ✓ 24 tokens × 2 modes                                | `pnpm tokens:check`             |
+| Tokens match Figma                                  | ✓ 24 / 24 (ΔE ≤ 1, alpha ±0.02)                      | `pnpm tokens:figma:check`       |
+| Code Connect                                        | ✓ 20 connected + 5 inline = 25 / 25 Figma components | `pnpm figma:check`, `pnpm test` |
+| Lint (incl. 5 harness rules)                        | ✓ 0 errors                                           | `pnpm lint`                     |
+| Types (strict, route types)                         | ✓                                                    | `pnpm typecheck`                |
+| Story coverage                                      | ✓ every section / site / works file                  | `pnpm check:stories`            |
+| Unit + contract tests                               | ✓ 35 / 35                                            | `pnpm test`                     |
+| Storybook interaction + a11y                        | ✓ 60 / 60 (axe in `error` mode)                      | `pnpm test:stories`             |
+| E2E + axe WCAG 2.2 AA + best practices, 3 viewports | ✓ 61 passed, 2 skipped                               | `pnpm test:e2e`                 |
+| Initial JS budget (≤ 230 KB gzip)                   | ✓ max 227.4 KB (`/`), three.js lazy                  | `pnpm check:budget`             |
 
 ## Lighthouse 12
 
-| Page                     | Device  | Performance | Accessibility | Best practices\* | SEO | LCP   | CLS | TBT    |
-| ------------------------ | ------- | ----------- | ------------- | ---------------- | --- | ----- | --- | ------ |
-| `/`                      | Desktop | 99          | 100           | 96               | 100 | 0.8 s | 0   | 0 ms   |
-| `/`                      | Mobile  | 85          | 100           | 96               | 100 | 3.8 s | 0   | 230 ms |
-| `/works/pump-the-market` | Desktop | 100         | 100           | 96               | 100 | 0.7 s | 0   | 0 ms   |
-| `/works/pump-the-market` | Mobile  | 93          | 100           | 96               | 100 | 3.0 s | 0   | 110 ms |
-| `/solutions/conferences` | Desktop | 100         | 98            | 96               | 100 | 0.8 s | 0   | 0 ms   |
-| `/solutions/conferences` | Mobile  | 91          | 98            | 96               | 100 | 3.4 s | 0   | 80 ms  |
+Two runs per page and device; ranges show run-to-run variance.
+
+| Page                     | Device  | Performance | Accessibility | Best practices\* | SEO | LCP       | CLS | TBT        |
+| ------------------------ | ------- | ----------- | ------------- | ---------------- | --- | --------- | --- | ---------- |
+| `/`                      | Desktop | 99–100      | 100           | 96               | 100 | 0.8 s     | 0   | 0 ms       |
+| `/`                      | Mobile  | 92–99       | 100           | 96               | 100 | 1.6–3.2 s | 0   | 120–130 ms |
+| `/works/pump-the-market` | Desktop | 100         | 100           | 96               | 100 | 0.7–0.8 s | 0   | 0 ms       |
+| `/works/pump-the-market` | Mobile  | 96          | 100           | 96               | 100 | 2.1–2.7 s | 0   | 80–210 ms  |
+| `/solutions/conferences` | Desktop | 100         | 100           | 96               | 100 | 0.7–0.8 s | 0   | 0 ms       |
+| `/solutions/conferences` | Mobile  | 94–95       | 100           | 96               | 100 | 2.9–3.0 s | 0   | 100–110 ms |
 
 \* Locally the Vercel Analytics scripts (`/_vercel/*`) return 404, which Lighthouse counts as
-console errors; on Vercel they load. Accessibility 98 on solution pages: one heading-order skip
-(`h1` → `h3`) — open item.
+console errors; on Vercel they load.
 
-Mobile runs use Lighthouse's simulated slow 4G + 4× CPU throttling; the home page carries the
-particle wordmark and the venue tour, the heaviest above-the-fold work on the site.
+Mobile runs use Lighthouse's simulated slow 4G + 4× CPU throttling.
+
+### What moved the numbers (2026-10-16)
+
+- **Heading order** — solution and works pages jumped from `h1` to `h3`; added the missing `h2`s
+  (visually hidden). axe now also runs its `best-practice` rules on every route, so the skip can't
+  come back. Accessibility 98 → 100.
+- **Fonts** — Geist and Geist Mono subset to Latin plus the punctuation, arrows and € the site
+  uses (70 KB → 34 KB each); Geist Mono no longer preloaded (small labels only). Home mobile
+  LCP 3.8 s → 1.6–3.2 s, performance 85 → 92–99.
 
 ## Initial JS per route (gzip)
 

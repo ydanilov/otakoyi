@@ -94,7 +94,8 @@ token or component to use instead.
 ### Accessibility as a test
 
 Storybook runs axe in `error` mode on every story; Playwright runs axe (WCAG 2.2 AA) on every
-route at three viewports. Accessibility regressions fail CI like type errors.
+route at three viewports, including axe's best-practice rules such as heading order.
+Accessibility regressions fail CI like type errors.
 
 ### A generative engine with a contract
 
@@ -117,8 +118,8 @@ pages, so they never drift from what the site says.
 
 |                      |                                                             |
 | -------------------- | ----------------------------------------------------------- |
-| Lighthouse (desktop) | Performance 99–100 · Accessibility 98–100 · SEO 100         |
-| Lighthouse (mobile)  | Performance 85–93 · CLS 0 on every page                     |
+| Lighthouse (desktop) | Performance 99–100 · Accessibility 100 · SEO 100            |
+| Lighthouse (mobile)  | Performance 92–99 · Accessibility 100 · CLS 0               |
 | axe                  | 0 violations — 60 stories, 61 e2e checks across 3 viewports |
 | JS budget            | max 227 KB of 230 KB, three.js lazy everywhere              |
 | Figma ↔ code         | 24 / 24 tokens in sync · 25 / 25 components accounted for   |
@@ -132,7 +133,6 @@ Full numbers and how to reproduce them: [docs/metrics.md](docs/metrics.md).
   placeholders until real projects ship. Visuals on the site are generated or rendered.
 - Code Connect templates are validated in CI; publishing them to Figma Dev Mode needs a Figma
   plan with Code Connect, which the studio doesn't have yet.
-- Open items: one heading-order skip on solution pages (a11y 98), mobile LCP on the home page.
 
 ## Run it
 
