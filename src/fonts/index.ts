@@ -1,6 +1,7 @@
 import localFont from "next/font/local"
 
 // Self-hosted Geist (no network at build time; works in Next and Storybook alike).
+// Subset to Latin + punctuation/arrows/€ used on the site (~34 KB each instead of ~70 KB).
 export const fontSans = localFont({
   src: "./Geist-Variable.woff2",
   variable: "--font-geist-sans",
@@ -13,6 +14,8 @@ export const fontMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
   display: "swap",
+  // Small labels only: don't compete with the body face for the first paint.
+  preload: false,
 })
 
 // Wordmark only: New Rocker (SIL OFL 1.1, see NewRocker-OFL.txt), latin subset.

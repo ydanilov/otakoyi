@@ -18,7 +18,8 @@
 ```
 Mobbin  ──references──▶  docs/research/
 Figma Variables  ◀──mirror──▶  tokens/tokens.json  ──pnpm tokens──▶  CSS vars + TS
-Figma components ◀──Code Connect (planned)──▶  src/components/ui + sections
+Figma Variables ──tokens:figma:pull──▶  tokens/figma.json  ──tokens:figma:check──▶  tokens.json
+Figma components ◀──Code Connect (figma/*.figma.ts)──▶  src/components/ui + sections
 Code (git) is the final truth. Storybook is the living contract for every component.
 ```
 
@@ -37,26 +38,28 @@ Code (git) is the final truth. Storybook is the living contract for every compon
 
 ## Sensors — what runs where
 
-| Sensor                                       | Command              | Local | CI         |
-| -------------------------------------------- | -------------------- | ----- | ---------- |
-| Tokens in sync                               | `pnpm tokens:check`  | ✓     | ✓          |
-| Lint + harness rules                         | `pnpm lint`          | ✓     | ✓          |
-| Format                                       | `pnpm format:check`  | ✓     | ✓          |
-| Types (incl. route types)                    | `pnpm typecheck`     | ✓     | ✓          |
-| Story coverage                               | `pnpm check:stories` | ✓     | ✓          |
-| Content + token contracts                    | `pnpm test`          | ✓     | ✓          |
-| Storybook interactions + a11y                | `pnpm test:stories`  | ✓     | ✓          |
-| Build                                        | `pnpm build`         | ✓     | ✓          |
-| JS budget, lazy three.js                     | `pnpm check:budget`  | ✓     | ✓          |
-| E2E + axe (3 viewports)                      | `pnpm test:e2e`      | ✓     | ✓          |
-| Visual regression (3 viewports × dark/light) | `pnpm test:visual`   | —     | ✓ (Docker) |
+| Sensor                                       | Command                   | Local | CI         |
+| -------------------------------------------- | ------------------------- | ----- | ---------- |
+| Tokens in sync                               | `pnpm tokens:check`       | ✓     | ✓          |
+| Tokens match Figma (snapshot)                | `pnpm tokens:figma:check` | ✓     | ✓          |
+| Code Connect templates parse                 | `pnpm figma:check`        | ✓     | ✓          |
+| Lint + harness rules                         | `pnpm lint`               | ✓     | ✓          |
+| Format                                       | `pnpm format:check`       | ✓     | ✓          |
+| Types (incl. route types)                    | `pnpm typecheck`          | ✓     | ✓          |
+| Story coverage                               | `pnpm check:stories`      | ✓     | ✓          |
+| Content + token contracts                    | `pnpm test`               | ✓     | ✓          |
+| Storybook interactions + a11y                | `pnpm test:stories`       | ✓     | ✓          |
+| Build                                        | `pnpm build`              | ✓     | ✓          |
+| JS budget, lazy three.js                     | `pnpm check:budget`       | ✓     | ✓          |
+| E2E + axe (3 viewports)                      | `pnpm test:e2e`           | ✓     | ✓          |
+| Visual regression (3 viewports × dark/light) | `pnpm test:visual`        | —     | ✓ (Docker) |
 
 Visual baselines are environment-specific. They are created and updated **only** by the
 "Update visual baselines" workflow (manual, human-triggered), which commits them to the branch.
 
 ## Garbage collection (weekly)
 
-- Figma ↔ code drift: compare Figma Variables with `tokens/tokens.json`; components without Code Connect.
+- Figma ↔ code drift: the `Figma token sync` workflow pulls Figma every Monday and opens a PR on change; `scripts/code-connect.test.ts` catches components without Code Connect.
 - Unused components / stories, unused tokens.
 - Outdated dependencies (shadcn upstream diffs in `src/components/ui`).
 - Stale ADRs and research notes.

@@ -1,0 +1,61 @@
+name: Figma token sync
+
+# Pulls the Theme variables from Figma (via their bound swatches) into tokens/figma.json and
+# checks them against tokens/tokens.json. If Figma changed, it opens a PR with the new snapshot,
+# so design changes show up as a reviewable diff and the `tokens:figma:check` sensor tells the
+# author exactly which tokens to update in code. Needs the FIGMA_ACCESS_TOKEN repository secret
+# (Figma personal access token with file_content:read).
+on:
+  schedule:
+    - cron: "17 6 * * 1" # Mondays, part of the weekly sweep
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Pull Figma snapshot
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$FIGMA_ACCESS_TOKEN" ]; then
+            echo "::warning::FIGMA_ACCESS_TOKEN secret is not set — skipping the Figma pull."
+            exit 0
+          fi
+          pnpm tokens:figma:pull
+      - name: Open a PR if Figma changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # pulledAt/version change on every pull; only the tokens themselves count.
+          if node -e 'const fs=require("fs"),{execSync}=require("child_process");const a=JSON.parse(execSync("git show HEAD:tokens/figma.json")).tokens;const b=JSON.parse(fs.readFileSync("tokens/figma.json")).tokens;process.exit(JSON.stringify(a)===JSON.stringify(b)?0:1)'; then
+            echo "Figma unchanged."
+            exit 0
+          fi
+          pnpm tokens:figma:check > drift.txt 2>&1 || true
+          branch="chore/figma-sync-$(date +%Y%m%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add tokens/figma.json
+          git commit -m "chore(tokens): sync Figma snapshot"
+          git push -u origin "$branch"
+          {
+            echo "Figma Theme variables changed. \`pnpm tokens:figma:check\` reports:"
+            echo
+            echo '```'
+            cat drift.txt
+            echo '```'
+            echo
+            echo "Update \`tokens/tokens.json\` (then \`pnpm tokens\`) on this branch, or revert the change in Figma."
+          } > body.md
+          gh pr create --title "chore(tokens): Figma variables changed" --body-file body.md

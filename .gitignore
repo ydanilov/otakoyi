@@ -49,3 +49,6 @@ storybook-static
 /blob-report
 scripts/blender/.cache/
 __pycache__/
+
+# Code Connect parse output (pnpm figma:check)
+.figma-connect.json

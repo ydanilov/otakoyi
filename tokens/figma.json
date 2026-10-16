@@ -1,0 +1,232 @@
+{
+  "$description": "Snapshot of the Figma side of the token contract, written by `pnpm tokens:figma:pull`. Do not edit by hand. `pnpm tokens:figma:check` compares it with tokens/tokens.json.",
+  "$source": {
+    "fileKey": "7fyYBxvBHHEK4IKO6ZTkXN",
+    "figmaVersion": "2407622176931102350",
+    "lastModified": "2026-10-08T03:45:56Z",
+    "pulledAt": "2026-10-16",
+    "via": "Figma REST /files/:key/nodes (token swatches bound to Theme variables)"
+  },
+  "tokens": {
+    "background": {
+      "variableId": "VariableID:5:6",
+      "dark": {
+        "hex": "#070707"
+      },
+      "light": {
+        "hex": "#fafafa"
+      }
+    },
+    "foreground": {
+      "variableId": "VariableID:5:7",
+      "dark": {
+        "hex": "#f5f5f5"
+      },
+      "light": {
+        "hex": "#0b0b0b"
+      }
+    },
+    "card": {
+      "variableId": "VariableID:5:8",
+      "dark": {
+        "hex": "#0f0f0f"
+      },
+      "light": {
+        "hex": "#ffffff"
+      }
+    },
+    "card-foreground": {
+      "variableId": "VariableID:5:9",
+      "dark": {
+        "hex": "#f5f5f5"
+      },
+      "light": {
+        "hex": "#0b0b0b"
+      }
+    },
+    "popover": {
+      "variableId": "VariableID:5:10",
+      "dark": {
+        "hex": "#0f0f0f"
+      },
+      "light": {
+        "hex": "#ffffff"
+      }
+    },
+    "popover-foreground": {
+      "variableId": "VariableID:5:11",
+      "dark": {
+        "hex": "#f5f5f5"
+      },
+      "light": {
+        "hex": "#0b0b0b"
+      }
+    },
+    "primary": {
+      "variableId": "VariableID:5:12",
+      "dark": {
+        "hex": "#f5f5f5"
+      },
+      "light": {
+        "hex": "#0b0b0b"
+      }
+    },
+    "primary-foreground": {
+      "variableId": "VariableID:5:13",
+      "dark": {
+        "hex": "#070707"
+      },
+      "light": {
+        "hex": "#fafafa"
+      }
+    },
+    "secondary": {
+      "variableId": "VariableID:5:14",
+      "dark": {
+        "hex": "#1b1b1b"
+      },
+      "light": {
+        "hex": "#ebebeb"
+      }
+    },
+    "secondary-foreground": {
+      "variableId": "VariableID:5:15",
+      "dark": {
+        "hex": "#f5f5f5"
+      },
+      "light": {
+        "hex": "#0b0b0b"
+      }
+    },
+    "muted": {
+      "variableId": "VariableID:5:16",
+      "dark": {
+        "hex": "#1b1b1b"
+      },
+      "light": {
+        "hex": "#ebebeb"
+      }
+    },
+    "muted-foreground": {
+      "variableId": "VariableID:5:17",
+      "dark": {
+        "hex": "#a4a4a4"
+      },
+      "light": {
+        "hex": "#555555"
+      }
+    },
+    "accent": {
+      "variableId": "VariableID:5:18",
+      "dark": {
+        "hex": "#1b1b1b"
+      },
+      "light": {
+        "hex": "#ebebeb"
+      }
+    },
+    "accent-foreground": {
+      "variableId": "VariableID:5:19",
+      "dark": {
+        "hex": "#f5f5f5"
+      },
+      "light": {
+        "hex": "#0b0b0b"
+      }
+    },
+    "signal": {
+      "variableId": "VariableID:5:20",
+      "dark": {
+        "hex": "#c1f354"
+      },
+      "light": {
+        "hex": "#4f8300"
+      }
+    },
+    "signal-foreground": {
+      "variableId": "VariableID:5:21",
+      "dark": {
+        "hex": "#070707"
+      },
+      "light": {
+        "hex": "#fafafa"
+      }
+    },
+    "destructive": {
+      "variableId": "VariableID:5:22",
+      "dark": {
+        "hex": "#ff6367"
+      },
+      "light": {
+        "hex": "#df2225"
+      }
+    },
+    "border": {
+      "variableId": "VariableID:5:23",
+      "dark": {
+        "hex": "#ffffff",
+        "alpha": 0.12
+      },
+      "light": {
+        "hex": "#000000",
+        "alpha": 0.1
+      }
+    },
+    "input": {
+      "variableId": "VariableID:5:24",
+      "dark": {
+        "hex": "#ffffff",
+        "alpha": 0.16
+      },
+      "light": {
+        "hex": "#000000",
+        "alpha": 0.14
+      }
+    },
+    "ring": {
+      "variableId": "VariableID:5:25",
+      "dark": {
+        "hex": "#c1f354"
+      },
+      "light": {
+        "hex": "#4f8300"
+      }
+    },
+    "gen-1": {
+      "variableId": "VariableID:5:26",
+      "dark": {
+        "hex": "#c1f354"
+      },
+      "light": {
+        "hex": "#4f8300"
+      }
+    },
+    "gen-2": {
+      "variableId": "VariableID:5:27",
+      "dark": {
+        "hex": "#42a3fd"
+      },
+      "light": {
+        "hex": "#0060c1"
+      }
+    },
+    "gen-3": {
+      "variableId": "VariableID:5:28",
+      "dark": {
+        "hex": "#e882e1"
+      },
+      "light": {
+        "hex": "#b73095"
+      }
+    },
+    "gen-4": {
+      "variableId": "VariableID:5:29",
+      "dark": {
+        "hex": "#f5f5f5"
+      },
+      "light": {
+        "hex": "#0b0b0b"
+      }
+    }
+  }
+}
