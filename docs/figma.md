@@ -6,7 +6,16 @@ File: **otakoyi** — https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoy
 | ---------- | ---------------------------------------------------------------------- | --------------------------------------- |
 | Tokens     | Variables collection _Theme_ (modes Dark / Light)                      | `tokens/tokens.json`                    |
 | Components | Button, Badge, Card, ToggleGroup, Accordion, Header, Footer, WorkCard… | `src/components/ui`, `sections`, `site` |
-| Pages      | Home, Works, Case study, Studio (desktop 1440 + mobile 390)            | `src/app/**/page.tsx`                   |
+| Pages      | Every live route, desktop 1440 + mobile 390 (captured from production) | `src/app/**/page.tsx`                   |
+
+The file "otakoyi" (account yura.danilov.official) replaced "Draft" on 2026-10-16. It is a recovered
+copy, so node IDs are unchanged (token frames 5:41/5:116, components in `figma/components.json`).
+
+**Pages page.** Section _Live site_ holds one frame per route and breakpoint, named
+`<Page> — Desktop 1440` / `<Page> — Mobile 390`, filled with section-by-section captures of production
+(scroll-driven sections are shown once, in their pinned state). They are a reference of what is live,
+not editable layouts: rebuild a frame from library components before redesigning it. Older drafts sit in
+the _Archive_ section.
 
 Rules:
 
