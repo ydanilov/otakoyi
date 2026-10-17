@@ -474,6 +474,18 @@
       "node": "72-341",
       "status": "inline",
       "code": "src/app/studio/page.tsx"
+    },
+    {
+      "figma": "CasePage",
+      "node": "89-5961",
+      "status": "inline",
+      "code": "src/app/works/[slug]/page.tsx"
+    },
+    {
+      "figma": "SolutionPage",
+      "node": "88-7249",
+      "status": "inline",
+      "code": "src/app/solutions/[slug]/page.tsx"
     }
   ]
 }

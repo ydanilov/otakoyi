@@ -25,7 +25,12 @@ Desktop and mobile of one page sit side by side. Every frame is an auto-layout s
 the library (`SiteHeader`, `Hero`, `SectionHeading`, `WorkCard`, `Faq`, `Cta`, `SiteFooter`…) with the
 production copy and images, so a layout is edited by changing instance properties, not pixels. Section
 components with a responsive layout are component sets with a `breakpoint` variant (`desktop` | `mobile`).
-Scroll-driven sections are drawn once, in their pinned state.
+Scroll-driven sections are drawn once, in their pinned state. Pages of one type are instances of one
+page template on the Components page (_Page templates_): `CasePage` for `/works/[slug]` and
+`SolutionPage` for `/solutions/[slug]`, each with a `breakpoint` variant. Edit the layout in the
+template; each page only overrides content and hides the optional parts it does not use.
+`SiteHeader` has `state=sticky` (the fixed bar) and `state=in-hero` (draft: before scrolling the bar
+is part of the hero, without background or border, and sticks once it reaches the top).
 
 Rules:
 

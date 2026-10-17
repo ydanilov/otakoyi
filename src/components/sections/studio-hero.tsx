@@ -78,19 +78,6 @@ export function StudioHero({ first, second, image }: StudioHeroProps) {
             </div>
           </div>
 
-          {/* Outlined ampersand over the photo, between the two phrases. */}
-          <span
-            aria-hidden
-            className="pointer-events-none absolute top-[22%] left-1/2 z-10 font-medium text-transparent select-none [-webkit-text-stroke:2px_var(--signal)] md:top-[12%]"
-            style={{
-              fontSize: "clamp(12rem, min(30vw, 52svh), 26rem)",
-              lineHeight: 1,
-              transform: `translateX(-50%) rotate(${t * 18 - 6}deg) scale(${1 + t * 0.08})`,
-            }}
-          >
-            &amp;
-          </span>
-
           <ReactiveHeadline
             as="p"
             decorative
@@ -102,11 +89,22 @@ export function StudioHero({ first, second, image }: StudioHeroProps) {
             style={{ transform: `translateX(${-t * 90}px)` }}
           />
 
+          {/* Outlined ampersand between the two phrases: in the flow on mobile, over the photo on desktop. */}
+          <span
+            aria-hidden
+            className="pointer-events-none relative z-10 mx-auto -my-3 block w-fit text-[7.5rem] leading-none font-medium text-transparent select-none [--ax:0%] [-webkit-text-stroke:2px_var(--signal)] md:absolute md:top-[12%] md:left-1/2 md:my-0 md:text-[clamp(12rem,min(30vw,52svh),26rem)] md:[--ax:-50%]"
+            style={{
+              transform: `translateX(var(--ax)) rotate(${t * 18 - 6}deg) scale(${1 + t * 0.08})`,
+            }}
+          >
+            &amp;
+          </span>
+
           <ReactiveHeadline
             as="p"
             decorative
             text={second}
-            className="relative z-20 mt-6 text-right text-6xl leading-[0.85] tracking-tighter text-signal drop-shadow-[0_2px_24px_var(--background)] md:absolute md:right-0 md:bottom-[12%] md:mt-0 md:max-w-[40rem] md:text-[clamp(4rem,min(9vw,15svh),8.5rem)]"
+            className="relative z-20 text-right text-6xl leading-[0.85] tracking-tighter text-signal drop-shadow-[0_2px_24px_var(--background)] md:absolute md:right-0 md:bottom-[12%] md:mt-0 md:max-w-[40rem] md:text-[clamp(4rem,min(9vw,15svh),8.5rem)]"
             style={{ transform: `translateX(${t * 90}px)` }}
           />
         </div>

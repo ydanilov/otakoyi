@@ -175,7 +175,7 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
                           <span>· {s.time}</span>
                         </p>
                         <p
-                          className="mt-4 text-4xl font-medium tracking-tighter md:text-7xl md:whitespace-nowrap"
+                          className="mt-4 text-4xl font-medium tracking-tighter whitespace-nowrap md:text-7xl"
                           style={{
                             color: `color-mix(in oklab, var(--muted-foreground) ${Math.round(st.lift * 100)}%, var(--foreground))`,
                           }}
