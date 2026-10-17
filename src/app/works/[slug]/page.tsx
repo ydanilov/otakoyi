@@ -180,7 +180,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
       </div>
 
       {item.outcomes ? (
-        <section aria-labelledby="outcomes-title" className="bg-muted/30">
+        <section aria-labelledby="outcomes-title">
           <div className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
             <div className="mb-12 max-w-2xl space-y-3">
               <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
