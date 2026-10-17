@@ -21,7 +21,7 @@
     },
     {
       "figma": "SectionHeading",
-      "node": "7-8",
+      "node": "74-540",
       "status": "connected",
       "template": "section-heading"
     },
@@ -93,7 +93,7 @@
     },
     {
       "figma": "SiteFooter",
-      "node": "8-103",
+      "node": "74-3151",
       "status": "connected",
       "template": "site-footer"
     },
@@ -117,7 +117,7 @@
     },
     {
       "figma": "Cta",
-      "node": "9-77",
+      "node": "74-3135",
       "status": "connected",
       "template": "cta"
     },
@@ -207,7 +207,7 @@
     },
     {
       "figma": "Hero",
-      "node": "43-20",
+      "node": "74-3168",
       "status": "connected",
       "template": "hero"
     },
@@ -219,31 +219,31 @@
     },
     {
       "figma": "TechnologyBento",
-      "node": "43-84",
+      "node": "74-3505",
       "status": "connected",
       "template": "technology-bento"
     },
     {
       "figma": "DeliveryStatement",
-      "node": "43-142",
+      "node": "74-3186",
       "status": "connected",
       "template": "delivery-statement"
     },
     {
       "figma": "VenueTour",
-      "node": "45-105",
+      "node": "74-3588",
       "status": "connected",
       "template": "venue-tour"
     },
     {
       "figma": "WorksReel",
-      "node": "45-136",
+      "node": "74-3739",
       "status": "connected",
       "template": "works-reel"
     },
     {
       "figma": "PinnedProcess",
-      "node": "45-153",
+      "node": "74-3772",
       "status": "connected",
       "template": "pinned-process"
     },
@@ -261,7 +261,7 @@
     },
     {
       "figma": "StudioHero",
-      "node": "50-254",
+      "node": "74-3889",
       "status": "connected",
       "template": "studio-hero"
     },
@@ -279,7 +279,7 @@
     },
     {
       "figma": "BenefitsItem",
-      "node": "8-128",
+      "node": "74-3324",
       "status": "inline",
       "code": "src/components/sections/benefits.tsx"
     },
@@ -309,19 +309,19 @@
     },
     {
       "figma": "TechnologyBentoItem",
-      "node": "43-69",
+      "node": "74-3395",
       "status": "inline",
       "code": "src/components/sections/technologies.tsx"
     },
     {
       "figma": "StopCopy",
-      "node": "45-77",
+      "node": "74-3519",
       "status": "inline",
       "code": "src/components/sections/venue-tour.tsx"
     },
     {
       "figma": "VenueTourNav",
-      "node": "45-91",
+      "node": "74-3533",
       "status": "inline",
       "code": "src/components/sections/venue-tour.tsx"
     },
@@ -375,7 +375,7 @@
     },
     {
       "figma": "NextInstallation",
-      "node": "47-356",
+      "node": "74-3784",
       "status": "inline",
       "code": "src/app/works/[slug]/page.tsx"
     },
@@ -438,6 +438,54 @@
       "node": "56-106",
       "status": "connected",
       "template": "dialog-overlay"
+    },
+    {
+      "figma": "Benefits",
+      "node": "74-3380",
+      "status": "inline",
+      "code": "src/components/sections/benefits.tsx"
+    },
+    {
+      "figma": "Process",
+      "node": "61-413",
+      "status": "inline",
+      "code": "src/components/sections/process.tsx"
+    },
+    {
+      "figma": "Faq",
+      "node": "61-435",
+      "status": "inline",
+      "code": "src/components/sections/faq.tsx"
+    },
+    {
+      "figma": "TechnologySelector",
+      "node": "74-3882",
+      "status": "inline",
+      "code": "src/components/sections/technologies.tsx"
+    },
+    {
+      "figma": "TechnologySelectorTab",
+      "node": "62-330",
+      "status": "inline",
+      "code": "src/components/sections/technologies.tsx"
+    },
+    {
+      "figma": "StudioIncludedItem",
+      "node": "72-341",
+      "status": "inline",
+      "code": "src/app/studio/page.tsx"
+    },
+    {
+      "figma": "CasePage",
+      "node": "89-5961",
+      "status": "inline",
+      "code": "src/app/works/[slug]/page.tsx"
+    },
+    {
+      "figma": "SolutionPage",
+      "node": "88-7249",
+      "status": "inline",
+      "code": "src/app/solutions/[slug]/page.tsx"
     }
   ]
 }

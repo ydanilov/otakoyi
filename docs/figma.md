@@ -7,7 +7,7 @@ File: **otakoyi** — https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoy
 | Tokens     | Variables collection _Theme_ (modes Dark / Light)                                       | `tokens/tokens.json`              |
 | shadcn/ui  | The shadcn primitives the site uses, 1:1 with the source, bound to Theme variables      | `src/components/ui`               |
 | Components | Site building blocks (header, footer, CTA, icons…) and _Sections_ built from primitives | `src/components/sections`, `site` |
-| Pages      | Every live route, desktop 1440 + mobile 390 (captured from production)                  | `src/app/**/page.tsx`             |
+| Pages      | Every live route, desktop 1440 + mobile 390, built from library instances               | `src/app/**/page.tsx`             |
 
 The file "otakoyi" (account yura.danilov.official) replaced "Draft" on 2026-10-16. It is a recovered
 copy, so node IDs are unchanged (token frames 5:41/5:116, components in `figma/components.json`).
@@ -18,11 +18,19 @@ Textarea, Slider, Separator, Accordion, Card, Dialog and Sheet, drawn from the c
 Section components on the Components page are composed from instances of these primitives, never
 from detached copies. A new primitive is copied from shadcn into code first, then drawn here.
 
-**Pages page.** Section _Live site_ holds one frame per route and breakpoint, named
-`<Page> — Desktop 1440` / `<Page> — Mobile 390`, filled with section-by-section captures of production
-(scroll-driven sections are shown once, in their pinned state). They are a reference of what is live,
-not editable layouts: rebuild a frame from library components before redesigning it. Older drafts sit in
-the _Archive_ section.
+**Pages page.** Section _Pages — editable_ holds one frame per route and breakpoint, named
+`<Page> — Desktop 1440` / `<Page> — Mobile 390`, grouped into sub-sections: _01 · Core pages_ (Home,
+Installations, Solutions, Studio), _02 · Cases — /works/[slug]_ and _03 · Solutions — /solutions/[slug]_.
+Desktop and mobile of one page sit side by side. Every frame is an auto-layout stack of instances of
+the library (`SiteHeader`, `Hero`, `SectionHeading`, `WorkCard`, `Faq`, `Cta`, `SiteFooter`…) with the
+production copy and images, so a layout is edited by changing instance properties, not pixels. Section
+components with a responsive layout are component sets with a `breakpoint` variant (`desktop` | `mobile`).
+Scroll-driven sections are drawn once, in their pinned state. Pages of one type are instances of one
+page template on the Components page (_Page templates_): `CasePage` for `/works/[slug]` and
+`SolutionPage` for `/solutions/[slug]`, each with a `breakpoint` variant. Edit the layout in the
+template; each page only overrides content and hides the optional parts it does not use.
+`SiteHeader` has `state=sticky` (the fixed bar) and `state=in-hero` (draft: before scrolling the bar
+is part of the hero, without background or border, and sticks once it reaches the top).
 
 Rules:
 

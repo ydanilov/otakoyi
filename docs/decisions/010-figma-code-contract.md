@@ -6,7 +6,10 @@
 "Draft" file, and `tokens/tokens.json` / `src/components` in code. Nothing checked that the two
 stayed the same, so drift was only caught by eye. Two platform limits shape the solution:
 the Figma Variables REST API is Enterprise-only, and Code Connect publishing needs a plan with
-Dev Mode + Code Connect (Organization or Enterprise). The studio's Figma is on Pro.
+Dev Mode + Code Connect. The studio's Figma is on Pro.
+
+> Amended 2026-10-17: Code Connect publishing works on Professional with a Full seat (one
+> framework); it is not limited to Organization or Enterprise. Only the publishing token is missing.
 
 **Decision.**
 

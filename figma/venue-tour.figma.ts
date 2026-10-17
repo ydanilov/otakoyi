@@ -1,4 +1,4 @@
-// url=<FIGMA_DRAFT>?node-id=45-105
+// url=<FIGMA_DRAFT>?node-id=74-3588
 // component=VenueTour
 // Code Connect template: what Figma Dev Mode shows for this component instead of generated CSS.
 import figma from "figma"
