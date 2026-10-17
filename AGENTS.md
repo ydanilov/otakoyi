@@ -17,17 +17,17 @@ Humans own direction and approval; agents do the work between checkpoints.
 
 ## Stack (decided — see `docs/decisions/`)
 
-| Layer          | Choice                                                                      |
-| -------------- | --------------------------------------------------------------------------- |
-| Framework      | Next.js 16 App Router, TypeScript strict, pnpm                              |
-| UI             | shadcn/ui (new-york, source in `src/components/ui`) + Tailwind v4           |
-| Tokens         | `tokens/tokens.json` → `pnpm tokens` → CSS vars + TS                        |
-| Generative     | React Three Fiber + GLSL in `src/components/works`                          |
-| Content        | MDX in `src/content/cases/*.mdx`, metadata in `src/content/cases.ts` (zod)  |
-| Component docs | Storybook 10 (`@storybook/nextjs-vite`) — the component contract            |
-| Tests          | Vitest (unit + Storybook interaction/a11y), Playwright (e2e, axe, visual)   |
-| Design         | Figma file "Draft" (Variables mirror `tokens.json`); references from Mobbin |
-| Hosting        | GitHub (private) → Vercel (preview per PR, prod on `main`)                  |
+| Layer          | Choice                                                                        |
+| -------------- | ----------------------------------------------------------------------------- |
+| Framework      | Next.js 16 App Router, TypeScript strict, pnpm                                |
+| UI             | shadcn/ui (new-york, source in `src/components/ui`) + Tailwind v4             |
+| Tokens         | `tokens/tokens.json` → `pnpm tokens` → CSS vars + TS                          |
+| Generative     | React Three Fiber + GLSL in `src/components/works`                            |
+| Content        | MDX in `src/content/cases/*.mdx`, metadata in `src/content/cases.ts` (zod)    |
+| Component docs | Storybook 10 (`@storybook/nextjs-vite`) — the component contract              |
+| Tests          | Vitest (unit + Storybook interaction/a11y), Playwright (e2e, axe, visual)     |
+| Design         | Figma file "otakoyi" (Variables mirror `tokens.json`); references from Mobbin |
+| Hosting        | GitHub (private) → Vercel (preview per PR, prod on `main`)                    |
 
 ## Commands
 

@@ -3,9 +3,13 @@
 // Code Connect template: what Figma Dev Mode shows for this component instead of generated CSS.
 import figma from "figma"
 
-const variant = figma.selectedInstance.getEnum("Variant", {
+const variant = figma.selectedInstance.getEnum("variant", {
+  default: "default",
   secondary: "secondary",
   outline: "outline",
+  destructive: "destructive",
+  ghost: "ghost",
+  link: "link",
 })
 
 export default {

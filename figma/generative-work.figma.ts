@@ -3,14 +3,14 @@
 // Code Connect template: what Figma Dev Mode shows for this component instead of generated CSS.
 import figma from "figma"
 
-const work = figma.selectedInstance.getEnum("Work", {
-  "Signal Field": "signal-field",
-  Contour: "contour",
-  Lattice: "lattice",
-  "Signal Field — Seed 42": "signal-field",
-  "Brand Demo — Fintech": "signal-field",
+const work = figma.selectedInstance.getEnum("work", {
+  "signal-field": "signal-field",
+  contour: "contour",
+  lattice: "lattice",
+  "signal-field-seed-42": "signal-field",
+  "brand-demo-fintech": "signal-field",
 })
-const seed = figma.selectedInstance.getEnum("Work", { "Signal Field — Seed 42": 42 })
+const seed = figma.selectedInstance.getEnum("work", { "signal-field-seed-42": 42 })
 
 export default {
   id: "GenerativeWork",

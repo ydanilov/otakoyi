@@ -1,17 +1,45 @@
 # Figma ↔ code
 
-File: **Draft** — https://www.figma.com/design/7fyYBxvBHHEK4IKO6ZTkXN/Draft
+File: **otakoyi** — https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoyi
 
-| Figma page | Purpose                                                                | Code counterpart                        |
-| ---------- | ---------------------------------------------------------------------- | --------------------------------------- |
-| Tokens     | Variables collection _Theme_ (modes Dark / Light)                      | `tokens/tokens.json`                    |
-| Components | Button, Badge, Card, ToggleGroup, Accordion, Header, Footer, WorkCard… | `src/components/ui`, `sections`, `site` |
-| Pages      | Home, Works, Case study, Studio (desktop 1440 + mobile 390)            | `src/app/**/page.tsx`                   |
+| Figma page | Purpose                                                                                 | Code counterpart                  |
+| ---------- | --------------------------------------------------------------------------------------- | --------------------------------- |
+| Tokens     | Variables collection _Theme_ (modes Dark / Light)                                       | `tokens/tokens.json`              |
+| shadcn/ui  | The shadcn primitives the site uses, 1:1 with the source, bound to Theme variables      | `src/components/ui`               |
+| Components | Site building blocks (header, footer, CTA, icons…) and _Sections_ built from primitives | `src/components/sections`, `site` |
+| Pages      | Every live route, desktop 1440 + mobile 390 (captured from production)                  | `src/app/**/page.tsx`             |
+
+The file "otakoyi" (account yura.danilov.official) replaced "Draft" on 2026-10-16. It is a recovered
+copy, so node IDs are unchanged (token frames 5:41/5:116, components in `figma/components.json`).
+
+**shadcn/ui page.** Button (all variants + `signal`), Badge, Toggle (ToggleGroupItem), Label, Input,
+Textarea, Slider, Separator, Accordion, Card, Dialog and Sheet, drawn from the classes in
+`src/components/ui` (new-york) and bound to the Theme variables, so our tokens are the shadcn theme.
+Section components on the Components page are composed from instances of these primitives, never
+from detached copies. A new primitive is copied from shadcn into code first, then drawn here.
+
+**Pages page.** Section _Live site_ holds one frame per route and breakpoint, named
+`<Page> — Desktop 1440` / `<Page> — Mobile 390`, filled with section-by-section captures of production
+(scroll-driven sections are shown once, in their pinned state). They are a reference of what is live,
+not editable layouts: rebuild a frame from library components before redesigning it. Older drafts sit in
+the _Archive_ section.
 
 Rules:
 
 - Variable names = token names (`background`, `muted-foreground`, `signal`, `gen-1`…).
-- Component names = React component names; variant props = React prop names.
+- Naming follows shadcn/ui and the code, not Figma habits:
+  - **Components** are named like their React export (`Button`, `AccordionItem`, `DialogContent`,
+    `StopCopy`). Parts without their own export use shadcn's Parent+Part style
+    (`TechnologyBentoItem`, `WorksGridFilter`, `CaseQuickFact`); icon and mark sets use a slash
+    group (`Icon/arrow-right`, `LogoMark/Lumen`).
+  - **Layers** inside a primitive carry the shadcn slot names (`CardHeader`, `CardTitle`,
+    `AccordionTrigger`, `DialogFooter`, `SheetDescription`).
+  - **Properties** are the React prop names in camelCase: `variant`, `size`, `orientation`,
+    `children` for slotted text, `title`/`description` etc. for named props, `showX` for optional
+    parts, `icon` for instance swaps. Values are the code values (`outline`, `icon-sm`,
+    `signal-field`).
+  - **`state`** mirrors Radix `data-state` (`open`/`closed`, `on`/`off`) or, for fields, the CSS
+    state being shown (`default`, `focus`, `invalid`, `disabled`). Code Connect ignores it.
 - Generative imagery in Figma is a placeholder fill (screenshots of `GenerativeWork` at a fixed seed); the real thing lives in code.
 - Code Connect: every library component is listed in `figma/components.json`; connected ones have a
   template in `figma/<name>.figma.ts` (ADR-010). New Figma component → add a template (or mark it

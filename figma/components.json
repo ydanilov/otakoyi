@@ -1,8 +1,18 @@
 {
-  "$description": "Every component in the Figma library (file Draft, page Components) and how it maps to code. `connected` entries must have a Code Connect template in figma/; `inline` entries are Figma-only building blocks rendered inside a section component in code. Checked by scripts/code-connect.test.ts.",
+  "$description": "Every component in the Figma library (file otakoyi, pages shadcn/ui and Components) and how it maps to code. `connected` entries must have a Code Connect template in figma/; `inline` entries are Figma-only building blocks rendered inside a section component in code. Checked by scripts/code-connect.test.ts.",
   "components": [
-    { "figma": "Button", "node": "6-26", "status": "connected", "template": "button" },
-    { "figma": "Badge", "node": "6-31", "status": "connected", "template": "badge" },
+    {
+      "figma": "Button",
+      "node": "6-26",
+      "status": "connected",
+      "template": "button"
+    },
+    {
+      "figma": "Badge",
+      "node": "6-31",
+      "status": "connected",
+      "template": "badge"
+    },
     {
       "figma": "GenerativeWork",
       "node": "7-7",
@@ -51,45 +61,383 @@
       "status": "connected",
       "template": "icon-chevron-down"
     },
-    { "figma": "Icon/check", "node": "8-39", "status": "connected", "template": "icon-check" },
-    { "figma": "Icon/sun", "node": "8-50", "status": "connected", "template": "icon-sun" },
-    { "figma": "Icon/menu", "node": "8-55", "status": "connected", "template": "icon-menu" },
-    { "figma": "Logo", "node": "8-56", "status": "connected", "template": "logo" },
-    { "figma": "SiteHeader", "node": "8-102", "status": "connected", "template": "site-header" },
-    { "figma": "SiteFooter", "node": "8-103", "status": "connected", "template": "site-footer" },
-    { "figma": "WorkCard", "node": "9-39", "status": "connected", "template": "work-card" },
-    { "figma": "FAQItem", "node": "9-66", "status": "connected", "template": "faq-item" },
-    { "figma": "ToggleChip", "node": "9-73", "status": "connected", "template": "toggle-chip" },
-    { "figma": "CTA", "node": "9-77", "status": "connected", "template": "cta" },
     {
-      "figma": "FormatCard",
+      "figma": "Icon/check",
+      "node": "8-39",
+      "status": "connected",
+      "template": "icon-check"
+    },
+    {
+      "figma": "Icon/sun",
+      "node": "8-50",
+      "status": "connected",
+      "template": "icon-sun"
+    },
+    {
+      "figma": "Icon/menu",
+      "node": "8-55",
+      "status": "connected",
+      "template": "icon-menu"
+    },
+    {
+      "figma": "Logo",
+      "node": "8-56",
+      "status": "connected",
+      "template": "logo"
+    },
+    {
+      "figma": "SiteHeader",
+      "node": "8-102",
+      "status": "connected",
+      "template": "site-header"
+    },
+    {
+      "figma": "SiteFooter",
+      "node": "8-103",
+      "status": "connected",
+      "template": "site-footer"
+    },
+    {
+      "figma": "WorkCard",
+      "node": "9-39",
+      "status": "connected",
+      "template": "work-card"
+    },
+    {
+      "figma": "AccordionItem",
+      "node": "9-66",
+      "status": "connected",
+      "template": "faq-item"
+    },
+    {
+      "figma": "BrandDemoToggle",
+      "node": "9-73",
+      "status": "connected",
+      "template": "toggle-chip"
+    },
+    {
+      "figma": "Cta",
+      "node": "9-77",
+      "status": "connected",
+      "template": "cta"
+    },
+    {
+      "figma": "Toggle",
+      "node": "39-22",
+      "status": "connected",
+      "template": "toggle"
+    },
+    {
+      "figma": "Label",
+      "node": "39-24",
+      "status": "connected",
+      "template": "label"
+    },
+    {
+      "figma": "Separator",
+      "node": "39-30",
+      "status": "connected",
+      "template": "separator"
+    },
+    {
+      "figma": "Input",
+      "node": "39-42",
+      "status": "connected",
+      "template": "input"
+    },
+    {
+      "figma": "Textarea",
+      "node": "39-50",
+      "status": "connected",
+      "template": "textarea"
+    },
+    {
+      "figma": "Slider",
+      "node": "39-62",
+      "status": "connected",
+      "template": "slider"
+    },
+    {
+      "figma": "Card",
+      "node": "40-14",
+      "status": "connected",
+      "template": "card"
+    },
+    {
+      "figma": "DialogContent",
+      "node": "40-24",
+      "status": "connected",
+      "template": "dialog"
+    },
+    {
+      "figma": "SheetContent",
+      "node": "40-35",
+      "status": "connected",
+      "template": "sheet"
+    },
+    {
+      "figma": "Icon/x",
+      "node": "38-24",
+      "status": "connected",
+      "template": "icon-x"
+    },
+    {
+      "figma": "Icon/arrow-down",
+      "node": "38-28",
+      "status": "connected",
+      "template": "icon-arrow-down"
+    },
+    {
+      "figma": "Icon/arrow-up-right",
+      "node": "38-32",
+      "status": "connected",
+      "template": "icon-arrow-up-right"
+    },
+    {
+      "figma": "Icon/layout-grid",
+      "node": "38-36",
+      "status": "connected",
+      "template": "icon-layout-grid"
+    },
+    {
+      "figma": "Icon/list",
+      "node": "38-42",
+      "status": "connected",
+      "template": "icon-list"
+    },
+    {
+      "figma": "Hero",
+      "node": "43-20",
+      "status": "connected",
+      "template": "hero"
+    },
+    {
+      "figma": "SpecMarquee",
+      "node": "43-37",
+      "status": "connected",
+      "template": "spec-marquee"
+    },
+    {
+      "figma": "TechnologyBento",
+      "node": "43-84",
+      "status": "connected",
+      "template": "technology-bento"
+    },
+    {
+      "figma": "DeliveryStatement",
+      "node": "43-142",
+      "status": "connected",
+      "template": "delivery-statement"
+    },
+    {
+      "figma": "VenueTour",
+      "node": "45-105",
+      "status": "connected",
+      "template": "venue-tour"
+    },
+    {
+      "figma": "WorksReel",
+      "node": "45-136",
+      "status": "connected",
+      "template": "works-reel"
+    },
+    {
+      "figma": "PinnedProcess",
+      "node": "45-153",
+      "status": "connected",
+      "template": "pinned-process"
+    },
+    {
+      "figma": "Occasions",
+      "node": "47-168",
+      "status": "connected",
+      "template": "occasions"
+    },
+    {
+      "figma": "ProposalForm",
+      "node": "50-252",
+      "status": "connected",
+      "template": "proposal-dialog"
+    },
+    {
+      "figma": "StudioHero",
+      "node": "50-254",
+      "status": "connected",
+      "template": "studio-hero"
+    },
+    {
+      "figma": "LogoWall",
+      "node": "50-306",
+      "status": "connected",
+      "template": "logo-wall"
+    },
+    {
+      "figma": "FormatsItem",
       "node": "8-119",
       "status": "inline",
       "code": "src/components/sections/formats.tsx"
     },
     {
-      "figma": "BenefitTile",
+      "figma": "BenefitsItem",
       "node": "8-128",
       "status": "inline",
       "code": "src/components/sections/benefits.tsx"
     },
     {
-      "figma": "StatTile",
+      "figma": "InNumbersItem",
       "node": "8-133",
       "status": "inline",
       "code": "src/components/sections/in-numbers.tsx"
     },
     {
-      "figma": "ProcessStep",
+      "figma": "ProcessItem",
       "node": "8-136",
       "status": "inline",
       "code": "src/components/sections/process.tsx"
     },
     {
-      "figma": "CustomisationPoint",
+      "figma": "BrandDemoPoint",
       "node": "9-74",
       "status": "inline",
       "code": "src/components/sections/brand-demo.tsx"
+    },
+    {
+      "figma": "Icon/instagram",
+      "node": "38-50",
+      "status": "inline",
+      "code": "src/components/site/social-icons.tsx"
+    },
+    {
+      "figma": "TechnologyBentoItem",
+      "node": "43-69",
+      "status": "inline",
+      "code": "src/components/sections/technologies.tsx"
+    },
+    {
+      "figma": "StopCopy",
+      "node": "45-77",
+      "status": "inline",
+      "code": "src/components/sections/venue-tour.tsx"
+    },
+    {
+      "figma": "VenueTourNav",
+      "node": "45-91",
+      "status": "inline",
+      "code": "src/components/sections/venue-tour.tsx"
+    },
+    {
+      "figma": "OccasionsItem",
+      "node": "47-166",
+      "status": "inline",
+      "code": "src/components/sections/occasions.tsx"
+    },
+    {
+      "figma": "WorksGridFilter",
+      "node": "47-216",
+      "status": "inline",
+      "code": "src/components/sections/works-grid.tsx"
+    },
+    {
+      "figma": "WorksGridListItem",
+      "node": "47-306",
+      "status": "inline",
+      "code": "src/components/sections/works-grid.tsx"
+    },
+    {
+      "figma": "CaseQuickFact",
+      "node": "47-317",
+      "status": "inline",
+      "code": "src/app/works/[slug]/page.tsx"
+    },
+    {
+      "figma": "CaseQuickFacts",
+      "node": "47-321",
+      "status": "inline",
+      "code": "src/app/works/[slug]/page.tsx"
+    },
+    {
+      "figma": "CaseResult",
+      "node": "47-335",
+      "status": "inline",
+      "code": "src/app/works/[slug]/page.tsx"
+    },
+    {
+      "figma": "CaseResults",
+      "node": "47-339",
+      "status": "inline",
+      "code": "src/app/works/[slug]/page.tsx"
+    },
+    {
+      "figma": "OutcomeItem",
+      "node": "47-350",
+      "status": "inline",
+      "code": "src/app/works/[slug]/page.tsx"
+    },
+    {
+      "figma": "NextInstallation",
+      "node": "47-356",
+      "status": "inline",
+      "code": "src/app/works/[slug]/page.tsx"
+    },
+    {
+      "figma": "StudioPrinciple",
+      "node": "50-261",
+      "status": "inline",
+      "code": "src/app/studio/page.tsx"
+    },
+    {
+      "figma": "StudioTeamMember",
+      "node": "50-267",
+      "status": "inline",
+      "code": "src/app/studio/page.tsx"
+    },
+    {
+      "figma": "LogoMark/Lumen",
+      "node": "50-273",
+      "status": "inline",
+      "code": "src/components/sections/logo-wall.tsx"
+    },
+    {
+      "figma": "LogoMark/Halden",
+      "node": "50-277",
+      "status": "inline",
+      "code": "src/components/sections/logo-wall.tsx"
+    },
+    {
+      "figma": "LogoMark/Meridian",
+      "node": "50-280",
+      "status": "inline",
+      "code": "src/components/sections/logo-wall.tsx"
+    },
+    {
+      "figma": "LogoMark/Vertex",
+      "node": "50-284",
+      "status": "inline",
+      "code": "src/components/sections/logo-wall.tsx"
+    },
+    {
+      "figma": "LogoMark/Orbita",
+      "node": "50-288",
+      "status": "inline",
+      "code": "src/components/sections/logo-wall.tsx"
+    },
+    {
+      "figma": "LogoMark/Strata",
+      "node": "50-293",
+      "status": "inline",
+      "code": "src/components/sections/logo-wall.tsx"
+    },
+    {
+      "figma": "LogoWallItem",
+      "node": "50-299",
+      "status": "inline",
+      "code": "src/components/sections/logo-wall.tsx"
+    },
+    {
+      "figma": "DialogOverlay",
+      "node": "56-106",
+      "status": "connected",
+      "template": "dialog-overlay"
     }
   ]
 }
