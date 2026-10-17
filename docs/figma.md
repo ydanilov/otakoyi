@@ -19,13 +19,13 @@ Section components on the Components page are composed from instances of these p
 from detached copies. A new primitive is copied from shadcn into code first, then drawn here.
 
 **Pages page.** Section _Pages — editable_ holds one frame per route and breakpoint, named
-`<Page> — Desktop 1440` / `<Page> — Mobile 390`. Every frame is an auto-layout stack of instances of
+`<Page> — Desktop 1440` / `<Page> — Mobile 390`, grouped into sub-sections: _01 · Core pages_ (Home,
+Installations, Solutions, Studio), _02 · Cases — /works/[slug]_ and _03 · Solutions — /solutions/[slug]_.
+Desktop and mobile of one page sit side by side. Every frame is an auto-layout stack of instances of
 the library (`SiteHeader`, `Hero`, `SectionHeading`, `WorkCard`, `Faq`, `Cta`, `SiteFooter`…) with the
 production copy and images, so a layout is edited by changing instance properties, not pixels. Section
 components with a responsive layout are component sets with a `breakpoint` variant (`desktop` | `mobile`).
-Scroll-driven sections are drawn once, in their pinned state. Section _Live site_ keeps the
-section-by-section captures of production as a reference to compare against; older drafts sit in the
-_Archive_ section.
+Scroll-driven sections are drawn once, in their pinned state.
 
 Rules:
 
