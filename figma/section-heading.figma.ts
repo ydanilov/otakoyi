@@ -1,4 +1,4 @@
-// url=<FIGMA_DRAFT>?node-id=7-8
+// url=<FIGMA_DRAFT>?node-id=74-540
 // component=SectionHeading
 // Code Connect template: what Figma Dev Mode shows for this component instead of generated CSS.
 import figma from "figma"
