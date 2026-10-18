@@ -27,7 +27,7 @@ Humans own direction and approval; agents do the work between checkpoints.
 | Component docs | Storybook 10 (`@storybook/nextjs-vite`) — the component contract              |
 | Tests          | Vitest (unit + Storybook interaction/a11y), Playwright (e2e, axe, visual)     |
 | Design         | Figma file "otakoyi" (Variables mirror `tokens.json`); references from Mobbin |
-| Hosting        | GitHub (private) → Vercel (preview per PR, prod on `main`)                    |
+| Hosting        | GitHub (public) → Vercel (preview per PR, prod on `main`)                     |
 
 ## Commands
 
