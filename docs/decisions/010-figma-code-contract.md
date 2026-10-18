@@ -3,7 +3,7 @@
 **Status:** Accepted · 2026-10-16 · completes the "planned" parts of ADR-005 and docs/figma.md
 
 **Context.** Tokens and components exist twice: Figma Variables / library components in the
-"Draft" file, and `tokens/tokens.json` / `src/components` in code. Nothing checked that the two
+Figma file, and `tokens/tokens.json` / `src/components` in code. Nothing checked that the two
 stayed the same, so drift was only caught by eye. Two platform limits shape the solution:
 the Figma Variables REST API is Enterprise-only, and Code Connect publishing needs a plan with
 Dev Mode + Code Connect. The studio's Figma is on Pro.

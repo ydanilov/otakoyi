@@ -5,18 +5,18 @@ Measured on 2026-10-16 on `main` + this branch (production build,
 
 ## Sensors
 
-| Sensor                                              | Result                                               | Command                         |
-| --------------------------------------------------- | ---------------------------------------------------- | ------------------------------- |
-| Tokens generated in sync                            | ✓ 24 tokens × 2 modes                                | `pnpm tokens:check`             |
-| Tokens match Figma                                  | ✓ 24 / 24 (ΔE ≤ 1, alpha ±0.02)                      | `pnpm tokens:figma:check`       |
-| Code Connect                                        | ✓ 20 connected + 5 inline = 25 / 25 Figma components | `pnpm figma:check`, `pnpm test` |
-| Lint (incl. 5 harness rules)                        | ✓ 0 errors                                           | `pnpm lint`                     |
-| Types (strict, route types)                         | ✓                                                    | `pnpm typecheck`                |
-| Story coverage                                      | ✓ every section / site / works file                  | `pnpm check:stories`            |
-| Unit + contract tests                               | ✓ 35 / 35                                            | `pnpm test`                     |
-| Storybook interaction + a11y                        | ✓ 60 / 60 (axe in `error` mode)                      | `pnpm test:stories`             |
-| E2E + axe WCAG 2.2 AA + best practices, 3 viewports | ✓ 61 passed, 2 skipped                               | `pnpm test:e2e`                 |
-| Initial JS budget (≤ 230 KB gzip)                   | ✓ max 227.4 KB (`/`), three.js lazy                  | `pnpm check:budget`             |
+| Sensor                                              | Result                                                | Command                         |
+| --------------------------------------------------- | ----------------------------------------------------- | ------------------------------- |
+| Tokens generated in sync                            | ✓ 24 tokens × 2 modes                                 | `pnpm tokens:check`             |
+| Tokens match Figma                                  | ✓ 24 / 24 (ΔE ≤ 1, alpha ±0.02)                       | `pnpm tokens:figma:check`       |
+| Code Connect                                        | ✓ 46 connected + 35 inline = 81 / 81 Figma components | `pnpm figma:check`, `pnpm test` |
+| Lint (incl. 5 harness rules)                        | ✓ 0 errors                                            | `pnpm lint`                     |
+| Types (strict, route types)                         | ✓                                                     | `pnpm typecheck`                |
+| Story coverage                                      | ✓ every section / site / works file                   | `pnpm check:stories`            |
+| Unit + contract tests                               | ✓ 35 / 35                                             | `pnpm test`                     |
+| Storybook interaction + a11y                        | ✓ 60 / 60 (axe in `error` mode)                       | `pnpm test:stories`             |
+| E2E + axe WCAG 2.2 AA + best practices, 3 viewports | ✓ 61 passed, 2 skipped                                | `pnpm test:e2e`                 |
+| Initial JS budget (≤ 230 KB gzip)                   | ✓ max 227.4 KB (`/`), three.js lazy                   | `pnpm check:budget`             |
 
 ## Lighthouse 12
 
@@ -58,7 +58,7 @@ Mobile runs use Lighthouse's simulated slow 4G + 4× CPU throttling.
 
 ## Delivery
 
-- 28 PRs merged in the first two weeks (repo started 2026-10-02), each with a Vercel preview.
+- 32 PRs merged in the first 15 days (repo started 2026-10-02), each with a Vercel preview.
 - 10 ADRs, 11 hard rules in `AGENTS.md`, 13 CI sensors.
 - 24 tokens, 23 UI primitives, 36 section / site / works components, all with stories.
 

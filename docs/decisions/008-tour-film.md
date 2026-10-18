@@ -1,6 +1,6 @@
 # 008 — The venue tour is a pre-rendered film
 
-**Status:** Accepted · 2026-10-13
+**Status:** Superseded by ADR-009 · 2026-10-13
 
 **Context.** The scenes for the home-page tour (exhibition stand, office lobby, concert, museum room) are now designed in Blender with EEVEE: volumetric haze, light beams, depth of field, bloom, hundreds of dressed figures. Rebuilding that look in real-time WebGL would cost a large download and still fall short on phones.
 
