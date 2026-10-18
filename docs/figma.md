@@ -9,8 +9,7 @@ File: **otakoyi** — https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoy
 | Components | Site building blocks (header, footer, CTA, icons…) and _Sections_ built from primitives | `src/components/sections`, `site` |
 | Pages      | Every live route, desktop 1440 + mobile 390, built from library instances               | `src/app/**/page.tsx`             |
 
-The file "otakoyi" (account yura.danilov.official) replaced "Draft" on 2026-10-16. It is a recovered
-copy, so node IDs are unchanged (token frames 5:41/5:116, components in `figma/components.json`).
+Node IDs: token frames 5:41 / 5:116; components are listed in `figma/components.json`.
 
 **shadcn/ui page.** Button (all variants + `signal`), Badge, Toggle (ToggleGroupItem), Label, Input,
 Textarea, Slider, Separator, Accordion, Card, Dialog and Sheet, drawn from the classes in
