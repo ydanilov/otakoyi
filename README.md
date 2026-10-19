@@ -9,6 +9,9 @@ on-brand, accessible UI without being able to break it.**
 
 > Design engineering by Yura Danilov — positioning, Figma library, design system, code, CI and the
 > agent workflow. Most code was written by AI agents (Claude Code) inside the harness described below.
+>
+> **This is a draft.** The studio is just launching, so the cases and every figure on the site are
+> placeholders. The engineering numbers in this README are measured.
 
 ---
 
@@ -79,8 +82,8 @@ A weekly workflow pulls Figma and opens a PR when a designer changed something:
 
 ### Code Connect for every Figma component
 
-All 25 components in the Figma library are accounted for in `figma/components.json`: 20 are
-connected to their React counterparts with Code Connect templates (`figma/*.figma.ts`), 5 are
+All 81 components in the Figma library are accounted for in `figma/components.json`: 46 are
+connected to their React counterparts with Code Connect templates (`figma/*.figma.ts`), 35 are
 Figma-only parts rendered inside a section. A contract test fails on a missing template, a wrong
 node, an orphan, or an import that doesn't exist in code — so the design library and the codebase
 can't silently diverge. ([ADR-010](docs/decisions/010-figma-code-contract.md))
@@ -122,17 +125,19 @@ pages, so they never drift from what the site says.
 | Lighthouse (mobile)  | Performance 87–99 · Accessibility 100 · CLS 0               |
 | axe                  | 0 violations — 60 stories, 61 e2e checks across 3 viewports |
 | JS budget            | max 227 KB of 230 KB, three.js lazy everywhere              |
-| Figma ↔ code         | 24 / 24 tokens in sync · 25 / 25 components accounted for   |
-| Delivery             | 28 PRs in two weeks, 13 CI sensors, 10 ADRs                 |
+| Figma ↔ code         | 24 / 24 tokens in sync · 81 / 81 components accounted for   |
+| Delivery             | 32 PRs in 15 days, 13 CI sensors, 10 ADRs                   |
 
 Full numbers and how to reproduce them: [docs/metrics.md](docs/metrics.md).
 
 ## Honest notes
 
-- Pump The Market and The Whale are the studio's own R&D installations; the other cases are
-  placeholders until real projects ship. Visuals on the site are generated or rendered.
-- Code Connect templates are validated in CI; publishing them to Figma Dev Mode needs a Figma
-  plan with Code Connect, which the studio doesn't have yet.
+- The site is a draft for a studio that is just launching: every case figure is a placeholder.
+  Pump The Market and The Whale are the studio's own R&D installations. Visuals on the site are
+  generated or rendered.
+- Code Connect templates are validated in every CI run. The `Publish Code Connect` workflow pushes
+  them to Figma Dev Mode on `main` once the `FIGMA_ACCESS_TOKEN` secret is set (Professional plan,
+  Full seat); without it the workflow only validates.
 
 ## Run it
 
