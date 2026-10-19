@@ -1,6 +1,6 @@
 # 005 — `tokens/tokens.json` as token source of truth
 
-**Status:** Accepted · 2026-10-02
+**Status:** Accepted · 2026-10-02 · the light mode is superseded by ADR-011 (dark only, one value per token)
 
 **Decision.** One JSON file with `dark`/`light` values per token (OKLCH). `pnpm tokens` generates `src/app/tokens.css` (shadcn CSS variables) and `src/lib/tokens.generated.ts` (hex palette for WebGL). Figma Variables (collection _Theme_, modes Dark/Light) mirror the same names. CI fails if generated files are stale.
 

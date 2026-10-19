@@ -38,21 +38,21 @@ Code (git) is the final truth. Storybook is the living contract for every compon
 
 ## Sensors — what runs where
 
-| Sensor                                       | Command                   | Local | CI         |
-| -------------------------------------------- | ------------------------- | ----- | ---------- |
-| Tokens in sync                               | `pnpm tokens:check`       | ✓     | ✓          |
-| Tokens match Figma (snapshot)                | `pnpm tokens:figma:check` | ✓     | ✓          |
-| Code Connect templates parse                 | `pnpm figma:check`        | ✓     | ✓          |
-| Lint + harness rules                         | `pnpm lint`               | ✓     | ✓          |
-| Format                                       | `pnpm format:check`       | ✓     | ✓          |
-| Types (incl. route types)                    | `pnpm typecheck`          | ✓     | ✓          |
-| Story coverage                               | `pnpm check:stories`      | ✓     | ✓          |
-| Content + token contracts                    | `pnpm test`               | ✓     | ✓          |
-| Storybook interactions + a11y                | `pnpm test:stories`       | ✓     | ✓          |
-| Build                                        | `pnpm build`              | ✓     | ✓          |
-| JS budget, lazy three.js                     | `pnpm check:budget`       | ✓     | ✓          |
-| E2E + axe (3 viewports)                      | `pnpm test:e2e`           | ✓     | ✓          |
-| Visual regression (3 viewports × dark/light) | `pnpm test:visual`        | —     | ✓ (Docker) |
+| Sensor                          | Command                   | Local | CI         |
+| ------------------------------- | ------------------------- | ----- | ---------- |
+| Tokens in sync                  | `pnpm tokens:check`       | ✓     | ✓          |
+| Tokens match Figma (snapshot)   | `pnpm tokens:figma:check` | ✓     | ✓          |
+| Code Connect templates parse    | `pnpm figma:check`        | ✓     | ✓          |
+| Lint + harness rules            | `pnpm lint`               | ✓     | ✓          |
+| Format                          | `pnpm format:check`       | ✓     | ✓          |
+| Types (incl. route types)       | `pnpm typecheck`          | ✓     | ✓          |
+| Story coverage                  | `pnpm check:stories`      | ✓     | ✓          |
+| Content + token contracts       | `pnpm test`               | ✓     | ✓          |
+| Storybook interactions + a11y   | `pnpm test:stories`       | ✓     | ✓          |
+| Build                           | `pnpm build`              | ✓     | ✓          |
+| JS budget, lazy three.js        | `pnpm check:budget`       | ✓     | ✓          |
+| E2E + axe (3 viewports)         | `pnpm test:e2e`           | ✓     | ✓          |
+| Visual regression (3 viewports) | `pnpm test:visual`        | —     | ✓ (Docker) |
 
 Visual baselines are environment-specific. They are created and updated **only** by the
 "Update visual baselines" workflow (manual, human-triggered), which commits them to the branch.

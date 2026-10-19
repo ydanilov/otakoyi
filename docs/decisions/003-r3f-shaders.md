@@ -1,6 +1,6 @@
 # 003 — React Three Fiber + GLSL for generative works
 
-**Status:** Accepted · 2026-10-02 · the `prefers-reduced-motion` fallback is superseded by ADR-006
+**Status:** Accepted · 2026-10-02 · the `prefers-reduced-motion` fallback is superseded by ADR-006 · the `palette` prop is superseded by ADR-011 (dark only)
 
 **Decision.** Generative works are fragment shaders rendered by R3F. Every work goes through one component with a fixed contract:
 

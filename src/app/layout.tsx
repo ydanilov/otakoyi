@@ -5,7 +5,7 @@ import { ProposalDialog } from "@/components/site/proposal-dialog"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
 import { site } from "@/config/site"
-import { motionScript, themeScript } from "@/lib/init-scripts"
+import { motionScript } from "@/lib/init-scripts"
 import { JsonLd, organization, website } from "@/lib/json-ld"
 import { keywords, seoDescription, siteUrl } from "@/lib/seo"
 import { themeHex } from "@/lib/tokens.generated"
@@ -36,10 +36,11 @@ export const metadata: Metadata = {
   category: "design",
 }
 
-export const viewport: Viewport = { themeColor: themeHex.dark.background, colorScheme: "dark" }
+export const viewport: Viewport = { themeColor: themeHex.background, colorScheme: "dark" }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    // One theme only (ADR-011); `dark` stays so shadcn's `dark:` variants in components/ui apply.
     <html
       lang="en"
       data-scroll-behavior="smooth"
@@ -47,7 +48,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript + motionScript }} />
+        <script dangerouslySetInnerHTML={{ __html: motionScript }} />
         <JsonLd data={[organization, website]} />
       </head>
       <body className="flex min-h-svh flex-col">
