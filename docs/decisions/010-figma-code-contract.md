@@ -1,6 +1,6 @@
 # 010 — Figma ↔ code contract: token snapshot sensor + Code Connect
 
-**Status:** Accepted · 2026-10-16 · completes the "planned" parts of ADR-005 and docs/figma.md
+**Status:** Accepted · 2026-10-16 · completes the "planned" parts of ADR-005 and docs/figma.md · the per-mode swatch frames are superseded by ADR-011 (one frame, one mode)
 
 **Context.** Tokens and components exist twice: Figma Variables / library components in the
 Figma file, and `tokens/tokens.json` / `src/components` in code. Nothing checked that the two

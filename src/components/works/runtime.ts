@@ -55,18 +55,3 @@ export function seeded(seed: number) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296
   }
 }
-
-function subscribeTheme(cb: () => void) {
-  const mo = new MutationObserver(cb)
-  mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
-  return () => mo.disconnect()
-}
-
-/** Current site theme as a generative palette mode (dark-first on the server). */
-export function useThemeMode(): "dark" | "light" {
-  return useSyncExternalStore(
-    subscribeTheme,
-    () => (document.documentElement.classList.contains("dark") ? "dark" : "light"),
-    () => "dark",
-  )
-}

@@ -1,9 +1,6 @@
 // Inline scripts run before first paint. Kept in a plain (server-safe) module: importing a
 // constant from a "use client" file into the root layout yields a client reference, not the string.
 
-/** Theme: the site is dark only; clear a "light" choice stored by the old theme toggle. */
-export const themeScript = `try{localStorage.removeItem("theme")}catch(e){}`
-
 /** Motion (ADR-006): on by default, honour a stored "off". */
 // The header toggle is gone, so a visitor's old "motion=off" must not freeze the site: only the
 // test key (set by Playwright) turns motion off; the old key is cleared.

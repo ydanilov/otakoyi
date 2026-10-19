@@ -10,223 +10,101 @@
   "tokens": {
     "background": {
       "variableId": "VariableID:5:6",
-      "dark": {
-        "hex": "#070707"
-      },
-      "light": {
-        "hex": "#fafafa"
-      }
+      "hex": "#070707"
     },
     "foreground": {
       "variableId": "VariableID:5:7",
-      "dark": {
-        "hex": "#f5f5f5"
-      },
-      "light": {
-        "hex": "#0b0b0b"
-      }
+      "hex": "#f5f5f5"
     },
     "card": {
       "variableId": "VariableID:5:8",
-      "dark": {
-        "hex": "#0f0f0f"
-      },
-      "light": {
-        "hex": "#ffffff"
-      }
+      "hex": "#0f0f0f"
     },
     "card-foreground": {
       "variableId": "VariableID:5:9",
-      "dark": {
-        "hex": "#f5f5f5"
-      },
-      "light": {
-        "hex": "#0b0b0b"
-      }
+      "hex": "#f5f5f5"
     },
     "popover": {
       "variableId": "VariableID:5:10",
-      "dark": {
-        "hex": "#0f0f0f"
-      },
-      "light": {
-        "hex": "#ffffff"
-      }
+      "hex": "#0f0f0f"
     },
     "popover-foreground": {
       "variableId": "VariableID:5:11",
-      "dark": {
-        "hex": "#f5f5f5"
-      },
-      "light": {
-        "hex": "#0b0b0b"
-      }
+      "hex": "#f5f5f5"
     },
     "primary": {
       "variableId": "VariableID:5:12",
-      "dark": {
-        "hex": "#f5f5f5"
-      },
-      "light": {
-        "hex": "#0b0b0b"
-      }
+      "hex": "#f5f5f5"
     },
     "primary-foreground": {
       "variableId": "VariableID:5:13",
-      "dark": {
-        "hex": "#070707"
-      },
-      "light": {
-        "hex": "#fafafa"
-      }
+      "hex": "#070707"
     },
     "secondary": {
       "variableId": "VariableID:5:14",
-      "dark": {
-        "hex": "#1b1b1b"
-      },
-      "light": {
-        "hex": "#ebebeb"
-      }
+      "hex": "#1b1b1b"
     },
     "secondary-foreground": {
       "variableId": "VariableID:5:15",
-      "dark": {
-        "hex": "#f5f5f5"
-      },
-      "light": {
-        "hex": "#0b0b0b"
-      }
+      "hex": "#f5f5f5"
     },
     "muted": {
       "variableId": "VariableID:5:16",
-      "dark": {
-        "hex": "#1b1b1b"
-      },
-      "light": {
-        "hex": "#ebebeb"
-      }
+      "hex": "#1b1b1b"
     },
     "muted-foreground": {
       "variableId": "VariableID:5:17",
-      "dark": {
-        "hex": "#a4a4a4"
-      },
-      "light": {
-        "hex": "#555555"
-      }
+      "hex": "#a4a4a4"
     },
     "accent": {
       "variableId": "VariableID:5:18",
-      "dark": {
-        "hex": "#1b1b1b"
-      },
-      "light": {
-        "hex": "#ebebeb"
-      }
+      "hex": "#1b1b1b"
     },
     "accent-foreground": {
       "variableId": "VariableID:5:19",
-      "dark": {
-        "hex": "#f5f5f5"
-      },
-      "light": {
-        "hex": "#0b0b0b"
-      }
+      "hex": "#f5f5f5"
     },
     "signal": {
       "variableId": "VariableID:5:20",
-      "dark": {
-        "hex": "#c1f354"
-      },
-      "light": {
-        "hex": "#4f8300"
-      }
+      "hex": "#c1f354"
     },
     "signal-foreground": {
       "variableId": "VariableID:5:21",
-      "dark": {
-        "hex": "#070707"
-      },
-      "light": {
-        "hex": "#fafafa"
-      }
+      "hex": "#070707"
     },
     "destructive": {
       "variableId": "VariableID:5:22",
-      "dark": {
-        "hex": "#ff6367"
-      },
-      "light": {
-        "hex": "#df2225"
-      }
+      "hex": "#ff6367"
     },
     "border": {
       "variableId": "VariableID:5:23",
-      "dark": {
-        "hex": "#ffffff",
-        "alpha": 0.12
-      },
-      "light": {
-        "hex": "#000000",
-        "alpha": 0.1
-      }
+      "hex": "#ffffff",
+      "alpha": 0.12
     },
     "input": {
       "variableId": "VariableID:5:24",
-      "dark": {
-        "hex": "#ffffff",
-        "alpha": 0.16
-      },
-      "light": {
-        "hex": "#000000",
-        "alpha": 0.14
-      }
+      "hex": "#ffffff",
+      "alpha": 0.16
     },
     "ring": {
       "variableId": "VariableID:5:25",
-      "dark": {
-        "hex": "#c1f354"
-      },
-      "light": {
-        "hex": "#4f8300"
-      }
+      "hex": "#c1f354"
     },
     "gen-1": {
       "variableId": "VariableID:5:26",
-      "dark": {
-        "hex": "#c1f354"
-      },
-      "light": {
-        "hex": "#4f8300"
-      }
+      "hex": "#c1f354"
     },
     "gen-2": {
       "variableId": "VariableID:5:27",
-      "dark": {
-        "hex": "#42a3fd"
-      },
-      "light": {
-        "hex": "#0060c1"
-      }
+      "hex": "#42a3fd"
     },
     "gen-3": {
       "variableId": "VariableID:5:28",
-      "dark": {
-        "hex": "#e882e1"
-      },
-      "light": {
-        "hex": "#b73095"
-      }
+      "hex": "#e882e1"
     },
     "gen-4": {
       "variableId": "VariableID:5:29",
-      "dark": {
-        "hex": "#f5f5f5"
-      },
-      "light": {
-        "hex": "#0b0b0b"
-      }
+      "hex": "#f5f5f5"
     }
   }
 }

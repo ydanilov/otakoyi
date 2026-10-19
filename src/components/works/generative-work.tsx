@@ -5,7 +5,6 @@ import { useState } from "react"
 
 import { useMotion } from "@/lib/motion"
 import { cn } from "@/lib/utils"
-import type { GenerativeMode } from "@/lib/tokens.generated"
 import { works, type WorkId } from "./registry"
 import { useVisibility, useWebGL } from "./runtime"
 import type { BrandColors, WorkDomain, WorkPointer } from "./shader-canvas"
@@ -14,16 +13,14 @@ const ShaderCanvas = dynamic(() => import("./shader-canvas"), { ssr: false })
 
 /**
  * The generative work contract. Every work on the site is rendered through this
- * component so that seed / palette / density behave identically everywhere
+ * component so that seed / density behave identically everywhere
  * (pages, MDX, Storybook, visual tests).
  */
 export type GenerativeWorkProps = {
   work: WorkId
   /** Deterministic seed. Same seed → same image. */
   seed?: number
-  /** Token palette mode. Defaults to "dark" (dark-first). */
-  palette?: GenerativeMode
-  /** Client brand colors (highlight, base, secondary, ink). Overrides `palette`. */
+  /** Client brand colors (highlight, base, secondary, ink). Overrides the token palette. */
   brandColors?: BrandColors
   /** 0..1 — how busy the composition is. */
   density?: number
@@ -43,7 +40,6 @@ export type GenerativeWorkProps = {
 export function GenerativeWork({
   work,
   seed,
-  palette = "dark",
   brandColors,
   density,
   animate = true,
@@ -84,7 +80,6 @@ export function GenerativeWork({
             fragmentShader={def.fragmentShader}
             seed={seed ?? def.defaults.seed}
             density={density ?? def.defaults.density}
-            palette={palette}
             brandColors={brandColors}
             animate={animate && motion && inView}
             frozenTime={12}

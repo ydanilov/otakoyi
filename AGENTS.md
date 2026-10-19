@@ -48,7 +48,7 @@ Run `pnpm verify` before every commit. Run `pnpm verify:full` before opening a P
 
 1. **Tokens only.** No raw colors (`#fff`, `rgb()`, `oklch()`) and no Tailwind palette colors (`bg-red-500`) in `src/`. Use semantic classes (`bg-background`, `text-muted-foreground`, `bg-signal`) or `var(--token)`. New color → add it to `tokens/tokens.json`, run `pnpm tokens`, map it in `globals.css`.
 2. **Design system first.** Compose pages from `@/components/ui/*` and `@/components/sections/*`. Never import `radix-ui` outside `src/components/ui`. Need a new primitive? Copy it from shadcn, don't hand-roll it.
-3. **WebGL is quarantined.** `three` / `@react-three/*` only inside `src/components/works`. Everywhere else use `<GenerativeWork work seed palette density />`.
+3. **WebGL is quarantined.** `three` / `@react-three/*` only inside `src/components/works`. Everywhere else use `<GenerativeWork work seed density />`.
 4. **No story, no component.** Every file in `sections/`, `site/`, `works/` needs a story next to it (`pnpm check:stories`). Add `play` functions for interactive behaviour.
 5. **Accessibility is a test, not a review comment.** Storybook a11y runs in `error` mode; Playwright runs axe (WCAG 2.2 AA) on every route.
 6. **Content contract.** Each case = entry in `src/content/cases.ts` + `src/content/cases/<slug>.mdx`. Schema is zod; tests fail on orphans or missing bodies.
@@ -93,7 +93,7 @@ tokens/tokens.json       ← design tokens source of truth (tokens/figma.json = 
 src/app/                 ← routes (/, /works, /works/[slug], /studio)
 src/components/ui/       ← shadcn primitives (+ `signal` button variant)
 src/components/sections/ ← page sections composed from ui
-src/components/site/     ← header, footer, theme
+src/components/site/     ← header, footer
 src/components/works/    ← generative engine (R3F + GLSL) and registry
 src/content/             ← case metadata (zod) + MDX bodies
 tests/                   ← Playwright e2e, a11y, visual
