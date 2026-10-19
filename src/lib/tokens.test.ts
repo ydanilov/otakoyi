@@ -4,13 +4,11 @@ import { describe, expect, it } from "vitest"
 const tokens = JSON.parse(readFileSync("tokens/tokens.json", "utf8"))
 
 describe("design tokens", () => {
-  const all = { ...tokens.color, ...tokens.generative } as Record<string, Record<string, string>>
+  const all = { ...tokens.color, ...tokens.generative } as Record<string, unknown>
 
-  it("every token defines both dark and light modes", () => {
-    for (const [name, v] of Object.entries(all)) {
-      expect(v.dark, `${name}.dark`).toBeTruthy()
-      expect(v.light, `${name}.light`).toBeTruthy()
-    }
+  it("every token is a single value (dark only, ADR-011)", () => {
+    for (const [name, v] of Object.entries(all))
+      expect(typeof v === "string" && v.length > 0, `${name} must be one color string`).toBe(true)
   })
 
   it("every shadcn foreground has a matching surface", () => {

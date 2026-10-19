@@ -12,7 +12,7 @@ import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js"
 
-import { generativePalette, type GenerativeMode } from "@/lib/tokens.generated"
+import { generativePalette } from "@/lib/tokens.generated"
 import { works, type WorkId } from "./registry"
 import { meshVertexShader, rippleFragmentShader } from "./shaders"
 import venuePeople from "./venue-people.json"
@@ -20,7 +20,6 @@ import venuePeople from "./venue-people.json"
 export type VenueSceneCanvasProps = {
   /** 0..1 — camera position along the tour (stand → lobby → music → museum). */
   progress: number
-  palette: GenerativeMode
   /** Live time, people, camera drift. Off → frozen, deterministic frame. */
   animate: boolean
   onReady?: () => void
@@ -270,11 +269,11 @@ function Shadows() {
 const RIPPLES = venuePeople.ripples
 
 // ---------------------------------------------------------------------------------- venue
-function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
+function Venue({ progress, animate, onReady }: VenueSceneCanvasProps) {
   const gltf = useLoader(GLTFLoader, MODEL, (loader) => loader.setMeshoptDecoder(MeshoptDecoder))
   const [venueMap, floorMap] = useLoader(THREE.TextureLoader, [VENUE_BAKE, FLOOR_BAKE])
   const { invalidate } = useThree()
-  const colors = generativePalette[palette]
+  const colors = generativePalette
   const materials = useRef<THREE.ShaderMaterial[]>([])
   const look = useRef(new THREE.Vector3())
   const smoothed = useRef(progress)
@@ -343,7 +342,7 @@ function Venue({ progress, palette, animate, onReady }: VenueSceneCanvasProps) {
     return { mesh, material: m }
   }, [scene])
 
-  useEffect(() => invalidate(), [progress, palette, animate, invalidate])
+  useEffect(() => invalidate(), [progress, animate, invalidate])
 
   useFrame((state, delta) => {
     const camera = state.camera

@@ -9,31 +9,26 @@
 //                             Figma in line with code (applied through the Figma plugin bridge).
 //
 // Why swatches and not /variables/local: the Variables REST API is Enterprise-only. Every Theme
-// variable is bound to a swatch on the Figma "Tokens" page, and the nodes endpoint returns the
-// bound, resolved value per mode frame on any plan.
+// variable is bound to a swatch in the "Tokens" frame on the Figma "Tokens" page, and the nodes
+// endpoint returns the bound, resolved value on any plan. The site is dark only (ADR-011): the
+// Theme collection has one mode, so each token has a single value.
 import { readFileSync, writeFileSync } from "node:fs"
 import { differenceCiede2000, formatHex, parse } from "culori"
 
 const CONFIG = JSON.parse(readFileSync("tokens/figma.config.json", "utf8"))
 const SNAPSHOT = "tokens/figma.json"
 const PLAN = "tokens/figma-push.json"
-const MODES = ["dark", "light"]
 const dE = differenceCiede2000()
 
-/** tokens.json → { name: { dark: {hex, alpha}, light: {hex, alpha} } } */
+/** tokens.json → { name: { hex, alpha } } */
 export function codeTokens() {
   const t = JSON.parse(readFileSync("tokens/tokens.json", "utf8"))
   const all = { ...t.color, ...t.generative }
   return Object.fromEntries(
-    Object.entries(all).map(([name, modes]) => [
-      name,
-      Object.fromEntries(
-        MODES.map((m) => {
-          const c = parse(modes[m])
-          return [m, { hex: formatHex(c), alpha: round(c.alpha ?? 1) }]
-        }),
-      ),
-    ]),
+    Object.entries(all).map(([name, value]) => {
+      const c = parse(value)
+      return [name, { hex: formatHex(c), alpha: round(c.alpha ?? 1) }]
+    }),
   )
 }
 
@@ -48,7 +43,7 @@ const hex = ({ r, g, b }) =>
     )
     .join("")
 
-/** Walk a mode frame: swatch frames named `<group>/<token>`, first filled child = the variable. */
+/** Walk the Tokens frame: swatch frames named `<group>/<token>`, first filled child = the variable. */
 export function readSwatches(frame) {
   const out = {}
   const visit = (node) => {
@@ -79,21 +74,22 @@ async function pull() {
     )
     process.exit(1)
   }
-  const ids = MODES.map((m) => CONFIG.modeFrames[m]).join(",")
-  const res = await fetch(`https://api.figma.com/v1/files/${CONFIG.fileKey}/nodes?ids=${ids}`, {
-    headers: { "X-Figma-Token": token },
-  })
+  const res = await fetch(
+    `https://api.figma.com/v1/files/${CONFIG.fileKey}/nodes?ids=${CONFIG.frame}`,
+    {
+      headers: { "X-Figma-Token": token },
+    },
+  )
   if (!res.ok) throw new Error(`Figma API ${res.status}: ${await res.text()}`)
   const data = await res.json()
-  const tokens = {}
-  for (const m of MODES) {
-    const frame = data.nodes[CONFIG.modeFrames[m]]?.document
-    if (!frame) throw new Error(`Mode frame ${CONFIG.modeFrames[m]} (${m}) not found in Figma`)
-    for (const [name, { variableId, value }] of Object.entries(readSwatches(frame))) {
-      tokens[name] ??= { variableId }
-      tokens[name][m] = value
-    }
-  }
+  const frame = data.nodes[CONFIG.frame]?.document
+  if (!frame) throw new Error(`Tokens frame ${CONFIG.frame} not found in Figma`)
+  const tokens = Object.fromEntries(
+    Object.entries(readSwatches(frame)).map(([name, { variableId, value }]) => [
+      name,
+      { variableId, ...value },
+    ]),
+  )
   const snapshot = {
     $description:
       "Snapshot of the Figma side of the token contract, written by `pnpm tokens:figma:pull`. Do not edit by hand. `pnpm tokens:figma:check` compares it with tokens/tokens.json.",
@@ -118,21 +114,19 @@ export function diff(code, figma, tol = CONFIG.tolerance) {
   for (const name of Object.keys(figma))
     if (!code[name]) problems.push(`${name}: in Figma but missing from tokens.json`)
   for (const name of Object.keys(code)) {
-    if (!figma[name]) continue
-    for (const m of MODES) {
-      const a = code[name][m]
-      const b = figma[name][m]
-      if (!b) {
-        problems.push(`${name}.${m}: no ${m} value in Figma`)
-        continue
-      }
-      const d = dE(a.hex, b.hex)
-      const alphaDelta = Math.abs((a.alpha ?? 1) - (b.alpha ?? 1))
-      if (d > tol.deltaE2000)
-        problems.push(`${name}.${m}: code ${a.hex} vs Figma ${b.hex} (ΔE ${d.toFixed(2)})`)
-      if (alphaDelta > tol.alpha)
-        problems.push(`${name}.${m}: alpha code ${a.alpha} vs Figma ${b.alpha ?? 1}`)
+    const a = code[name]
+    const b = figma[name]
+    if (!b) continue
+    if (!b.hex) {
+      problems.push(`${name}: no value in Figma`)
+      continue
     }
+    const d = dE(a.hex, b.hex)
+    const alphaDelta = Math.abs((a.alpha ?? 1) - (b.alpha ?? 1))
+    if (d > tol.deltaE2000)
+      problems.push(`${name}: code ${a.hex} vs Figma ${b.hex} (ΔE ${d.toFixed(2)})`)
+    if (alphaDelta > tol.alpha)
+      problems.push(`${name}: alpha code ${a.alpha} vs Figma ${b.alpha ?? 1}`)
   }
   return problems
 }
@@ -158,22 +152,20 @@ function plan() {
   const snapshot = JSON.parse(readFileSync(SNAPSHOT, "utf8"))
   const code = codeTokens()
   const updates = []
-  for (const [name, modes] of Object.entries(code)) {
+  for (const [name, v] of Object.entries(code)) {
     const f = snapshot.tokens[name]
-    for (const m of MODES) {
-      const same =
-        f?.[m] &&
-        dE(modes[m].hex, f[m].hex) <= CONFIG.tolerance.deltaE2000 &&
-        Math.abs(modes[m].alpha - (f[m].alpha ?? 1)) <= CONFIG.tolerance.alpha
-      if (same) continue
-      const c = parse(modes[m].hex)
-      updates.push({
-        variableId: f?.variableId ?? null,
-        name,
-        mode: m === "dark" ? "Dark" : "Light",
-        value: { r: round(c.r), g: round(c.g), b: round(c.b), a: modes[m].alpha },
-      })
-    }
+    const same =
+      f?.hex &&
+      dE(v.hex, f.hex) <= CONFIG.tolerance.deltaE2000 &&
+      Math.abs(v.alpha - (f.alpha ?? 1)) <= CONFIG.tolerance.alpha
+    if (same) continue
+    const c = parse(v.hex)
+    updates.push({
+      variableId: f?.variableId ?? null,
+      name,
+      mode: CONFIG.mode,
+      value: { r: round(c.r), g: round(c.g), b: round(c.b), a: v.alpha },
+    })
   }
   writeFileSync(PLAN, JSON.stringify({ collection: CONFIG.collection, updates }, null, 2) + "\n")
   console.log(`✓ ${updates.length} variable update(s) → ${PLAN}`)

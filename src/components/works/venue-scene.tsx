@@ -4,17 +4,14 @@ import dynamic from "next/dynamic"
 import { useState } from "react"
 
 import { useMotion } from "@/lib/motion"
-import type { GenerativeMode } from "@/lib/tokens.generated"
 import { cn } from "@/lib/utils"
-import { useThemeMode, useVisibility, useWebGL } from "./runtime"
+import { useVisibility, useWebGL } from "./runtime"
 
 const VenueSceneCanvas = dynamic(() => import("./venue-scene-canvas"), { ssr: false })
 
 export type VenueSceneProps = {
   /** 0..1 — camera position along the tour: exhibition stand → office lobby → music stage → museum room. */
   progress?: number
-  /** Defaults to the current site theme. */
-  palette?: GenerativeMode
   label?: string
   className?: string
 }
@@ -26,12 +23,10 @@ export type VenueSceneProps = {
  */
 export function VenueScene({
   progress = 0,
-  palette,
   label = "3D venue with generative installations on an exhibition stand, in an office lobby, on a music stage and in an immersive museum room",
   className,
 }: VenueSceneProps) {
   const motion = useMotion()
-  const theme = useThemeMode()
   const webgl = useWebGL()
   const [ref, { inView, seen }] = useVisibility<HTMLDivElement>("400px")
   const [ready, setReady] = useState(false)
@@ -53,7 +48,6 @@ export function VenueScene({
         <div className="absolute inset-0">
           <VenueSceneCanvas
             progress={progress}
-            palette={palette ?? theme}
             animate={motion && inView}
             onReady={() => setReady(true)}
           />

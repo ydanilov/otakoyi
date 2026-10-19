@@ -12,7 +12,7 @@
 - [ ] Built from `@/components/ui` + tokens only (no raw colors)
 - [ ] Story added/updated for every new or changed component (with `play` where interactive)
 - [ ] `pnpm verify:full` green locally
-- [ ] Vercel preview checked on mobile + desktop, dark + light
+- [ ] Vercel preview checked on mobile + desktop
 - [ ] Visual baseline changes are intended (if any)
 - [ ] New decisions captured as an ADR in `docs/decisions/`
 

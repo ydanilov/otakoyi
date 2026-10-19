@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
 
-import { generativePalette, type GenerativeMode } from "@/lib/tokens.generated"
+import { generativePalette } from "@/lib/tokens.generated"
 
 /** Four colors in the order gen-1 (highlight), gen-2 (base), gen-3 (secondary), gen-4 (ink). */
 export type BrandColors = readonly [string, string, string, string]
@@ -25,7 +25,6 @@ export type ShaderCanvasProps = {
   fragmentShader: string
   seed: number
   density: number
-  palette: GenerativeMode
   /** Client brand colors. Overrides the token palette when set. */
   brandColors?: BrandColors
   animate: boolean
@@ -43,7 +42,6 @@ function Plane({
   fragmentShader,
   seed,
   density,
-  palette,
   brandColors,
   animate,
   frozenTime,
@@ -54,7 +52,6 @@ function Plane({
   const reported = useRef(false)
   const material = useRef<THREE.ShaderMaterial>(null)
   const { size, invalidate } = useThree()
-  const tokenColors = generativePalette[palette]
   const colors = brandColors
     ? {
         "gen-1": brandColors[0],
@@ -62,7 +59,7 @@ function Plane({
         "gen-3": brandColors[2],
         "gen-4": brandColors[3],
       }
-    : tokenColors
+    : generativePalette
 
   const uniforms = useMemo(
     () => ({
@@ -88,7 +85,7 @@ function Plane({
   // In demand mode, re-render when the contract props change.
   useEffect(() => {
     invalidate()
-  }, [seed, density, palette, brandColors, frozenTime, invalidate])
+  }, [seed, density, brandColors, frozenTime, invalidate])
 
   useFrame((state, delta) => {
     const m = material.current
