@@ -7,16 +7,17 @@ Measured on 2026-10-16 on `main` + this branch (production build,
 
 | Sensor                                              | Result                                                | Command                         |
 | --------------------------------------------------- | ----------------------------------------------------- | ------------------------------- |
-| Tokens generated in sync                            | ✓ 24 tokens × 2 modes                                 | `pnpm tokens:check`             |
+| Tokens generated in sync                            | ✓ 24 tokens, one mode (dark only)                     | `pnpm tokens:check`             |
 | Tokens match Figma                                  | ✓ 24 / 24 (ΔE ≤ 1, alpha ±0.02)                       | `pnpm tokens:figma:check`       |
 | Code Connect                                        | ✓ 46 connected + 35 inline = 81 / 81 Figma components | `pnpm figma:check`, `pnpm test` |
 | Lint (incl. 5 harness rules)                        | ✓ 0 errors                                            | `pnpm lint`                     |
 | Types (strict, route types)                         | ✓                                                     | `pnpm typecheck`                |
 | Story coverage                                      | ✓ every section / site / works file                   | `pnpm check:stories`            |
 | Unit + contract tests                               | ✓ 35 / 35                                             | `pnpm test`                     |
-| Storybook interaction + a11y                        | ✓ 60 / 60 (axe in `error` mode)                       | `pnpm test:stories`             |
+| Storybook interaction + a11y                        | ✓ 59 / 59 (axe in `error` mode)                       | `pnpm test:stories`             |
 | E2E + axe WCAG 2.2 AA + best practices, 3 viewports | ✓ 61 passed, 2 skipped                                | `pnpm test:e2e`                 |
 | Initial JS budget (≤ 230 KB gzip)                   | ✓ max 227.4 KB (`/`), three.js lazy                   | `pnpm check:budget`             |
+| Visual regression (CI only, Docker)                 | 16 routes × 3 viewports = 48 screenshots              | `pnpm test:visual`              |
 
 ## Lighthouse 12
 

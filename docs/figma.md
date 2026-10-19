@@ -4,12 +4,12 @@ File: **otakoyi** — https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoy
 
 | Figma page | Purpose                                                                                 | Code counterpart                  |
 | ---------- | --------------------------------------------------------------------------------------- | --------------------------------- |
-| Tokens     | Variables collection _Theme_ (modes Dark / Light)                                       | `tokens/tokens.json`              |
+| Tokens     | Variables collection _Theme_ (one mode, _Default_; the site is dark only)               | `tokens/tokens.json`              |
 | shadcn/ui  | The shadcn primitives the site uses, 1:1 with the source, bound to Theme variables      | `src/components/ui`               |
 | Components | Site building blocks (header, footer, CTA, icons…) and _Sections_ built from primitives | `src/components/sections`, `site` |
 | Pages      | Every live route, desktop 1440 + mobile 390, built from library instances               | `src/app/**/page.tsx`             |
 
-Node IDs: token frames 5:41 / 5:116; components are listed in `figma/components.json`.
+Node IDs: token frame _Tokens_ 5:41; components are listed in `figma/components.json`.
 
 **shadcn/ui page.** Button (all variants + `signal`), Badge, Toggle (ToggleGroupItem), Label, Input,
 Textarea, Slider, Separator, Accordion, Card, Dialog and Sheet, drawn from the classes in
@@ -51,9 +51,10 @@ Rules:
 - Code Connect: every library component is listed in `figma/components.json`; connected ones have a
   template in `figma/<name>.figma.ts` (ADR-010). New Figma component → add a template (or mark it
   `inline`) or `pnpm test` fails.
-- Token swatches on the _Tokens_ page are part of the contract: frames `Tokens — Dark` (5:41) and
-  `Tokens — Light` (5:116) hold one swatch per token named `<group>/<token>`, filled with the bound
-  Theme variable. `pnpm tokens:figma:pull` reads them; don't rename them.
+- Token swatches on the _Tokens_ page are part of the contract: one frame `Tokens` (5:41, title
+  text "Theme") holds one swatch per token named `<group>/<token>`, filled with the bound Theme
+  variable. The Theme collection has one mode, `Default` (dark only, ADR-011).
+  `pnpm tokens:figma:pull` reads the frame; don't rename it or its swatches.
 
 ## Sync loop
 

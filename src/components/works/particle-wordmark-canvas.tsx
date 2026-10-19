@@ -4,14 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
 
-import { generativePalette, type GenerativeMode } from "@/lib/tokens.generated"
+import { generativePalette } from "@/lib/tokens.generated"
 import { seeded } from "./runtime"
 import { particleFragmentShader, particleVertexShader } from "./shaders"
 
 export type ParticleWordmarkCanvasProps = {
   text: string
   seed: number
-  palette: GenerativeMode
   /** 0 = wordmark assembled, 1 = fully scattered. */
   scatter: number
   /** Live time + pointer. Off → frozen, deterministic frame. */
@@ -36,7 +35,7 @@ function sampleText(text: string, seed: number) {
   canvas.height = h
   const ctx = canvas.getContext("2d")!
   ctx.font = font
-  ctx.fillStyle = generativePalette.dark["gen-4"] // any opaque fill: only alpha is sampled
+  ctx.fillStyle = generativePalette["gen-4"] // any opaque fill: only alpha is sampled
   ctx.textBaseline = "middle"
   ctx.fillText(text, 20, h / 2)
   const data = ctx.getImageData(0, 0, w, h).data
@@ -62,7 +61,7 @@ function sampleText(text: string, seed: number) {
   return { points: new Float32Array(out), aspect: w / h }
 }
 
-function Points({ text, seed, palette, scatter, animate, onReady }: ParticleWordmarkCanvasProps) {
+function Points({ text, seed, scatter, animate, onReady }: ParticleWordmarkCanvasProps) {
   const { viewport, gl, invalidate } = useThree()
   const [sample, setSample] = useState<{ points: Float32Array; aspect: number } | null>(null)
   const material = useRef<THREE.ShaderMaterial>(null)
@@ -98,7 +97,7 @@ function Points({ text, seed, palette, scatter, animate, onReady }: ParticleWord
     return g
   }, [sample, seed])
 
-  const colors = generativePalette[palette]
+  const colors = generativePalette
   const uniforms = useMemo(
     () => ({
       uTime: { value: FROZEN_TIME },
@@ -115,7 +114,7 @@ function Points({ text, seed, palette, scatter, animate, onReady }: ParticleWord
     [],
   )
 
-  useEffect(() => invalidate(), [scatter, palette, animate, geometry, invalidate])
+  useEffect(() => invalidate(), [scatter, animate, geometry, invalidate])
 
   useFrame((state, delta) => {
     const m = material.current
@@ -165,7 +164,7 @@ function Points({ text, seed, palette, scatter, animate, onReady }: ParticleWord
           uniforms={uniforms}
           transparent
           depthWrite={false}
-          blending={palette === "dark" ? THREE.AdditiveBlending : THREE.NormalBlending}
+          blending={THREE.AdditiveBlending}
         />
       </points>
     </group>

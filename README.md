@@ -65,7 +65,7 @@ flowchart LR
 
 ### One token contract, two tools
 
-`tokens/tokens.json` (OKLCH, dark + light) is the source of truth. `pnpm tokens` generates the
+`tokens/tokens.json` (OKLCH, dark only) is the source of truth. `pnpm tokens` generates the
 shadcn CSS variables and a hex palette for WebGL shaders and OG images. In Figma the same names
 live as Variables (collection _Theme_), each bound to a swatch on the _Tokens_ page.
 
@@ -76,7 +76,7 @@ A weekly workflow pulls Figma and opens a PR when a designer changed something:
 
 ```text
 ✗ tokens.json and Figma (snapshot 2026-10-16) have drifted:
-  - signal.dark: code #a2d128 vs Figma #c1f354 (ΔE 7.88)
+  - signal: code #a2d128 vs Figma #c1f354 (ΔE 7.88)
   Fix: change the side that is wrong. Design changed in Figma → update tokens/tokens.json …
 ```
 
@@ -103,7 +103,7 @@ Accessibility regressions fail CI like type errors.
 ### A generative engine with a contract
 
 Every visual on the site is a fragment shader behind one component —
-`<GenerativeWork work seed palette density />` — colours from tokens, deterministic per seed, lazy
+`<GenerativeWork work seed density />` — colours from tokens, deterministic per seed, lazy
 loaded, paused off-screen. Determinism is what makes screenshot tests of live WebGL possible.
 
 ### Performance as a budget

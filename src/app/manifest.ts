@@ -11,8 +11,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: seoDescription,
     start_url: "/",
     display: "standalone",
-    background_color: themeHex.dark.background,
-    theme_color: themeHex.dark.background,
+    background_color: themeHex.background,
+    theme_color: themeHex.background,
     icons: [
       { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { src: "/icon.png", sizes: "512x512", type: "image/png" },

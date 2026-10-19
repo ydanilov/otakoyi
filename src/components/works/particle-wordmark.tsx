@@ -4,9 +4,8 @@ import dynamic from "next/dynamic"
 import { useState } from "react"
 
 import { useMotion } from "@/lib/motion"
-import type { GenerativeMode } from "@/lib/tokens.generated"
 import { cn } from "@/lib/utils"
-import { useThemeMode, useVisibility, useWebGL } from "./runtime"
+import { useVisibility, useWebGL } from "./runtime"
 
 const ParticleWordmarkCanvas = dynamic(() => import("./particle-wordmark-canvas"), { ssr: false })
 
@@ -14,8 +13,6 @@ export type ParticleWordmarkProps = {
   /** The word drawn in particles. */
   text: string
   seed?: number
-  /** Defaults to the current site theme. */
-  palette?: GenerativeMode
   /** 0..1 — 0 assembled, 1 scattered. Drive it from scroll. */
   scatter?: number
   className?: string
@@ -30,12 +27,10 @@ export type ParticleWordmarkProps = {
 export function ParticleWordmark({
   text,
   seed = 7,
-  palette,
   scatter = 0,
   className,
 }: ParticleWordmarkProps) {
   const motion = useMotion()
-  const theme = useThemeMode()
   const webgl = useWebGL()
   const [ref, { inView, seen }] = useVisibility<HTMLDivElement>()
   const [ready, setReady] = useState(false)
@@ -57,7 +52,6 @@ export function ParticleWordmark({
           <ParticleWordmarkCanvas
             text={text}
             seed={seed}
-            palette={palette ?? theme}
             scatter={motion ? scatter : 0}
             animate={motion && inView}
             onReady={() => setReady(true)}

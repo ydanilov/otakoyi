@@ -6,7 +6,6 @@ const config: StorybookConfig = {
     "@storybook/addon-vitest",
     "@storybook/addon-a11y",
     "@storybook/addon-docs",
-    "@storybook/addon-themes",
     // Exposes stories to coding agents over MCP (component docs + props).
     "@storybook/addon-mcp",
   ],

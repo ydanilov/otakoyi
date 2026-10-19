@@ -35,10 +35,11 @@ export const metadata: Metadata = {
   category: "design",
 }
 
-export const viewport: Viewport = { themeColor: themeHex.dark.background, colorScheme: "dark" }
+export const viewport: Viewport = { themeColor: themeHex.background, colorScheme: "dark" }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    // One theme only (ADR-011); `dark` stays so shadcn's `dark:` variants in components/ui apply.
     <html
       lang="en"
       className={`dark ${fontSans.variable} ${fontMono.variable} ${fontLogo.variable}`}
