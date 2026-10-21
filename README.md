@@ -3,7 +3,7 @@
 **Sales site for a generative installation studio, built so that AI coding agents can ship
 on-brand, accessible UI without being able to break it.**
 
-[Live site](https://studio-portfolio-navy.vercel.app) · [Storybook](https://studio-portfolio-storybook.vercel.app) ·
+[Live site](https://otakoyi-studio.vercel.app) · [Storybook](https://studio-portfolio-storybook.vercel.app) ·
 [Figma](https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoyi) · [Metrics](docs/metrics.md) ·
 [Decisions](docs/decisions/README.md)
 

@@ -10,7 +10,7 @@ export const siteUrl = (
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "https://studio-portfolio-navy.vercel.app")
+    : "https://otakoyi-studio.vercel.app")
 ).replace(/\/$/, "")
 
 export const absoluteUrl = (path = "/") => `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`
