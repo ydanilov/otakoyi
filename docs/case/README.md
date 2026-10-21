@@ -1,56 +1,53 @@
-# Case screenshots
+# How this site was built
 
-Screenshots for the design-engineering case: from the Figma library to production. Captured on 2026-10-21.
+Screenshots taken on 21 October 2026. The site is a draft: the studio is just launching, so the cases and numbers on it are placeholders.
 
-The site is a draft: the studio is just launching, so cases and figures on the site are placeholders.
+## 1. The live site
 
-## Production site
-
-[Live site](https://studio-portfolio-navy.vercel.app)
+This is the result, running in production.
 
 | Desktop                                    | Mobile                                   |
 | ------------------------------------------ | ---------------------------------------- |
 | ![Home, desktop](01-site-home-desktop.png) | ![Home, mobile](02-site-home-mobile.png) |
 
-## Figma: tokens → components → sections → pages
+## 2. Figma: from colours to full pages
 
-[Figma file](https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoyi)
+The design was built bottom-up, and each step uses only the step before it.
 
-**Tokens.** The same variables as [`tokens/tokens.json`](../../tokens/tokens.json).
+**Colours (tokens).** Every colour has a name, like `background` or `signal`. The code uses the same names, so Figma and the site never disagree.
 
 ![Figma tokens](03-figma-tokens.png)
 
-**Components.** shadcn/ui primitives bound to the token variables, 1:1 with [`src/components/ui`](../../src/components/ui).
+**Basic components.** Buttons, fields, cards and so on. They are the same components the site uses in code, painted with the colours above.
 
 ![Figma components](04-figma-components.png)
 
-**Sections.** Site blocks built from component instances.
+**Sections.** Bigger blocks of the site, assembled from the basic components.
 
 ![Figma sections](05-figma-sections.png)
 
-**Pages.** Every route, desktop and mobile, built from sections.
+**Pages.** Every page of the site, on desktop and mobile, assembled from sections.
 
 ![Figma pages](06-figma-pages.png)
 
-## Storybook: every component, every state, accessibility checked
+## 3. Storybook: every component on its own
 
-[Storybook](https://studio-portfolio-storybook.vercel.app)
+Each component can be opened and checked separately from the site, in every state. Accessibility is checked automatically. Here the result is "0 problems".
 
-![Storybook with the accessibility panel](07-storybook-a11y.png)
+![Storybook with the accessibility check](07-storybook-a11y.png)
 
-## The checks that keep the agent inside the system
+## 4. Checks that keep the AI on track
 
-A throwaway component that breaks the rules, and what the checks answer. Every message says how to fix the problem.
-Rules: [`AGENTS.md`](../../AGENTS.md) · lint rules: [`eslint.config.mjs`](../../eslint.config.mjs).
+An example: the AI writes a component that breaks the rules (a random colour, a 3D library in the wrong place, no documentation). The checks block it, and each message says how to fix the problem. The AI fixes it before a person ever reviews the change.
 
 ![Check error messages](08-check-error-message.png)
 
-## CI on every change
+## 5. Every change is checked before it goes live
 
-[CI workflow](../../.github/workflows/ci.yml)
+Each change runs all checks automatically. Only a fully green change can reach the site.
 
 ![Green CI run](09-github-ci-green.png)
 
-## Lighthouse
+## 6. Accessibility score
 
 ![Lighthouse accessibility 100](10-lighthouse-accessibility.png)
