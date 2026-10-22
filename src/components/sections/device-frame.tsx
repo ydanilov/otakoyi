@@ -15,12 +15,12 @@ type DeviceFrameProps = {
  * Proportions of a current iPhone / iPad, as a share of the frame's own width (container query
  * units, so the bezel scales with the device instead of with the column it sits in). The outer
  * radius is the screen radius plus the bezel, so both corners stay concentric.
- *  - phone: ~9 px bezel at a 200 px frame, display corner ≈ 13.7 % of the screen width
- *  - tablet: ~13 px bezel at a 560 px frame, display corner ≈ 1.5 % of the screen width
+ *  - phone: ~5 px bezel at a 200 px frame, display corner ≈ 13 % of the screen width
+ *  - tablet: ~6 px bezel at a 560 px frame, display corner ≈ 1.5 % of the screen width
  */
 const frame = {
-  phone: { shell: "rounded-[16.9cqw]", inset: "p-[4.5cqw]", screen: "rounded-[12.4cqw]" },
-  tablet: { shell: "rounded-[3.75cqw]", inset: "p-[2.3cqw]", screen: "rounded-[1.45cqw]" },
+  phone: { shell: "rounded-[14.6cqw]", inset: "p-[2.4cqw]", screen: "rounded-[12.4cqw]" },
+  tablet: { shell: "rounded-[2.6cqw]", inset: "p-[1.1cqw]", screen: "rounded-[1.5cqw]" },
 } as const
 
 /**
@@ -35,7 +35,7 @@ export function DeviceFrame({ screen, sizes, priority, className }: DeviceFrameP
     <figure className={cn("@container relative h-fit", className)}>
       <div
         className={cn(
-          "bg-foreground shadow-2xl ring-1 ring-muted-foreground/50 dark:bg-background",
+          "bg-foreground shadow-2xl ring-1 ring-foreground/15 dark:bg-background",
           f.shell,
           f.inset,
         )}
