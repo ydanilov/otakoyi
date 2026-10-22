@@ -14,12 +14,10 @@ import { Button } from "@/components/ui/button"
 import { proposalHref } from "@/config/site"
 import {
   controlApp,
-  controlAvailability,
   controlFeatures,
   controlScreens,
   controlSteps,
   controlUseCases,
-  controlWorksWith,
   type ControlScreen,
 } from "@/content/control"
 import { cn } from "@/lib/utils"
@@ -95,49 +93,9 @@ export function PairingSteps({ className }: { className?: string }) {
   )
 }
 
-const stateDot = {
-  live: "bg-signal",
-  beta: "border border-signal bg-transparent",
-  planned: "bg-muted-foreground/50",
-} as const
-
-/** Where the app runs today and what is coming. Honest states, no store badges. */
-export function ControlAvailability({
-  className,
-  showIncluded = true,
-}: {
-  className?: string
-  showIncluded?: boolean
-}) {
-  return (
-    <div className={className}>
-      <ul className="divide-y border-y">
-        {controlAvailability.map((a) => (
-          <li key={a.platform} className="grid grid-cols-[0.5rem_minmax(0,1fr)] gap-x-4 py-4">
-            <span aria-hidden className={cn("mt-2 size-2 rounded-full", stateDot[a.state])} />
-            <span className="grid gap-x-6 gap-y-1 sm:grid-cols-[8.5rem_minmax(0,1fr)]">
-              <span className="font-medium">{a.platform}</span>
-              <span>
-                <span className="block">{a.status}</span>
-                <span className="block text-sm text-muted-foreground">{a.detail}</span>
-              </span>
-            </span>
-          </li>
-        ))}
-      </ul>
-      {showIncluded && (
-        <p className="mt-5 flex items-start gap-3 text-pretty">
-          <CheckIcon aria-hidden className="mt-0.5 size-5 shrink-0 text-signal" />
-          {controlApp.included}
-        </p>
-      )}
-    </div>
-  )
-}
-
 /**
  * The control app on /solutions: what it is (both ends — lobby controller and VJ console), the
- * devices, the three pairing steps, availability and a route to /control.
+ * devices, the three pairing steps and a route to /control.
  */
 export function ControlAppFeature({ className }: { className?: string }) {
   return (
@@ -153,9 +111,12 @@ export function ControlAppFeature({ className }: { className?: string }) {
           <SectionHeading
             eyebrow={`${controlApp.name} · included`}
             title="Every installation comes with its own controller"
-            description={`${controlApp.promise}. Your staff scan a QR on the installation's screen and take control in seconds`}
+            description={`${controlApp.lead}. ${controlApp.promise}`}
           />
-          <ControlAvailability className="mt-10" />
+          <p className="mt-10 flex items-start gap-3 text-pretty">
+            <CheckIcon aria-hidden className="mt-0.5 size-5 shrink-0 text-signal" />
+            {controlApp.included}
+          </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Button asChild size="lg" variant="signal">
               <Link href={controlApp.path}>
@@ -226,39 +187,6 @@ export function ControlUseCases({ className }: { className?: string }) {
   )
 }
 
-const actions = [
-  { name: "Flash", body: "Identify a screen in the room" },
-  { name: "Restart", body: "Bring the installation back in seconds" },
-  { name: "Blackout", body: "Hold to confirm, so it never happens by accident" },
-  { name: "Idle mode", body: "Stop reacting to people, keep the picture alive" },
-  { name: "Activity log", body: "Who did what, and when" },
-] as const
-
-/** The installation panel: status and the safe actions, next to the tablet inspector. */
-export function ControlInstallationPanel({ className }: { className?: string }) {
-  return (
-    <div
-      className={cn(
-        "grid items-center gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)] lg:gap-16",
-        className,
-      )}
-    >
-      <DeviceFrame
-        screen={controlScreens.tabletInstallation}
-        sizes="(min-width: 1280px) 760px, (min-width: 1024px) 60vw, 92vw"
-      />
-      <dl className="divide-y border-y">
-        {actions.map((a) => (
-          <div key={a.name} className="grid gap-1 py-4">
-            <dt className="font-medium">{a.name}</dt>
-            <dd className="text-pretty text-muted-foreground">{a.body}</dd>
-          </div>
-        ))}
-      </dl>
-    </div>
-  )
-}
-
 /** Everything the app does, as a 4 × 2 grid of numbered cards (the site's grid style). */
 export function ControlFeatures({ className }: { className?: string }) {
   return (
@@ -276,36 +204,5 @@ export function ControlFeatures({ className }: { className?: string }) {
         </li>
       ))}
     </ul>
-  )
-}
-
-/** TouchDesigner / any OSC software on Windows, macOS and Linux, through the bridge. */
-export function ControlWorksWith({ className }: { className?: string }) {
-  const groups = [
-    { label: "Software", items: controlWorksWith.software },
-    { label: "Installation computer", items: controlWorksWith.platforms },
-  ]
-  return (
-    <div
-      className={cn(
-        "grid gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-2",
-        className,
-      )}
-    >
-      {groups.map((g) => (
-        <div key={g.label} className="bg-background p-6 md:p-8">
-          <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-            {g.label}
-          </p>
-          <ul className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
-            {g.items.map((item) => (
-              <li key={item} className="text-2xl font-medium tracking-tight md:text-3xl">
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
   )
 }

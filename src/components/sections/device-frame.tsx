@@ -12,32 +12,44 @@ type DeviceFrameProps = {
 }
 
 /**
- * A real app screen in a quiet device bezel. The screens already carry the status bar and home
- * indicator, so the frame only draws the hardware edge. Width comes from `className`; height
- * follows the screen's own aspect ratio.
+ * Proportions of a current iPhone / iPad, as a share of the frame's own width (container query
+ * units, so the bezel scales with the device instead of with the column it sits in). The outer
+ * radius is the screen radius plus the bezel, so both corners stay concentric.
+ *  - phone: ~9 px bezel at a 200 px frame, display corner ≈ 13.7 % of the screen width
+ *  - tablet: ~13 px bezel at a 560 px frame, display corner ≈ 1.5 % of the screen width
+ */
+const frame = {
+  phone: { shell: "rounded-[16.9cqw]", inset: "p-[4.5cqw]", screen: "rounded-[12.4cqw]" },
+  tablet: { shell: "rounded-[3.75cqw]", inset: "p-[2.3cqw]", screen: "rounded-[1.45cqw]" },
+} as const
+
+/**
+ * A real app screen in a thin device bezel. The screens already carry the status bar and home
+ * indicator, so the frame only draws the hardware: a near-black bezel and a 1 px metallic edge.
+ * Width comes from `className`; height always follows the screen's own aspect ratio (`h-fit`, so
+ * a stretching flex parent can never leave an empty band under the screen).
  */
 export function DeviceFrame({ screen, sizes, priority, className }: DeviceFrameProps) {
-  const phone = screen.device === "phone"
+  const f = frame[screen.device]
   return (
-    <figure
-      className={cn(
-        "relative border bg-card shadow-2xl ring-1 ring-foreground/5",
-        phone ? "rounded-[2.6rem] p-[3.5%]" : "rounded-[1.75rem] p-[2%]",
-        className,
-      )}
-    >
-      <Image
-        src={screen.src}
-        alt={screen.alt}
-        width={screen.width}
-        height={screen.height}
-        sizes={sizes}
-        priority={priority}
+    <figure className={cn("@container relative h-fit", className)}>
+      <div
         className={cn(
-          "h-auto w-full bg-background",
-          phone ? "rounded-[2.2rem]" : "rounded-[1.25rem]",
+          "bg-foreground shadow-2xl ring-1 ring-muted-foreground/50 dark:bg-background",
+          f.shell,
+          f.inset,
         )}
-      />
+      >
+        <Image
+          src={screen.src}
+          alt={screen.alt}
+          width={screen.width}
+          height={screen.height}
+          sizes={sizes}
+          priority={priority}
+          className={cn("block h-auto w-full bg-background", f.screen)}
+        />
+      </div>
     </figure>
   )
 }

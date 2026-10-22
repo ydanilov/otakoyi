@@ -4,12 +4,9 @@ import { expect } from "storybook/test"
 import { controlApp, controlScreens } from "@/content/control"
 import {
   ControlAppFeature,
-  ControlAvailability,
   ControlDevices,
   ControlFeatures,
-  ControlInstallationPanel,
   ControlUseCases,
-  ControlWorksWith,
   PairingSteps,
 } from "./control-app"
 import { DeviceFrame } from "./device-frame"
@@ -21,7 +18,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** The /solutions block: both ends of the range, devices, pairing, availability, link to /control. */
+/** The /solutions block: both ends of the range, devices, pairing, link to /control. */
 export const SolutionsBlock: Story = {
   render: () => <ControlAppFeature />,
   play: async ({ canvas }) => {
@@ -35,7 +32,7 @@ export const SolutionsBlock: Story = {
       "href",
       "#proposal",
     )
-    await expect(canvas.getAllByRole("listitem").length).toBeGreaterThanOrEqual(6)
+    await expect(canvas.getAllByRole("listitem").length).toBeGreaterThanOrEqual(3)
     await expect(canvas.getByText(/No subscription/)).toBeVisible()
   },
 }
@@ -77,17 +74,5 @@ export const Pairing: Story = {
   },
 }
 
-/** Honest availability: beta on iOS, web works today, Android later — no store badges. */
-export const Availability: Story = {
-  render: () => <ControlAvailability className="max-w-xl" />,
-  play: async ({ canvas }) => {
-    await expect(canvas.getByText("Coming to the App Store")).toBeVisible()
-    await expect(canvas.getByText("Works today")).toBeVisible()
-    await expect(canvas.queryByText(/Download on the App Store/i)).toBeNull()
-  },
-}
-
 export const UseCases: Story = { render: () => <ControlUseCases /> }
-export const InstallationPanel: Story = { render: () => <ControlInstallationPanel /> }
 export const Features: Story = { render: () => <ControlFeatures /> }
-export const WorksWith: Story = { render: () => <ControlWorksWith /> }

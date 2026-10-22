@@ -4,7 +4,7 @@ import { join } from "node:path"
 import { faqItems } from "@/components/sections/faq"
 import { site } from "@/config/site"
 import { getIndexableCases } from "@/content/cases"
-import { controlApp, controlAvailability, controlFaq, controlFeatures } from "@/content/control"
+import { controlApp, controlFaq, controlFeatures } from "@/content/control"
 import { solutions } from "@/content/solutions"
 import { technologies } from "@/content/technologies"
 import { absoluteUrl, seoDescription } from "@/lib/seo"
@@ -48,7 +48,7 @@ ${getIndexableCases()
 
 ## Control app
 
-- [${controlApp.name}](${absoluteUrl(controlApp.path)}): ${controlApp.promise}. ${controlApp.included}
+- [${controlApp.name}](${absoluteUrl(controlApp.path)}): ${controlApp.lead}. ${controlApp.promise}. ${controlApp.included}
 
 ## Studio
 
@@ -106,11 +106,9 @@ ${technologies.map((t) => `- **${t.name}** (${t.kind}): ${t.line}. Typically: ${
 
 URL: ${absoluteUrl(controlApp.path)}
 
-${controlApp.promise}. ${controlApp.included}
+${controlApp.lead}. ${controlApp.promise}. ${controlApp.included}
 
 ${controlFeatures.map((f) => `- **${f.title}**: ${f.body}`).join("\n")}
-
-Availability: ${controlAvailability.map((a) => `${a.platform} — ${a.status} (${a.detail})`).join("; ")}
 
 ${controlFaq.map((f) => `**${f.q}** ${f.a}`).join("\n\n")}
 
