@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
-import { CheckIcon } from "lucide-react"
 
 import { Cta } from "@/components/sections/cta"
+import { Included } from "@/components/sections/included"
 import { LogoWall } from "@/components/sections/logo-wall"
 import { SectionHeading } from "@/components/sections/section-heading"
 import { StudioHero } from "@/components/sections/studio-hero"
@@ -14,18 +14,6 @@ export const metadata: Metadata = pageMetadata({
   description: `About ${site.name} — artists and engineers who design, build and install interactive generative installations, turnkey, from concept to opening night`,
   path: "/studio",
 })
-
-const included = [
-  { title: "Concept", body: "A concept and a live prototype in your brand, within a week" },
-  {
-    title: "Your installation",
-    body: "A generative installation built for you, ready to grow into new venues",
-  },
-  { title: "Data and interaction", body: "Your data, sensors and audience wired into every frame" },
-  { title: "Hardware", body: "Projection, LED and sensors specified, sourced and rigged" },
-  { title: "On site", body: "Installation, calibration and an operator on the night" },
-  { title: "Support", body: "Remote monitoring and updates long after the doors close" },
-]
 
 const principles = [
   {
@@ -109,28 +97,7 @@ export default function StudioPage() {
           description="One team from first call to the last night of the event"
           className="mb-12"
         />
-        <ol className="grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {included.map((item, i) => (
-            <li
-              key={item.title}
-              className="group flex min-h-56 flex-col justify-between gap-10 bg-background p-6 transition-colors hover:bg-card md:p-8"
-            >
-              <span className="flex items-center justify-between font-mono text-xs tracking-widest text-muted-foreground">
-                {String(i + 1).padStart(2, "0")}
-                <CheckIcon
-                  aria-hidden
-                  className="size-5 text-signal transition-transform duration-300 group-hover:scale-110"
-                />
-              </span>
-              <span>
-                <span className="block text-2xl font-medium tracking-tight">{item.title}</span>
-                <span className="mt-2 block max-w-xs text-pretty text-muted-foreground">
-                  {item.body}
-                </span>
-              </span>
-            </li>
-          ))}
-        </ol>
+        <Included />
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
