@@ -59,3 +59,21 @@ test("unknown case returns 404", async ({ page }) => {
   const res = await page.goto("/works/does-not-exist")
   expect(res?.status()).toBe(404)
 })
+
+test("control app: studio grid and solutions block lead to /control", async ({ page }) => {
+  await page.goto("/studio")
+  const included = page.getByRole("list").filter({ hasText: "Control app" })
+  await expect(included.getByRole("listitem")).toHaveCount(7)
+  await included.getByRole("link", { name: "See the control app" }).click()
+  await expect(page).toHaveURL(/\/control$/)
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Your installation, in your hands",
+  )
+  await expect(page.getByText("Coming to the App Store").first()).toBeVisible()
+
+  await page.goto("/solutions")
+  const block = page.locator("#control-app")
+  await expect(block.getByText("Show the QR")).toBeVisible()
+  await block.getByRole("link", { name: "Explore the control app" }).click()
+  await expect(page).toHaveURL(/\/control$/)
+})

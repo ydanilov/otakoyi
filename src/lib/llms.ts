@@ -4,6 +4,7 @@ import { join } from "node:path"
 import { faqItems } from "@/components/sections/faq"
 import { site } from "@/config/site"
 import { getIndexableCases } from "@/content/cases"
+import { controlApp, controlAvailability, controlFaq, controlFeatures } from "@/content/control"
 import { solutions } from "@/content/solutions"
 import { technologies } from "@/content/technologies"
 import { absoluteUrl, seoDescription } from "@/lib/seo"
@@ -44,6 +45,10 @@ ${getIndexableCases()
       `- [${c.title}](${absoluteUrl(`/works/${c.slug}`)}) (${c.status}, ${c.formats.join(", ")}): ${c.summary}`,
   )
   .join("\n")}
+
+## Control app
+
+- [${controlApp.name}](${absoluteUrl(controlApp.path)}): ${controlApp.promise}. ${controlApp.included}
 
 ## Studio
 
@@ -96,6 +101,18 @@ ${s.faq.map((f) => `**${f.q}** ${f.a}`).join("\n\n")}
 ## Surfaces and inputs we work with
 
 ${technologies.map((t) => `- **${t.name}** (${t.kind}): ${t.line}. Typically: ${t.where.join(", ")}`).join("\n")}
+
+## ${controlApp.name} — the control app
+
+URL: ${absoluteUrl(controlApp.path)}
+
+${controlApp.promise}. ${controlApp.included}
+
+${controlFeatures.map((f) => `- **${f.title}**: ${f.body}`).join("\n")}
+
+Availability: ${controlAvailability.map((a) => `${a.platform} — ${a.status} (${a.detail})`).join("; ")}
+
+${controlFaq.map((f) => `**${f.q}** ${f.a}`).join("\n\n")}
 
 ## Installations
 

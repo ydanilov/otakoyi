@@ -8,6 +8,7 @@ export const site = {
   nav: [
     { href: "/works", label: "Installations" },
     { href: "/solutions", label: "Solutions" },
+    { href: "/control", label: "Control app" },
     { href: "/studio", label: "Studio" },
   ],
   social: [{ href: "https://www.instagram.com/otakoyi.team/", label: "Instagram" }],

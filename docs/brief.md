@@ -44,6 +44,7 @@ Convert visitors into proposal requests (`Get a proposal` → pre-filled email; 
 | `/works`        | All installations, filter by format (Conference, Event, Office, Exhibition, Brand activation)       |
 | `/works/[slug]` | Case: challenge → installation → brand customisation → results tiles → CTA                          |
 | `/studio`       | Team, turnkey scope ("What's included"), principles, clients                                        |
+| `/control`      | Otakoyi Control, the branded controller app included with every installation (beta, honest status)  |
 
 ## Open items
 

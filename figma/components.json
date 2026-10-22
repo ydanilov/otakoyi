@@ -473,7 +473,7 @@
       "figma": "StudioIncludedItem",
       "node": "72-341",
       "status": "inline",
-      "code": "src/app/studio/page.tsx"
+      "code": "src/components/sections/included.tsx"
     },
     {
       "figma": "CasePage",
