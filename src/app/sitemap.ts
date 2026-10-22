@@ -24,6 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/works", 0.9, "weekly"),
     page("/solutions", 0.9),
     page("/studio", 0.7, "monthly", ["/studio/studio.webp"]),
+    page("/control", 0.8, "monthly", ["/control/tablet-vj.webp", "/control/phone-pult.webp"]),
     ...solutions.map((s) => page(`/solutions/${s.slug}`, 0.8, "monthly", s.image ? [s.image] : [])),
     ...getIndexableCases().map((c) =>
       page(`/works/${c.slug}`, 0.7, "monthly", [

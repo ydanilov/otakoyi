@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 
+import { ControlAppFeature } from "@/components/sections/control-app"
 import { Cta } from "@/components/sections/cta"
 import { HeroField } from "@/components/sections/hero-field"
 import { Occasions } from "@/components/sections/occasions"
@@ -68,6 +69,13 @@ export default function SolutionsPage() {
           label="Surfaces"
           items={technologies.filter((t) => t.kind === "output")}
         />
+      </section>
+      <section
+        id="control-app"
+        aria-label="Control app"
+        className="mx-auto max-w-7xl px-4 pb-16 md:px-8 md:pb-24"
+      >
+        <ControlAppFeature />
       </section>
       <Cta />
     </>
