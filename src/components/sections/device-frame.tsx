@@ -33,13 +33,7 @@ export function DeviceFrame({ screen, sizes, priority, className }: DeviceFrameP
   const f = frame[screen.device]
   return (
     <figure className={cn("@container relative h-fit", className)}>
-      <div
-        className={cn(
-          "bg-foreground shadow-2xl dark:bg-background",
-          f.shell,
-          f.inset,
-        )}
-      >
+      <div className={cn("bg-foreground shadow-2xl dark:bg-background", f.shell, f.inset)}>
         <Image
           src={screen.src}
           alt={screen.alt}
