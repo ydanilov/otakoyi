@@ -19,7 +19,8 @@ from detached copies. A new primitive is copied from shadcn into code first, the
 
 **Pages page.** Section _Pages — editable_ holds one frame per route and breakpoint, named
 `<Page> — Desktop 1440` / `<Page> — Mobile 390`, grouped into sub-sections: _01 · Core pages_ (Home,
-Installations, Solutions, Studio), _02 · Cases — /works/[slug]_ and _03 · Solutions — /solutions/[slug]_.
+Installations, Solutions, Studio), _02 · Cases — /works/[slug]_, _03 · Solutions — /solutions/[slug]_ and
+_04 · Control app_ (`/control` plus the control-app additions to /studio and /solutions).
 Desktop and mobile of one page sit side by side. Every frame is an auto-layout stack of instances of
 the library (`SiteHeader`, `Hero`, `SectionHeading`, `WorkCard`, `Faq`, `Cta`, `SiteFooter`…) with the
 production copy and images, so a layout is edited by changing instance properties, not pixels. Section
