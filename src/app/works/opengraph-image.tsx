@@ -6,7 +6,7 @@ export const contentType = ogContentType
 
 export default function Image() {
   return renderOg({
-    eyebrow: "Installations",
+    eyebrow: "Portfolio",
     title: "Installations that worked for brands like yours",
     bg: "works",
   })

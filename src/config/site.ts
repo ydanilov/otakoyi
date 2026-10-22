@@ -6,7 +6,7 @@ export const site = {
   email: "hello@otakoyi.team",
   cta: { label: "Get a proposal", subject: "Installation proposal" },
   nav: [
-    { href: "/works", label: "Installations" },
+    { href: "/works", label: "Portfolio" },
     { href: "/solutions", label: "Solutions" },
     { href: "/control", label: "Control app" },
     { href: "/studio", label: "Studio" },

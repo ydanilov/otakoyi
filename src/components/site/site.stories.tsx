@@ -16,7 +16,7 @@ export const Header: Story = {
   render: () => <SiteHeader />,
   parameters: { nextjs: { navigation: { pathname: "/works" } } },
   play: async ({ canvas }) => {
-    await expect(canvas.getByRole("link", { name: "Installations" })).toHaveAttribute(
+    await expect(canvas.getByRole("link", { name: "Portfolio" })).toHaveAttribute(
       "aria-current",
       "page",
     )
