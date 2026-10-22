@@ -63,7 +63,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
           },
           breadcrumbs([
             { name: "Home", path: "/" },
-            { name: "Installations", path: "/works" },
+            { name: "Portfolio", path: "/works" },
             { name: item.title, path: `/works/${slug}` },
           ]),
         ]}

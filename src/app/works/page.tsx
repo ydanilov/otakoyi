@@ -9,7 +9,7 @@ import { JsonLd, breadcrumbs } from "@/lib/json-ld"
 import { absoluteUrl, pageMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = pageMetadata({
-  title: "Installations",
+  title: "Portfolio",
   description:
     "Interactive generative installations for conferences, events, offices and exhibitions — case studies of body-tracking walls, live-data LED screens and interactive floors",
   path: "/works",
@@ -23,7 +23,7 @@ export default function WorksPage() {
         data={[
           {
             "@type": "CollectionPage",
-            name: "Installations",
+            name: "Portfolio",
             url: absoluteUrl("/works"),
             mainEntity: {
               "@type": "ItemList",
@@ -39,7 +39,7 @@ export default function WorksPage() {
           },
           breadcrumbs([
             { name: "Home", path: "/" },
-            { name: "Installations", path: "/works" },
+            { name: "Portfolio", path: "/works" },
           ]),
         ]}
       />
@@ -48,7 +48,7 @@ export default function WorksPage() {
         <div className="mx-auto max-w-7xl px-4 pt-16 pb-12 md:px-8 md:pt-24">
           <SectionHeading
             page
-            eyebrow="Installations"
+            eyebrow="Portfolio"
             title="Installations that worked for brands like yours"
             description="Our own TouchDesigner installations and studies from the generative engine we install on site. Filter by the kind of space you are planning"
           />
