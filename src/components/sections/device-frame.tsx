@@ -25,7 +25,7 @@ const frame = {
 
 /**
  * A real app screen in a thin device bezel. The screens already carry the status bar and home
- * indicator, so the frame only draws the hardware: a near-black bezel and a 1 px metallic edge.
+ * indicator, so the frame only draws the hardware: a near-black bezel, no outline.
  * Width comes from `className`; height always follows the screen's own aspect ratio (`h-fit`, so
  * a stretching flex parent can never leave an empty band under the screen).
  */
@@ -35,7 +35,7 @@ export function DeviceFrame({ screen, sizes, priority, className }: DeviceFrameP
     <figure className={cn("@container relative h-fit", className)}>
       <div
         className={cn(
-          "bg-foreground shadow-2xl ring-1 ring-foreground/15 dark:bg-background",
+          "bg-foreground shadow-2xl dark:bg-background",
           f.shell,
           f.inset,
         )}
