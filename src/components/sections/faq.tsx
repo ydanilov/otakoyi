@@ -12,7 +12,7 @@ export const faqItems = [
   },
   {
     q: "How is it priced?",
-    a: "Per event (rental), as a permanent installation (purchase + support), or as a yearly licence for multi-event programmes",
+    a: "Per event, as a permanent installation (purchase + support), or as a yearly licence for multi-event programmes. The control app comes free with every installation and stays yours for good",
   },
   {
     q: "How much can be customised?",

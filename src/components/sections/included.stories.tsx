@@ -18,8 +18,8 @@ export const Default: Story = {
     await expect(items).toHaveLength(includedItems.length + 1)
     await expect(items.at(-1)).toHaveTextContent("07")
     await expect(items.at(-1)).toHaveTextContent("Control app")
-    await expect(items.at(-1)).toHaveTextContent(/simple controller for the lobby/)
-    await expect(items.at(-1)).toHaveTextContent(/full VJ console for the show/)
+    await expect(items.at(-1)).toHaveTextContent(/controller for your generative installation/)
+    await expect(items.at(-1)).toHaveTextContent(/full VJ console/)
     await expect(canvas.getByRole("link", { name: /See the control app/ })).toHaveAttribute(
       "href",
       "/control",

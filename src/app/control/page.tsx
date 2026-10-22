@@ -1,12 +1,11 @@
 import type { Metadata } from "next"
+import Image from "next/image"
+import { ArrowDownIcon } from "lucide-react"
 
 import {
-  ControlAvailability,
   ControlDevices,
   ControlFeatures,
-  ControlInstallationPanel,
   ControlUseCases,
-  ControlWorksWith,
   PairingSteps,
 } from "@/components/sections/control-app"
 import { Cta } from "@/components/sections/cta"
@@ -14,15 +13,13 @@ import { Faq } from "@/components/sections/faq"
 import { HeroField } from "@/components/sections/hero-field"
 import { ReactiveHeadline } from "@/components/sections/reactive-headline"
 import { SectionHeading } from "@/components/sections/section-heading"
-import { Button } from "@/components/ui/button"
-import { proposalHref } from "@/config/site"
-import { controlApp, controlFaq, controlScreens, controlWorksWith } from "@/content/control"
+import { appStoreUrl, controlApp, controlFaq, controlScreens } from "@/content/control"
 import { JsonLd, breadcrumbs, faqPage, orgId } from "@/lib/json-ld"
 import { absoluteUrl, pageMetadata } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
 const description =
-  "Otakoyi Control, the branded controller that comes with every installation: a simple phone controller for lobbies or a full VJ console on a tablet for live shows. Pair by QR, no accounts. Included, no subscription"
+  "Otakoyi Control, the controller for your generative installation — change what it does in real time. A simple phone controller for lobbies or a full VJ console on a tablet for live shows. Pair by QR, no accounts. Included, no subscription"
 
 export const metadata: Metadata = pageMetadata({
   title: "Control app",
@@ -48,6 +45,17 @@ function Section({
     </section>
   )
 }
+
+const appStoreBadge = (
+  <Image
+    src="/control/app-store-badge.svg"
+    alt={appStoreUrl ? "Download on the App Store" : "Download on the App Store — coming soon"}
+    width={135}
+    height={40}
+    unoptimized
+    className="h-12 w-auto"
+  />
+)
 
 export default function ControlPage() {
   return (
@@ -85,18 +93,34 @@ export default function ControlPage() {
               className="max-w-3xl text-5xl leading-[0.95] tracking-tighter text-balance md:text-7xl"
             />
             <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground md:text-xl">
-              {controlApp.promise}. Scan a QR and you are in control
+              {controlApp.lead}. {controlApp.promise}
             </p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Button asChild size="lg" variant="signal">
-                <a href={proposalHref}>Request a demo</a>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <a href="#pairing">How pairing works</a>
-              </Button>
+            {/* Apple badge: official black artwork, ≥ 40 px tall, clear space ≥ ¼ of its height. */}
+            <div className="mt-10 flex flex-wrap items-start gap-x-8 gap-y-4">
+              <figure className="flex flex-col items-start gap-3">
+                {appStoreUrl ? (
+                  <a href={appStoreUrl} aria-label={`Download ${controlApp.name} on the App Store`}>
+                    {appStoreBadge}
+                  </a>
+                ) : (
+                  appStoreBadge
+                )}
+                {!appStoreUrl && (
+                  <figcaption className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                    Coming soon
+                  </figcaption>
+                )}
+              </figure>
+              <a
+                href="#pairing"
+                className="inline-flex h-12 items-center gap-2 font-medium underline-offset-4 hover:underline"
+              >
+                How pairing works
+                <ArrowDownIcon aria-hidden className="size-4" />
+              </a>
             </div>
             <p className="mt-8 font-mono text-xs tracking-widest text-muted-foreground uppercase">
-              iPhone and iPad · in beta · Web · works today
+              Free forever · No subscription · No hidden payments
             </p>
           </div>
           <ControlDevices phone={controlScreens.phoneLoading} priority />
@@ -107,7 +131,7 @@ export default function ControlPage() {
         <SectionHeading
           eyebrow="Two ways to run it"
           title="A calm remote for the lobby. A console for the show"
-          description="We design the controller around your installation and the people who run it. Every delivery ships both layouts, phone and tablet"
+          description="Made for Otakoyi installations. We build the dashboard for each project around what you need to run. Every delivery ships both layouts, phone and tablet"
           className="mb-12"
         />
         <ControlUseCases />
@@ -123,40 +147,9 @@ export default function ControlPage() {
         <PairingSteps />
       </Section>
 
-      <Section id="installation">
-        <SectionHeading
-          eyebrow="Safe by design"
-          title="One in control. Everyone in sync"
-          description="One device controls at a time and every other one sees the live state. Hand over with one tap — and the studio can always take over remotely"
-          className="mb-12"
-        />
-        <ControlInstallationPanel />
-      </Section>
-
       <Section id="features">
         <SectionHeading eyebrow="Features" title="Everything the show needs" className="mb-12" />
         <ControlFeatures />
-      </Section>
-
-      <Section id="works-with">
-        <SectionHeading
-          eyebrow="Works with"
-          title="TouchDesigner and any OSC software"
-          description={controlWorksWith.body}
-          className="mb-12"
-        />
-        <ControlWorksWith />
-      </Section>
-
-      <Section id="availability">
-        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:gap-16">
-          <SectionHeading
-            eyebrow="Availability"
-            title="Included. Yours for good"
-            description="The control app comes with every installation. No subscription and nothing to renew — access stays yours for good"
-          />
-          <ControlAvailability />
-        </div>
       </Section>
 
       <Section id="faq">

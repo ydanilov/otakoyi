@@ -19,7 +19,7 @@ export const includedItems = [
 /** The control app, closing the grid as a full-width row in the same card style. */
 export const includedControl = {
   title: "Control app",
-  body: "From a simple controller for the lobby to a full VJ console for the show — branded for you, on phone and tablet",
+  body: "The controller for your generative installation — change what it does in real time. From a lobby remote to a full VJ console, branded for you",
   note: "Included with every installation — yours to keep",
 } as const
 

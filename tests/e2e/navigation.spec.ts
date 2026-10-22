@@ -69,7 +69,6 @@ test("control app: studio grid and solutions block lead to /control", async ({ p
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Your installation, in your hands",
   )
-  await expect(page.getByText("Coming to the App Store").first()).toBeVisible()
 
   await page.goto("/solutions")
   const block = page.locator("#control-app")

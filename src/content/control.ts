@@ -1,17 +1,25 @@
 /**
  * Otakoyi Control — the branded control app that ships with every installation.
- * Copy follows docs/brief.md (no trailing periods at the end of a block). Availability is stated
- * honestly: the iOS / iPadOS app is in beta, not in the App Store yet; the web version works today.
+ * Copy follows docs/brief.md (no trailing periods at the end of a block).
  */
 
 export const controlApp = {
   name: "Otakoyi Control",
   path: "/control",
+  /** Leads every mention of the app: what it is for, before anything else. */
+  lead: "The controller for your generative installation — change what it does in real time",
   /** One line, both ends of the range: a simple controller or a full VJ console. */
   promise:
     "From a simple controller for the lobby to a full VJ console for the show — branded for you, on phone and tablet",
-  included: "Included in every delivery. No subscription — access stays yours for good",
+  included:
+    "Free forever. No subscription, no hidden payments — it comes with your installation and stays yours",
 } as const
+
+/**
+ * The App Store listing. The iPhone and iPad app is not published yet: keep this `null` until it
+ * is — the /control hero then shows the badge with a "Coming soon" caption instead of a link.
+ */
+export const appStoreUrl: string | null = null
 
 export type ControlScreen = {
   src: string
@@ -58,13 +66,6 @@ export const controlScreens = {
     height: 834,
     device: "tablet",
   },
-  tabletInstallation: {
-    src: "/control/tablet-installation.webp",
-    alt: "VJ console on a tablet with the installation inspector open: status, controllers, quick actions and modes",
-    width: 1210,
-    height: 834,
-    device: "tablet",
-  },
   tabletPrompts: {
     src: "/control/tablet-prompts.webp",
     alt: "Prompt presets for generative visuals on a tablet, with a prompt mix and room sound levels",
@@ -79,7 +80,7 @@ export const controlUseCases = [
     eyebrow: "Lobbies and permanent installations",
     title: "A simple controller on a phone",
     body: "Reception and facilities staff switch scenes and modes, set the brightness and run safe actions. Nothing to learn, nothing to break",
-    points: ["Scenes and modes", "Brightness", "Safe actions only"],
+    points: ["Real-time control", "Scenes and modes", "Brightness", "Safe actions only"],
     screen: controlScreens.phonePult,
   },
   {
@@ -87,6 +88,7 @@ export const controlUseCases = [
     title: "A full VJ console on a tablet",
     body: "Your operator plays the installation live: faders, knobs, thumbsticks, layer groups and prompt presets for generative visuals, with ×0.2 fine adjustment for the precise moments",
     points: [
+      "Real-time control",
       "Faders, knobs and thumbsticks",
       "Layer groups",
       "Prompt presets",
@@ -107,11 +109,15 @@ export const controlSteps = [
   },
   {
     title: "Run the show",
-    body: "The controller opens in your brand and takes control within seconds",
+    body: "The controller opens in your brand — from then on you steer the installation live, in real time",
   },
 ] as const
 
 export const controlFeatures = [
+  {
+    title: "Live, in real time",
+    body: "The controller for your generative installation — change what it does while it runs, and see it on the screens at once",
+  },
   {
     title: "Your brand, built in",
     body: "Your colours, logo and loading image. We design it for your installation; you never configure a thing",
@@ -140,43 +146,12 @@ export const controlFeatures = [
     title: "Works in a browser too",
     body: "A web version runs in any browser on the installation's network — a backup that is always there",
   },
-  {
-    title: "Demo mode",
-    body: "Anyone can try the app without an installation, so your team can rehearse before the doors open",
-  },
-] as const
-
-export const controlWorksWith = {
-  software: ["TouchDesigner", "Any OSC software"],
-  platforms: ["Windows", "macOS", "Linux"],
-  body: "A small bridge on the installation computer connects the app to TouchDesigner or any software that speaks OSC",
-} as const
-
-export const controlAvailability = [
-  {
-    platform: "iPhone and iPad",
-    status: "Coming to the App Store",
-    detail: "In beta now",
-    state: "beta",
-  },
-  {
-    platform: "Web",
-    status: "Works today",
-    detail: "Any browser on the installation's network",
-    state: "live",
-  },
-  {
-    platform: "Android",
-    status: "Later",
-    detail: "Planned after the iOS release",
-    state: "planned",
-  },
 ] as const
 
 export const controlFaq = [
   {
     q: "Does the control app cost extra?",
-    a: "No. It is included in every delivery. No subscription — access stays yours for good",
+    a: "No. Free forever. No subscription, no hidden payments — it comes with your installation and stays yours",
   },
   {
     q: "Can I download it from the App Store?",
@@ -196,7 +171,11 @@ export const controlFaq = [
   },
   {
     q: "What does it work with?",
-    a: "TouchDesigner and any OSC software on Windows, macOS or Linux, through a small bridge on the installation computer",
+    a: "Made for Otakoyi installations. We build the dashboard for each project around what you need to run",
+  },
+  {
+    q: "What runs on the installation computer?",
+    a: "Works on Windows, macOS and Linux. The bridge sets itself up and starts together with the installation — nothing to configure",
   },
   {
     q: "Is there an Android version?",
