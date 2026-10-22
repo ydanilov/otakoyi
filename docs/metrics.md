@@ -55,6 +55,9 @@ Mobile runs use Lighthouse's simulated slow 4G + 4× CPU throttling.
 | `/works/[slug]` (×6)     | 211.7 |
 | `/solutions`             | 209.2 |
 | `/studio`                | 208.2 |
+| `/control`\*             | 216.3 |
+
+\* Added 2026-10-22 (control app page), measured on that branch; the other rows are from 2026-10-16.
 
 ## Delivery
 

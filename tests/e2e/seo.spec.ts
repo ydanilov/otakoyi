@@ -10,6 +10,7 @@ test("robots, sitemap and llms.txt are served", async ({ request }) => {
 
   const sitemap = await (await request.get("/sitemap.xml")).text()
   for (const s of solutions) expect(sitemap).toContain(`/solutions/${s.slug}<`)
+  expect(sitemap).toContain("/control<")
   for (const c of getCases()) {
     if (isPlaceholderCase(c)) expect(sitemap).not.toContain(`/works/${c.slug}<`)
     else expect(sitemap).toContain(`/works/${c.slug}<`)
@@ -17,7 +18,9 @@ test("robots, sitemap and llms.txt are served", async ({ request }) => {
 
   const llms = await request.get("/llms.txt")
   expect(llms.ok()).toBe(true)
-  expect(await llms.text()).toMatch(/^# Otakoyi/)
+  const llmsText = await llms.text()
+  expect(llmsText).toMatch(/^# Otakoyi/)
+  expect(llmsText).toContain("/control)")
   expect((await request.get("/llms-full.txt")).ok()).toBe(true)
 })
 
@@ -25,7 +28,14 @@ test("every top-level page has canonical, OG image and valid JSON-LD", async ({
   page,
   request,
 }) => {
-  for (const path of ["/", "/works", "/solutions", "/studio", `/solutions/${solutions[0]!.slug}`]) {
+  for (const path of [
+    "/",
+    "/works",
+    "/solutions",
+    "/studio",
+    "/control",
+    `/solutions/${solutions[0]!.slug}`,
+  ]) {
     await page.goto(path)
     const canonical = await page.locator('link[rel="canonical"]').getAttribute("href")
     expect(new URL(canonical!).pathname).toBe(path)

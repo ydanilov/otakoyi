@@ -6,6 +6,7 @@ export const routes = [
   { name: "works", path: "/works" },
   { name: "studio", path: "/studio" },
   { name: "solutions", path: "/solutions" },
+  { name: "control", path: "/control" },
   ...solutions.map((s) => ({ name: `solution-${s.slug}`, path: `/solutions/${s.slug}` })),
   ...getCases().map((c) => ({ name: `case-${c.slug}`, path: `/works/${c.slug}` })),
 ]

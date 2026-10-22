@@ -2,16 +2,16 @@
 
 How the site presents itself to search engines and AI answer engines (ChatGPT, Claude, Perplexity, Google AI).
 
-| What                                                    | Where                                                                                                                                        |
-| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Canonical origin                                        | `src/lib/seo.ts` → `siteUrl` (`NEXT_PUBLIC_SITE_URL`, else Vercel production domain)                                                         |
-| Per-page title, description, canonical, OG/Twitter text | `pageMetadata()` in `src/lib/seo.ts`, called by every route                                                                                  |
-| Social cards (1200×630)                                 | `opengraph-image.tsx` per route, rendered by `src/lib/og.tsx`                                                                                |
-| Card photos                                             | `src/assets/og/bg/*.jpg`, built by `python3 scripts/build-og-assets.py` (next/og cannot read WebP)                                           |
-| Card fonts                                              | `src/assets/og/*.ttf` (static instances of the site fonts)                                                                                   |
-| Structured data (schema.org JSON-LD)                    | `src/lib/json-ld.tsx`: Organization + WebSite (layout), FAQPage (home, solutions), Service (solutions), CreativeWork (cases), BreadcrumbList |
-| Sitemap / robots                                        | `src/app/sitemap.ts`, `src/app/robots.ts` (AI crawlers explicitly allowed)                                                                   |
-| AI-readable summary                                     | `/llms.txt` (map) and `/llms-full.txt` (full text), built from content in `src/lib/llms.ts`                                                  |
+| What                                                    | Where                                                                                                                                                                                |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Canonical origin                                        | `src/lib/seo.ts` → `siteUrl` (`NEXT_PUBLIC_SITE_URL`, else Vercel production domain)                                                                                                 |
+| Per-page title, description, canonical, OG/Twitter text | `pageMetadata()` in `src/lib/seo.ts`, called by every route                                                                                                                          |
+| Social cards (1200×630)                                 | `opengraph-image.tsx` per route, rendered by `src/lib/og.tsx`                                                                                                                        |
+| Card photos                                             | `src/assets/og/bg/*.jpg`, built by `python3 scripts/build-og-assets.py` (next/og cannot read WebP)                                                                                   |
+| Card fonts                                              | `src/assets/og/*.ttf` (static instances of the site fonts)                                                                                                                           |
+| Structured data (schema.org JSON-LD)                    | `src/lib/json-ld.tsx`: Organization + WebSite (layout), FAQPage (home, solutions, control), Service (solutions), SoftwareApplication (control), CreativeWork (cases), BreadcrumbList |
+| Sitemap / robots                                        | `src/app/sitemap.ts`, `src/app/robots.ts` (AI crawlers explicitly allowed)                                                                                                           |
+| AI-readable summary                                     | `/llms.txt` (map) and `/llms-full.txt` (full text), built from content in `src/lib/llms.ts`                                                                                          |
 
 Rules
 
