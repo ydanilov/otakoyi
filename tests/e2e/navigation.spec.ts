@@ -76,3 +76,11 @@ test("control app: studio grid and solutions block lead to /control", async ({ p
   await block.getByRole("link", { name: "Explore the control app" }).click()
   await expect(page).toHaveURL(/\/control$/)
 })
+
+test("control hero: App Store badge only, no caption or pairing link", async ({ page }) => {
+  await page.goto("/control")
+  const hero = page.locator("section").first()
+  await expect(hero.getByRole("img", { name: /Download on the App Store/ })).toBeVisible()
+  await expect(hero.getByText("Coming soon", { exact: true })).toHaveCount(0)
+  await expect(hero.getByRole("link", { name: "How pairing works" })).toHaveCount(0)
+})
