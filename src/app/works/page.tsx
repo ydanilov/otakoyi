@@ -43,7 +43,7 @@ export default function WorksPage() {
           ]),
         ]}
       />
-      <section className="relative isolate overflow-hidden">
+      <section className="relative isolate hero-under-header overflow-hidden">
         <HeroField seed={13} />
         <div className="mx-auto max-w-7xl px-4 pt-16 pb-12 md:px-8 md:pt-24">
           <SectionHeading

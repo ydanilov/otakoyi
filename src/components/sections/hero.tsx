@@ -8,7 +8,7 @@ import { site } from "@/config/site"
 
 export function Hero() {
   return (
-    <section className="relative isolate flex min-h-[calc(100svh-3.5rem)] flex-col justify-end overflow-hidden">
+    <section className="relative isolate hero-under-header flex min-h-svh flex-col justify-end overflow-hidden">
       <HeroField seed={7} />
       <div className="mx-auto w-full max-w-7xl px-4 pb-14 md:px-8 md:pb-20">
         <p className="mb-6 font-mono text-xs tracking-widest text-muted-foreground uppercase">

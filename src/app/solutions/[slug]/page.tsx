@@ -67,7 +67,7 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
           ]),
         ]}
       />
-      <section className="relative isolate overflow-hidden">
+      <section className="relative isolate hero-under-header overflow-hidden">
         <HeroField work={s.hero.work} seed={s.hero.seed} />
         <div className="mx-auto max-w-7xl px-4 pt-24 pb-16 md:px-8 md:pt-40 md:pb-24">
           <p className="mb-4 font-mono text-xs tracking-widest text-signal uppercase">
