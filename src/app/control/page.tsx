@@ -80,7 +80,7 @@ export default function ControlPage() {
         ]}
       />
 
-      <section className="relative isolate overflow-hidden">
+      <section className="relative isolate hero-under-header overflow-hidden">
         <HeroField seed={41} />
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pt-16 pb-16 md:px-8 md:pt-24 md:pb-24 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
           <div>

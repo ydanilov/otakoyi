@@ -80,3 +80,14 @@ html[data-motion="off"] {
     cursor: pointer;
   }
 }
+
+/* Fixed site header (SiteHeader): height of its resting state, pt-5 + h-14. */
+:root {
+  --header-h: 4.75rem;
+}
+
+/* A page hero that runs under the transparent header, so its background fills the top edge. */
+@utility hero-under-header {
+  margin-top: calc(var(--header-h) * -1);
+  padding-top: var(--header-h);
+}
