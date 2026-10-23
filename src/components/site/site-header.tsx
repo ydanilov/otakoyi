@@ -36,7 +36,7 @@ export function SiteHeader() {
     <header
       data-docked={docked || undefined}
       className={cn(
-        "fixed inset-x-0 top-0 z-40 px-2 md:px-4 motion-on:transition-[padding] motion-on:duration-500 motion-on:ease-out",
+        "fixed inset-x-0 top-0 z-40 px-2 [view-transition-name:site-header] md:px-4 motion-on:transition-[padding] motion-on:duration-500 motion-on:ease-out",
         docked ? "pt-2 md:pt-3" : "pt-5",
       )}
     >

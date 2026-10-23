@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next"
 
+import { PageTransition } from "@/components/site/page-transition"
 import { ProposalDialog } from "@/components/site/proposal-dialog"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`dark ${fontSans.variable} ${fontMono.variable} ${fontLogo.variable}`}
       suppressHydrationWarning
     >
@@ -56,9 +58,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <SiteHeader />
-        <main id="main" className="flex-1 pt-(--header-h)">
-          {children}
-        </main>
+        <PageTransition>
+          <main id="main" className="flex-1 pt-(--header-h)">
+            {children}
+          </main>
+        </PageTransition>
         <SiteFooter />
         <ProposalDialog />
         {/* Vercel Web Analytics + Speed Insights as plain deferred scripts: no client bundle cost. */}
