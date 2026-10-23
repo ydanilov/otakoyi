@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { expect, within } from "storybook/test"
 
 import { Logo } from "./logo"
+import { PageTransition } from "./page-transition"
 import { socialIcons } from "./social-icons"
 import { SiteFooter } from "./site-footer"
 import { SiteHeader } from "./site-header"
@@ -52,4 +53,16 @@ export const SocialIcons: Story = {
       ))}
     </div>
   ),
+}
+
+// Route-change fade wrapper; in Storybook (stable React, no ViewTransition) it renders children as-is.
+export const PageTransitionWrapper: Story = {
+  render: () => (
+    <PageTransition>
+      <main className="p-6">Page content</main>
+    </PageTransition>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("main")).toHaveTextContent("Page content")
+  },
 }

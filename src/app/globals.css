@@ -91,3 +91,41 @@ html[data-motion="off"] {
   margin-top: calc(var(--header-h) * -1);
   padding-top: var(--header-h);
 }
+
+/* Page change (PageTransition, View Transitions API): the old page fades out to the background,
+   the new one fades in with a slight rise, hiding the scroll reset. The fixed header stays put. */
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-old(.page-out) {
+  animation: 140ms ease-in both vt-page-out;
+}
+::view-transition-new(.page-in) {
+  animation: 220ms ease-out 110ms both vt-page-in;
+}
+@keyframes vt-page-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+:root[data-motion="off"]::view-transition-group(*),
+:root[data-motion="off"]::view-transition-old(*),
+:root[data-motion="off"]::view-transition-new(*) {
+  animation: none !important;
+}
