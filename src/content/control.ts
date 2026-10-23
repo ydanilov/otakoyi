@@ -17,7 +17,7 @@ export const controlApp = {
 
 /**
  * The App Store listing. The iPhone and iPad app is not published yet: keep this `null` until it
- * is — the /control hero then shows the badge with a "Coming soon" caption instead of a link.
+ * is — the /control hero then shows the badge without a link.
  */
 export const appStoreUrl: string | null = null
 
@@ -29,7 +29,11 @@ export type ControlScreen = {
   device: "phone" | "tablet"
 }
 
-/** Real app screens (Figma file "OSC"), exported 1:1 and served through next/image. */
+/**
+ * Real app screens, captured from the live web build's "Try the demo" at 2x (iPhone 402 × 874,
+ * iPad 1210 × 834 with their safe areas) and served through next/image. `width`/`height` are the
+ * CSS size; the files are twice that.
+ */
 export const controlScreens = {
   phonePult: {
     src: "/control/phone-pult.webp",
@@ -40,14 +44,14 @@ export const controlScreens = {
   },
   phonePrompts: {
     src: "/control/phone-prompts.webp",
-    alt: "Phone controller with prompt presets for generative visuals and an A/B prompt mix slider",
+    alt: "Second screen of the phone controller: speed and hue knobs, a Flash button and a Blackout button",
     width: 402,
     height: 874,
     device: "phone",
   },
   phoneLoading: {
     src: "/control/phone-loading.webp",
-    alt: "The app opening in a client's brand: the client's logo and loading image while it connects to the installation",
+    alt: "The app opening with the installation's name and loading image while it connects to the installation",
     width: 402,
     height: 874,
     device: "phone",
@@ -68,7 +72,7 @@ export const controlScreens = {
   },
   tabletPrompts: {
     src: "/control/tablet-prompts.webp",
-    alt: "Prompt presets for generative visuals on a tablet, with a prompt mix and room sound levels",
+    alt: "Effects screen of the VJ console on a tablet: colour knobs, a focus point pad, an audio level meter, a blur knob and a strobe switch",
     width: 1210,
     height: 834,
     device: "tablet",

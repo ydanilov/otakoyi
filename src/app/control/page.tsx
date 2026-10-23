@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import Image from "next/image"
-import { ArrowDownIcon } from "lucide-react"
 
 import {
   ControlDevices,
@@ -96,28 +95,14 @@ export default function ControlPage() {
               {controlApp.lead}. {controlApp.promise}
             </p>
             {/* Apple badge: official black artwork, ≥ 40 px tall, clear space ≥ ¼ of its height. */}
-            <div className="mt-10 flex flex-wrap items-start gap-x-8 gap-y-4">
-              <figure className="flex flex-col items-start gap-3">
-                {appStoreUrl ? (
-                  <a href={appStoreUrl} aria-label={`Download ${controlApp.name} on the App Store`}>
-                    {appStoreBadge}
-                  </a>
-                ) : (
-                  appStoreBadge
-                )}
-                {!appStoreUrl && (
-                  <figcaption className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-                    Coming soon
-                  </figcaption>
-                )}
-              </figure>
-              <a
-                href="#pairing"
-                className="inline-flex h-12 items-center gap-2 font-medium underline-offset-4 hover:underline"
-              >
-                How pairing works
-                <ArrowDownIcon aria-hidden className="size-4" />
-              </a>
+            <div className="mt-10 flex items-start">
+              {appStoreUrl ? (
+                <a href={appStoreUrl} aria-label={`Download ${controlApp.name} on the App Store`}>
+                  {appStoreBadge}
+                </a>
+              ) : (
+                appStoreBadge
+              )}
             </div>
             <p className="mt-8 font-mono text-xs tracking-widest text-muted-foreground uppercase">
               Free forever · No subscription · No hidden payments
