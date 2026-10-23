@@ -4,6 +4,7 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch: # re-run every sensor on a branch by hand (e.g. main after a skipped run)
 
 concurrency:
   group: ci-${{ github.ref }}
