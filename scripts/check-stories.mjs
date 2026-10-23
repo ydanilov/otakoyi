@@ -1,9 +1,14 @@
-// Harness sensor: every component in sections/, site/ and works/ must be covered by a story
+// Harness sensor: every component in ui/ (shadcn primitives), sections/, site/ and works/ must be covered by a story
 // in the same folder. Storybook is the contract — no story, no component.
 import { readdirSync, readFileSync } from "node:fs"
 import path from "node:path"
 
-const DIRS = ["src/components/sections", "src/components/site", "src/components/works"]
+const DIRS = [
+  "src/components/ui",
+  "src/components/sections",
+  "src/components/site",
+  "src/components/works",
+]
 // Internal modules rendered only through a covered component.
 const EXEMPT = new Set([
   "src/components/works/shader-canvas.tsx",

@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowDownIcon } from "lucide-react"
+import { ArrowDownIcon, ArrowRightIcon } from "lucide-react"
 
 import { Process, processSteps } from "@/components/sections/process"
 import { Button } from "@/components/ui/button"
@@ -209,7 +209,10 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
                   )}
                 >
                   <Button asChild size="lg" variant="signal">
-                    <a href={proposalHref}>{site.cta.label}</a>
+                    <a href={proposalHref}>
+                      {site.cta.label}
+                      <ArrowRightIcon data-icon="inline-end" />
+                    </a>
                   </Button>
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { CheckIcon } from "lucide-react"
+import { ArrowRightIcon, CheckIcon } from "lucide-react"
 
 import { Cta } from "@/components/sections/cta"
 import { HeroField } from "@/components/sections/hero-field"
@@ -82,7 +82,10 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Button asChild size="lg" variant="signal">
-              <a href={proposalHref}>{site.cta.label}</a>
+              <a href={proposalHref}>
+                {site.cta.label}
+                <ArrowRightIcon data-icon="inline-end" />
+              </a>
             </Button>
             <Button asChild size="lg" variant="outline">
               <a href="#installations">See installations</a>
