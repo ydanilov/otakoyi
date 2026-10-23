@@ -39,6 +39,6 @@ export const Default: Story = {
   ),
   play: async ({ canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Solutions" }))
-    await expect(await screen.findByRole("menu")).toBeVisible()
+    await expect(await screen.findByRole("menu")).toHaveAttribute("data-state", "open")
   },
 }
