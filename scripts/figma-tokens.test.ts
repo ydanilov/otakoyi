@@ -21,11 +21,11 @@ const swatch = (name: string, color: object, opacity?: number) => ({
 })
 
 describe("figma ↔ tokens sync", () => {
-  it("reads bound swatches from a Figma mode frame (REST nodes shape)", () => {
+  it("reads bound swatches from the Figma Tokens frame (REST nodes shape)", () => {
     const frame = {
-      name: "Tokens — Dark",
+      name: "Tokens",
       children: [
-        { name: "Theme · Dark" },
+        { name: "Theme" },
         {
           name: "Swatches",
           children: [
@@ -51,18 +51,18 @@ describe("figma ↔ tokens sync", () => {
 
   it("reports missing tokens and colour / alpha drift", () => {
     const code = {
-      a: { dark: { hex: "#c1f354", alpha: 1 }, light: { hex: "#4f8300", alpha: 1 } },
-      b: { dark: { hex: "#ffffff", alpha: 0.12 }, light: { hex: "#000000", alpha: 0.1 } },
+      a: { hex: "#c1f354", alpha: 1 },
+      b: { hex: "#ffffff", alpha: 0.12 },
     }
     const figma = {
-      a: { dark: { hex: "#a2d128" }, light: { hex: "#4f8300" } },
-      b: { dark: { hex: "#ffffff", alpha: 0.3 }, light: { hex: "#000000", alpha: 0.1 } },
-      c: { dark: { hex: "#000000" }, light: { hex: "#ffffff" } },
+      a: { hex: "#a2d128" },
+      b: { hex: "#ffffff", alpha: 0.3 },
+      c: { hex: "#000000" },
     }
     const problems = diff(code, figma, { deltaE2000: 1, alpha: 0.02 })
     expect(problems).toHaveLength(3)
     expect(problems.join("\n")).toMatch(/c: in Figma but missing/)
-    expect(problems.join("\n")).toMatch(/a\.dark: code #c1f354 vs Figma #a2d128/)
-    expect(problems.join("\n")).toMatch(/b\.dark: alpha code 0\.12 vs Figma 0\.3/)
+    expect(problems.join("\n")).toMatch(/a: code #c1f354 vs Figma #a2d128/)
+    expect(problems.join("\n")).toMatch(/b: alpha code 0\.12 vs Figma 0\.3/)
   })
 })

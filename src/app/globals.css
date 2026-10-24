@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "./tokens.css";
 
+/* Dark only (ADR-011): <html class="dark"> stays so upstream shadcn `dark:` variants keep applying. */
 @custom-variant dark (&:is(.dark *));
 /* Site motion switch (ADR-006): <html data-motion="off"> */
 @custom-variant motion-off (&:where([data-motion="off"], [data-motion="off"] *));

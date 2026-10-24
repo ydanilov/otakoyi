@@ -1,12 +1,10 @@
 {
-  "$description": "Where the token contract lives in Figma. Each mode frame holds one swatch per token, named <group>/<token>, whose first child is filled with the bound Theme variable.",
+  "$description": "Where the token contract lives in Figma. The frame \"Tokens\" holds one swatch per token, named <group>/<token>, whose first child is filled with the bound Theme variable. The site is dark only (ADR-011): the Theme collection has one mode.",
   "fileKey": "IS3HHVFfnJ6b4BC8jf9TNS",
   "fileUrl": "https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoyi",
   "collection": "Theme",
-  "modeFrames": {
-    "dark": "5:41",
-    "light": "5:116"
-  },
+  "mode": "Default",
+  "frame": "5:41",
   "tolerance": {
     "deltaE2000": 1,
     "alpha": 0.02

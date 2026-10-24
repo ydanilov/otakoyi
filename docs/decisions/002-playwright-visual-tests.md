@@ -1,6 +1,6 @@
 # 002 — Playwright screenshots for visual regression
 
-**Status:** Accepted · 2026-10-02 · the determinism switch is superseded by ADR-006 (site motion off, not `reducedMotion`)
+**Status:** Accepted · 2026-10-02 · the determinism switch is superseded by ADR-006 (site motion off, not `reducedMotion`) · the dark/light matrix is superseded by ADR-011 (dark only)
 
 **Decision.** Playwright `toHaveScreenshot` on every route × 3 viewports (desktop 1440, tablet 834, mobile Pixel 7) × dark/light. Baselines live in git under `tests/visual/__screenshots__/`.
 

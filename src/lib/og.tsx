@@ -10,7 +10,7 @@ export const ogSize = { width: 1200, height: 630 }
 export const ogContentType = "image/png"
 
 const ASSETS = join(process.cwd(), "src/assets/og")
-const c = themeHex.dark
+const c = themeHex
 
 /** Token hex → rgba (the OG renderer ignores 8-digit hex). */
 const alpha = (hex: string, a: number) => {

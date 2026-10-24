@@ -15,6 +15,6 @@ const seed = figma.selectedInstance.getEnum("work", { "signal-field-seed-42": 42
 export default {
   id: "GenerativeWork",
   imports: ['import { GenerativeWork } from "@/components/works/generative-work"'],
-  example: figma.code`<GenerativeWork${figma.helpers.react.renderProp("work", work)}${figma.helpers.react.renderProp("seed", seed)} palette="dark" />`,
+  example: figma.code`<GenerativeWork${figma.helpers.react.renderProp("work", work)}${figma.helpers.react.renderProp("seed", seed)} />`,
   metadata: { nestable: true },
 }

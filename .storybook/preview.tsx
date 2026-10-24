@@ -1,9 +1,12 @@
 import type { Preview } from "@storybook/nextjs-vite"
-import { withThemeByClassName } from "@storybook/addon-themes"
 
 import { GenerativeWork } from "@/components/works/generative-work"
 import { fontLogo, fontMono, fontSans } from "../src/fonts"
 import "../src/app/globals.css"
+
+// Dark only (ADR-011): `dark` stays on <html>, as in the app, so shadcn's `dark:` variants (and
+// portalled content such as dialogs) render exactly as on the site.
+if (typeof document !== "undefined") document.documentElement.classList.add("dark")
 
 const preview: Preview = {
   parameters: {
@@ -17,7 +20,6 @@ const preview: Preview = {
     docs: { components: { GenerativeWork } },
   },
   decorators: [
-    withThemeByClassName({ themes: { dark: "dark", light: "" }, defaultTheme: "dark" }),
     (Story) => (
       <div
         className={`${fontSans.variable} ${fontMono.variable} ${fontLogo.variable} bg-background font-sans text-foreground`}
