@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react"
 
 import { GenerativeWork } from "@/components/works/generative-work"
 import type { WorkId } from "@/components/works/registry"
-import type { WorkPointer } from "@/components/works/shader-canvas"
+import type { BrandColors, WorkPointer } from "@/components/works/shader-canvas"
 import { useMotion } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
@@ -12,6 +12,10 @@ type HeroFieldProps = {
   work?: WorkId
   seed?: number
   density?: number
+  /** Client or prototype colors instead of the token palette. */
+  brandColors?: BrandColors
+  /** Classes for the legibility scrim over the work. Defaults to the bottom-up fade. */
+  scrimClassName?: string
   className?: string
 }
 
@@ -20,7 +24,14 @@ type HeroFieldProps = {
  * reacts to people in front of it. Decorative: hidden from assistive tech. Motion off (ADR-006):
  * a still frame with no pointer reaction.
  */
-export function HeroField({ work = "contour", seed, density, className }: HeroFieldProps) {
+export function HeroField({
+  work = "contour",
+  seed,
+  density,
+  brandColors,
+  scrimClassName,
+  className,
+}: HeroFieldProps) {
   const ref = useRef<HTMLDivElement>(null)
   const pointer = useRef<WorkPointer>({ x: 0, y: 0, on: false })
   const motion = useMotion()
@@ -54,10 +65,16 @@ export function HeroField({ work = "contour", seed, density, className }: HeroFi
         work={work}
         seed={seed}
         density={density}
+        brandColors={brandColors}
         pointer={pointer}
         className="absolute inset-0"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/30" />
+      <div
+        className={cn(
+          "absolute inset-0",
+          scrimClassName ?? "bg-gradient-to-t from-background via-background/70 to-background/30",
+        )}
+      />
     </div>
   )
 }
