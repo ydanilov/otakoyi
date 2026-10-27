@@ -314,3 +314,75 @@ void main() {
   gl_FragColor = vec4(max(col, 0.0), 1.0);
 }
 `
+
+/**
+ * Ribbed Glass — a soft ring of light seen through fluted glass. Each vertical rib is a small
+ * cylinder lens: it flips and stretches its own slice of the light, splits it into colour at the
+ * edges and catches a thin specular line. Film grain on top. The pointer pulls the light.
+ */
+export const ribbedGlass = /* glsl */ `
+${common}
+float asp() { return uResolution.x / max(uResolution.y, 1.0); }
+
+// The light behind the glass: a slow ring with a cool rim, a warm hot spot and a white core.
+vec3 scene(vec2 p, float t) {
+  float a = asp();
+  float sc = min(a, 1.0);
+  vec2 c = vec2(a * mix(0.5, 0.64, sc) + 0.06 * sin(t * 0.13 + uSeed), mix(0.62, 0.52, sc) + 0.05 * cos(t * 0.11));
+  c = mix(c, uPointer, 0.22 * uPointerAmt);
+  vec2 d = (p - c) / sc;
+  float r = length(d * vec2(1.0, 0.9));
+  float ang = atan(d.y, d.x);
+  float R = 0.34 + 0.025 * sin(t * 0.21);
+  float ring = exp(-pow((r - R) / 0.07, 2.0));
+  float halo = exp(-pow((r - R) / 0.2, 2.0));
+  vec3 cyan = mix(uC4, uC1, 0.15);
+  float ha = t * 0.19 + 2.3 + uSeed * 0.3;
+  vec2 hp = vec2(cos(ha), sin(ha)) * R;
+  float hot = exp(-dot(d - hp, d - hp) / 0.012);
+  float cool = 1.0 - smoothstep(0.0, 0.6, hot);
+  vec3 col = uC2 * halo * 0.5 * cool;
+  col += uC2 * ring * (0.9 + 0.6 * sin(ang + t * 0.27)) * cool;
+  col += cyan * ring * smoothstep(-0.4, 1.0, cos(ang - 0.7 + t * 0.17)) * 2.2 * cool;
+  col += uC1 * pow(ring, 2.0) * smoothstep(0.3, 1.0, cos(ang - 0.4 + t * 0.17)) * 2.0;
+  col += uC3 * hot * 3.0;
+  col += mix(uC3, uC1, 0.5) * exp(-dot(d - hp, d - hp) / 0.0025) * 1.5;
+  // The pointer brings a little light of its own.
+  col += cyan * pointerGlow(p) * 0.25;
+  return col;
+}
+
+void main() {
+  vec2 p = aspectUv();
+  float t = uTime;
+  float ribs = 10.0 + uDensity * 30.0;
+  // Ribs keep a similar on-screen width on phones and desktops.
+  float w = (0.5 + 0.5 * min(asp(), 1.0)) / ribs;
+  float x = p.x / w;
+  float id = floor(x);
+  float s = fract(x) - 0.5;
+  float cx = (id + 0.5) * w;
+  float j = hash(vec2(id, 7.0)) - 0.5;
+  // Cylinder lens: the slice is flipped and magnified, more at the edges; colour splits there.
+  float k = 1.9 + j * 1.4;
+  float bend = s * w;
+  float yb = (s * s) * 0.06 + j * 0.03;
+  vec3 col;
+  col.r = scene(vec2(cx + bend * (1.0 - k * 0.94), p.y + yb), t).r;
+  col.g = scene(vec2(cx + bend * (1.0 - k), p.y + yb), t).g;
+  col.b = scene(vec2(cx + bend * (1.0 - k * 1.08), p.y + yb), t).b;
+  // Glass body: a soft cylinder shade, a dark seam and a thin specular line at each edge.
+  float e = 0.5 - abs(s);
+  col *= 0.55 + 0.45 * cos(s * 2.8);
+  col *= smoothstep(0.0, 0.05, e);
+  vec3 behind = scene(vec2(cx, p.y), t);
+  float lum = dot(behind, vec3(0.3, 0.5, 0.2));
+  float spec = exp(-pow((e - 0.06) / 0.014, 2.0)) * step(0.0, s);
+  col += (uC1 * 0.05 + behind * 1.4) * spec * (0.2 + lum);
+  // Soft tone curve, then film grain.
+  col = 1.0 - exp(-col * 1.15);
+  float g = hash(gl_FragCoord.xy + fract(t * 7.0) * 113.0) - 0.5;
+  col += g * 0.07;
+  gl_FragColor = vec4(max(col, 0.0), 1.0);
+}
+`

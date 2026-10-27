@@ -1,4 +1,4 @@
-import { bloom, contour, lattice, signalField } from "./shaders"
+import { bloom, contour, lattice, ribbedGlass, signalField } from "./shaders"
 
 export type WorkDefinition = {
   title: string
@@ -33,6 +33,13 @@ export const works = {
       "A silk flower unfolds from the dark, then comes undone into smoke and the next one grows",
     fragmentShader: bloom,
     defaults: { seed: 11, density: 0.4 },
+  },
+  "ribbed-glass": {
+    title: "Ribbed Glass",
+    description:
+      "A ring of light behind fluted glass — every rib bends its own slice and splits it into colour",
+    fragmentShader: ribbedGlass,
+    defaults: { seed: 5, density: 0.4 },
   },
 } satisfies Record<string, WorkDefinition>
 

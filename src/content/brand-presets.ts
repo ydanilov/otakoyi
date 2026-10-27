@@ -22,3 +22,9 @@ export const venuePalettes: BrandColors[] = [
   ["#ffd0f2", "#9c1f7a", "#e04bb5", "#0a0208"], // concert — magenta
   ["#e2dcff", "#3b2fb8", "#7a5cff", "#04030c"], // museum room — blue-violet
 ]
+
+/**
+ * Hero prototype "ribbed glass" (highlight, base, secondary, cyan — the shader reads the
+ * fourth color as cyan, not ink): a white rim, electric blue, a warm orange hot spot. Content for the prototype, not tokens.
+ */
+export const glassPalette: BrandColors = ["#e8fbff", "#1f5bff", "#ff4a1c", "#1fd6ff"]
