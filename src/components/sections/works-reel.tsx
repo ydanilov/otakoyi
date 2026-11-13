@@ -1,5 +1,6 @@
 "use client"
 
+import { ArrowRightIcon } from "lucide-react"
 import Link from "next/link"
 
 import { WorkCard } from "@/components/sections/work-card"
@@ -44,7 +45,10 @@ export function WorksReel({ items }: WorksReelProps) {
           </h2>
         </div>
         <Button asChild variant="ghost">
-          <Link href="/works">All installations</Link>
+          <Link href="/works">
+            All installations
+            <ArrowRightIcon data-icon="inline-end" />
+          </Link>
         </Button>
       </div>
 
@@ -152,13 +156,10 @@ export function WorksReel({ items }: WorksReelProps) {
                         </div>
                       )}
                     </div>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="mt-10 rounded-full bg-background/40 backdrop-blur"
-                    >
+                    <Button asChild variant="outline" className="mt-10 backdrop-blur">
                       <Link href={`/works/${item.slug}`}>
                         Open the case<span className="sr-only">: {item.title}</span>
+                        <ArrowRightIcon data-icon="inline-end" />
                       </Link>
                     </Button>
                   </div>

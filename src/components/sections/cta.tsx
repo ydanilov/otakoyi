@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GenerativeWork } from "@/components/works/generative-work"
 import { proposalHref, site } from "@/config/site"
@@ -36,8 +37,11 @@ export function Cta() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-            <Button asChild size="lg" variant="signal" className="h-12 px-8 text-base">
-              <a href={proposalHref}>{site.cta.label}</a>
+            <Button asChild size="lg" variant="signal">
+              <a href={proposalHref}>
+                {site.cta.label}
+                <ArrowRightIcon data-icon="inline-end" />
+              </a>
             </Button>
           </div>
         </div>

@@ -13,7 +13,10 @@ const meta = {
       control: "select",
       options: ["default", "signal", "secondary", "outline", "ghost", "link", "destructive"],
     },
-    size: { control: "select", options: ["default", "sm", "lg", "icon"] },
+    size: {
+      control: "select",
+      options: ["xs", "sm", "default", "lg", "icon-xs", "icon-sm", "icon", "icon-lg"],
+    },
   },
 } satisfies Meta<typeof Button>
 export default meta
@@ -25,14 +28,24 @@ export const Default: Story = {
     await expect(args.onClick).toHaveBeenCalledOnce()
   },
 }
-export const Signal: Story = { args: { variant: "signal" } }
+export const Signal: Story = {
+  args: {
+    variant: "signal",
+    size: "lg",
+    children: (
+      <>
+        Start a project <ArrowRightIcon data-icon="inline-end" />
+      </>
+    ),
+  },
+}
 export const Outline: Story = { args: { variant: "outline" } }
 export const Ghost: Story = { args: { variant: "ghost" } }
 export const WithIcon: Story = {
   args: {
     children: (
       <>
-        See the work <ArrowRightIcon />
+        See the work <ArrowRightIcon data-icon="inline-end" />
       </>
     ),
     size: "lg",
@@ -49,6 +62,29 @@ export const AllVariants: Story = {
           </Button>
         ),
       )}
+    </div>
+  ),
+}
+export const Link: Story = { args: { variant: "link", children: "Read the case" } }
+
+const VARIANTS = ["signal", "default", "secondary", "outline", "ghost", "link"] as const
+const SIZES = ["xs", "sm", "default", "lg"] as const
+
+/** The full matrix — the same set Code Connect maps to the Figma Button component. */
+export const Matrix: Story = {
+  render: () => (
+    <div className="grid gap-4">
+      {VARIANTS.map((v) => (
+        <div key={v} className="flex flex-wrap items-center gap-3">
+          <span className="w-20 font-mono text-xs text-muted-foreground">{v}</span>
+          {SIZES.map((s) => (
+            <Button key={s} variant={v} size={s}>
+              {s === "xs" ? "Works" : "See installations"}
+              {s !== "xs" && <ArrowRightIcon data-icon="inline-end" />}
+            </Button>
+          ))}
+        </div>
+      ))}
     </div>
   ),
 }

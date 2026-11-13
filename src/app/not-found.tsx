@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from "lucide-react"
 import type { Metadata } from "next"
 import Link from "next/link"
 
@@ -22,7 +23,10 @@ export default function NotFound() {
         />
         <div className="mt-10 flex flex-wrap gap-3">
           <Button asChild size="lg" variant="signal">
-            <a href={proposalHref}>{site.cta.label}</a>
+            <a href={proposalHref}>
+              {site.cta.label}
+              <ArrowRightIcon data-icon="inline-end" />
+            </a>
           </Button>
           <Button asChild size="lg" variant="outline">
             <Link href="/works">See installations</Link>
