@@ -26,6 +26,11 @@ const noRawColors = {
       message:
         "Tailwind palette color. Use semantic tokens (bg-background, text-muted-foreground, bg-signal…).",
     },
+    {
+      selector: "JSXOpeningElement[name.name='button']",
+      message:
+        "Raw <button>. Use <Button variant size> from @/components/ui/button (restyle variants in ui/button.tsx, not per usage).",
+    },
   ],
 }
 
