@@ -27,7 +27,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "verify": "pnpm tokens:check && pnpm tokens:figma:check && pnpm figma:check && pnpm lint && pnpm format:check && pnpm typecheck && pnpm check:stories && pnpm test && pnpm test:stories",
-    "verify:full": "pnpm verify && pnpm build && pnpm check:budget && pnpm test:e2e"
+    "verify:full": "pnpm verify && pnpm build && pnpm check:budget && pnpm test:e2e",
+    "sweep": "knip --no-exit-code && node scripts/check-unused-tokens.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
@@ -71,6 +72,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
     "eslint-plugin-storybook": "^10.6.1",
+    "knip": "^6.45.1",
     "playwright": "latest",
     "prettier": "^3.9.9",
     "prettier-plugin-tailwindcss": "^0.8.1",

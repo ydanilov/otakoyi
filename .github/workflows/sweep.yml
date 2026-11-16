@@ -1,0 +1,56 @@
+name: Weekly sweep
+
+# Garbage collection from docs/workflow.md. Finds unused files, exports and dependencies (knip),
+# unused design tokens and outdated packages, and posts them in one issue titled
+# "Weekly sweep". Report only: nothing is deleted without the owner's approval.
+on:
+  schedule:
+    - cron: "41 6 * * 1" # Mondays, after the Figma token sync
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Collect findings
+        run: |
+          {
+            echo "Automated weekly sweep of \`main\` ($(git rev-parse --short HEAD)). Nothing is deleted without approval."
+            echo
+            echo "## Unused code (knip)"
+            echo '```'
+            pnpm -s knip --no-progress --no-exit-code || true
+            echo '```'
+            echo
+            echo "## Unused tokens"
+            echo '```'
+            node scripts/check-unused-tokens.mjs
+            echo '```'
+            echo
+            echo "## Outdated dependencies"
+            echo '```'
+            pnpm outdated --format list || true
+            echo '```'
+          } > sweep.md
+          cat sweep.md
+      - name: Open or update the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create sweep --color ededed --description "Weekly sweep findings" 2>/dev/null || true
+          n=$(gh issue list --label sweep --state open --json number --jq '.[0].number')
+          if [ -n "$n" ]; then
+            gh issue edit "$n" --body-file sweep.md
+            gh issue comment "$n" --body "Updated by the sweep of $(date -u +%F)."
+          else
+            gh issue create --title "Weekly sweep" --label sweep --body-file sweep.md
+          fi
