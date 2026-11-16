@@ -5,7 +5,7 @@ import { socialIcons } from "./social-icons"
 export function SiteFooter() {
   return (
     <footer className="mt-24 border-t">
-      <div className="mx-auto max-w-7xl px-4 md:px-8">
+      <div className="page-container">
         <div className="grid gap-10 py-10 md:grid-cols-[1fr_auto] md:items-center">
           <div className="space-y-3">
             <Logo />

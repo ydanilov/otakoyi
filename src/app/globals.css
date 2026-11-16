@@ -43,6 +43,85 @@
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 6px);
+
+  /* Type, motion and layout scales (tokens.json → tokens.css, ADR-012). Same values as Tailwind's
+     defaults where names match, so text-5xl / duration-500 render as before. */
+  --text-xs: var(--type-size-xs);
+  --text-sm: var(--type-size-sm);
+  --text-base: var(--type-size-base);
+  --text-lg: var(--type-size-lg);
+  --text-xl: var(--type-size-xl);
+  --text-2xl: var(--type-size-2xl);
+  --text-3xl: var(--type-size-3xl);
+  --text-4xl: var(--type-size-4xl);
+  --text-5xl: var(--type-size-5xl);
+  --text-6xl: var(--type-size-6xl);
+  --text-7xl: var(--type-size-7xl);
+  --text-8xl: var(--type-size-8xl);
+  --text-9xl: var(--type-size-9xl);
+  --text-display-fluid: var(--type-size-display-fluid);
+  --text-display-outline: var(--type-size-display-outline);
+  --text-display-outline-fluid: var(--type-size-display-outline-fluid);
+  --text-logo: var(--type-size-logo);
+  --text-logo-md: var(--type-size-logo-md);
+  --leading-display: var(--type-leading-display);
+  --leading-display-tight: var(--type-leading-display-tight);
+  --tracking-eyebrow: var(--type-tracking-eyebrow);
+
+  --transition-duration-fast: var(--motion-duration-fast);
+  --transition-delay-fast: var(--motion-duration-fast);
+  --transition-duration-base: var(--motion-duration-base);
+  --transition-duration-slow: var(--motion-duration-slow);
+  --transition-duration-slower: var(--motion-duration-slower);
+  --transition-duration-slowest: var(--motion-duration-slowest);
+  --ease-out: var(--motion-ease-out);
+  --ease-in: var(--motion-ease-in);
+  --ease-in-out: var(--motion-ease-in-out);
+
+  --container-page: var(--layout-container);
+}
+
+/* Glass surfaces (tokens.json → glass.*, ADR-012): background tint + backdrop blur. Rings,
+   borders and shadows stay separate utilities. */
+@utility glass-bar {
+  background-color: color-mix(in oklab, var(--background) var(--glass-bar-surface), transparent);
+  -webkit-backdrop-filter: blur(var(--glass-bar-blur)) saturate(var(--glass-bar-saturate));
+  backdrop-filter: blur(var(--glass-bar-blur)) saturate(var(--glass-bar-saturate));
+}
+@utility glass-panel {
+  background-color: color-mix(in oklab, var(--background) var(--glass-panel-surface), transparent);
+  -webkit-backdrop-filter: blur(var(--glass-panel-blur)) saturate(var(--glass-panel-saturate));
+  backdrop-filter: blur(var(--glass-panel-blur)) saturate(var(--glass-panel-saturate));
+}
+@utility glass-pill {
+  background-color: color-mix(in oklab, var(--background) var(--glass-pill-surface), transparent);
+  -webkit-backdrop-filter: blur(var(--glass-pill-blur)) saturate(var(--glass-pill-saturate));
+  backdrop-filter: blur(var(--glass-pill-blur)) saturate(var(--glass-pill-saturate));
+}
+@utility glass-chip {
+  background-color: color-mix(in oklab, var(--background) var(--glass-chip-surface), transparent);
+  -webkit-backdrop-filter: blur(var(--glass-chip-blur)) saturate(var(--glass-chip-saturate));
+  backdrop-filter: blur(var(--glass-chip-blur)) saturate(var(--glass-chip-saturate));
+}
+@utility glass-chip-strong {
+  background-color: color-mix(
+    in oklab,
+    var(--background) var(--glass-chip-strong-surface),
+    transparent
+  );
+  -webkit-backdrop-filter: blur(var(--glass-chip-strong-blur))
+    saturate(var(--glass-chip-strong-saturate));
+  backdrop-filter: blur(var(--glass-chip-strong-blur)) saturate(var(--glass-chip-strong-saturate));
+}
+
+/* Page column (tokens.json → layout.*): centered, max width and side gutters. */
+@utility page-container {
+  margin-inline: auto;
+  max-width: var(--layout-container);
+  padding-inline: var(--layout-gutter);
+  @media (width >= 48rem) {
+    padding-inline: var(--layout-gutter-md);
+  }
 }
 
 @layer base {

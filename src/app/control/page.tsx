@@ -89,7 +89,7 @@ export default function ControlPage() {
             </p>
             <ReactiveHeadline
               text="Your installation, in your hands"
-              className="max-w-3xl text-5xl leading-[0.95] tracking-tighter text-balance md:text-7xl"
+              className="max-w-3xl text-5xl leading-display tracking-tighter text-balance md:text-7xl"
             />
             <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground md:text-xl">
               {controlApp.lead}. {controlApp.promise}

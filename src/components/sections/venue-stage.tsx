@@ -200,7 +200,7 @@ export function VenueStage({
           key={v.image}
           aria-hidden
           className={cn(
-            "absolute inset-0 transition-opacity duration-700 ease-out",
+            "absolute inset-0 transition-opacity duration-slower ease-out",
             i === active ? "opacity-100" : "opacity-0",
           )}
         >

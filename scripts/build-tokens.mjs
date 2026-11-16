@@ -13,8 +13,21 @@ const vars = Object.entries(groups)
   .map(([k, v]) => `  --${k}: ${v};`)
   .join("\n")
 
+// Scale groups (ADR-012): type, motion, glass, layout → `--<group>-<sub>-<name>` variables.
+// globals.css maps them onto Tailwind's theme (text-*, leading-*, duration-*, ease-*) and the
+// glass-* / page-container utilities, so components only ever use the semantic names.
+const SCALES = ["type", "motion", "glass", "layout"]
+const flat = (prefix, node) =>
+  Object.entries(node).flatMap(([k, v]) =>
+    typeof v === "object" ? flat(`${prefix}-${k}`, v) : [[`${prefix}-${k}`, v]],
+  )
+const scaleVars = SCALES.filter((g) => t[g])
+  .flatMap((g) => flat(g, t[g]))
+  .map(([k, v]) => `  --${k}: ${v};`)
+  .join("\n")
+
 // Dark only (ADR-011): one value per token, one :root block.
-const css = HEADER + `:root {\n  --radius: ${t.radius};\n${vars}\n}\n`
+const css = HEADER + `:root {\n  --radius: ${t.radius};\n${vars}\n${scaleVars}\n}\n`
 
 const hex = (v) => formatHex(parse(v))
 const palette = JSON.stringify(

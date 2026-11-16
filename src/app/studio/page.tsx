@@ -61,7 +61,7 @@ export default function StudioPage() {
         }}
       />
 
-      <section className="mx-auto max-w-7xl px-4 pt-16 pb-24 md:px-8 md:pt-24">
+      <section className="page-container pt-16 pb-24 md:pt-24">
         <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] md:gap-16">
           <SectionHeading
             eyebrow="Principles"
@@ -90,7 +90,7 @@ export default function StudioPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
+      <section className="page-container pb-24">
         <SectionHeading
           eyebrow="Turnkey"
           title="What's included"
@@ -100,7 +100,7 @@ export default function StudioPage() {
         <Included />
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
+      <section className="page-container pb-24">
         <SectionHeading eyebrow="People" title="The team" className="mb-8" />
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {team.map((m, i) => (
@@ -119,7 +119,7 @@ export default function StudioPage() {
         </ul>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8">
+      <section className="page-container pb-24">
         <SectionHeading eyebrow="Clients" title="Brands we've built for" className="mb-12" />
         <LogoWall />
       </section>

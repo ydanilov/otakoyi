@@ -46,7 +46,7 @@ export default function SolutionsPage() {
       />
       <section className="relative isolate hero-under-header overflow-hidden">
         <HeroField seed={29} />
-        <div className="mx-auto max-w-7xl px-4 pt-16 pb-12 md:px-8 md:pt-24">
+        <div className="page-container pt-16 pb-12 md:pt-24">
           <SectionHeading
             page
             eyebrow="Solutions"
@@ -55,10 +55,10 @@ export default function SolutionsPage() {
           />
         </div>
       </section>
-      <div className="mx-auto max-w-7xl px-4 pb-16 md:px-8 md:pb-24">
+      <div className="page-container pb-16 md:pb-24">
         <Occasions items={solutions} />
       </div>
-      <section id="surfaces" className="mx-auto max-w-7xl px-4 pb-16 md:px-8 md:pb-24">
+      <section id="surfaces" className="page-container pb-16 md:pb-24">
         <SectionHeading
           eyebrow="Any venue, every surface"
           title="One installation. Every surface it meets"
@@ -70,11 +70,7 @@ export default function SolutionsPage() {
           items={technologies.filter((t) => t.kind === "output")}
         />
       </section>
-      <section
-        id="control-app"
-        aria-label="Control app"
-        className="mx-auto max-w-7xl px-4 pb-16 md:px-8 md:pb-24"
-      >
+      <section id="control-app" aria-label="Control app" className="page-container pb-16 md:pb-24">
         <ControlAppFeature />
       </section>
       <Cta />

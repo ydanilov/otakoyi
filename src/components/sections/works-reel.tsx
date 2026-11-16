@@ -130,16 +130,16 @@ export function WorksReel({ items }: WorksReelProps) {
                     key={item.slug}
                     inert={!on}
                     className={cn(
-                      "col-start-1 row-start-1 flex flex-col items-center text-center transition-[opacity,translate,filter] duration-500 ease-out",
+                      "col-start-1 row-start-1 flex flex-col items-center text-center transition-[opacity,translate,filter] duration-slow ease-out",
                       on ? "blur-0 opacity-100" : "pointer-events-none opacity-0 blur-sm",
                       !on && (i < active ? "-translate-y-8" : "translate-y-8"),
                     )}
                   >
                     <div aria-hidden className="flex flex-col items-center">
-                      <p className="font-mono text-xs tracking-[0.3em] text-signal uppercase">
+                      <p className="font-mono text-xs tracking-eyebrow text-signal uppercase">
                         {item.formats.join(" · ")}
                       </p>
-                      <p className="mt-5 text-6xl leading-[0.85] font-medium tracking-tighter text-balance md:text-9xl">
+                      <p className="mt-5 text-6xl leading-display-tight font-medium tracking-tighter text-balance md:text-9xl">
                         {item.title}
                       </p>
                       <p className="mt-5 max-w-md text-lg text-pretty text-muted-foreground">

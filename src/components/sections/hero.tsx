@@ -16,7 +16,7 @@ export function Hero() {
         </p>
         <ReactiveHeadline
           text="Installations that take people's breath away"
-          className="max-w-5xl text-5xl leading-[0.95] tracking-tighter md:text-8xl"
+          className="max-w-5xl text-5xl leading-display tracking-tighter md:text-8xl"
         />
         <div className="mt-8">
           <p className="max-w-xl text-lg text-pretty text-muted-foreground md:text-xl">

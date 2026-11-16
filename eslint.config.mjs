@@ -10,6 +10,12 @@ import storybook from "eslint-plugin-storybook"
 const RAW_COLOR = String.raw`(#[0-9a-fA-F]{3,8}\b|\brgba?\(|\bhsla?\(|\boklch\(|\boklab\()`
 const TW_PALETTE = String.raw`\b(bg|text|border|ring|outline|fill|stroke|from|via|to|decoration|shadow)-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|white|black)(-\d{2,3})?\b`
 
+// Type and motion come from token scales (ADR-012): no arbitrary sizes, line-heights,
+// letter-spacing, durations or delays outside ui/.
+const RAW_SCALE = String.raw`(^|[\s:"'\`])(text-\[(?!var\()|leading-\[|tracking-\[|duration-(\d|\[)|delay-(\d|\[))`
+const SCALE_MESSAGE =
+  "Off-scale value. Use the token scales (tokens.json → type/motion): text-5xl, text-display-fluid, leading-display, tracking-eyebrow, duration-slow, delay-fast. New step → add it to tokens.json."
+
 const noRawColors = {
   "no-restricted-syntax": [
     "error",
@@ -26,6 +32,8 @@ const noRawColors = {
       message:
         "Tailwind palette color. Use semantic tokens (bg-background, text-muted-foreground, bg-signal…).",
     },
+    { selector: `Literal[value=/${RAW_SCALE}/]`, message: SCALE_MESSAGE },
+    { selector: `TemplateElement[value.raw=/${RAW_SCALE}/]`, message: SCALE_MESSAGE },
     {
       selector: "JSXOpeningElement[name.name='button']",
       message:

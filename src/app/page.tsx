@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 
 function Section({ id, children }: { id?: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28">
+    <section id={id} className="page-container py-20 md:py-28">
       {children}
     </section>
   )

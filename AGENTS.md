@@ -47,6 +47,9 @@ Run `pnpm verify` before every commit. Run `pnpm verify:full` before opening a P
 ## Hard rules (enforced by sensors — the error message tells you the fix)
 
 1. **Tokens only.** No raw colors (`#fff`, `rgb()`, `oklch()`) and no Tailwind palette colors (`bg-red-500`) in `src/`. Use semantic classes (`bg-background`, `text-muted-foreground`, `bg-signal`) or `var(--token)`. New color → add it to `tokens/tokens.json`, run `pnpm tokens`, map it in `globals.css`.
+   Same for type, motion, glass and layout (ADR-012): `text-5xl`, `text-display-fluid`, `leading-display`,
+   `tracking-eyebrow`, `duration-slow`, `glass-chip`, `page-container` — no arbitrary `text-[…]`,
+   `leading-[…]`, `duration-…` numbers.
 2. **Design system first.** Compose pages from `@/components/ui/*` and `@/components/sections/*`. Never import `radix-ui` outside `src/components/ui`. Need a new primitive? Copy it from shadcn, don't hand-roll it. No raw `<button>` or hand-styled links outside `ui/`: use `<Button variant size>` and restyle in `ui/button.tsx`, not per usage (layout classes like margins are fine). Trailing icons get `data-icon="inline-end"`.
 3. **WebGL is quarantined.** `three` / `@react-three/*` only inside `src/components/works`. Everywhere else use `<GenerativeWork work seed density />`.
 4. **No story, no component.** Every file in `ui/`, `sections/`, `site/`, `works/` needs a story next to it (`pnpm check:stories`). Add `play` functions for interactive behaviour.

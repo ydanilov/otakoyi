@@ -69,13 +69,13 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
       />
       <section className="relative isolate hero-under-header overflow-hidden">
         <HeroField work={s.hero.work} seed={s.hero.seed} />
-        <div className="mx-auto max-w-7xl px-4 pt-24 pb-16 md:px-8 md:pt-40 md:pb-24">
+        <div className="page-container pt-24 pb-16 md:pt-40 md:pb-24">
           <p className="mb-4 font-mono text-xs tracking-widest text-signal uppercase">
             For {s.label.toLowerCase()}
           </p>
           <ReactiveHeadline
             text={s.title}
-            className="max-w-4xl text-5xl leading-[0.95] tracking-tighter text-balance md:text-8xl"
+            className="max-w-4xl text-5xl leading-display tracking-tighter text-balance md:text-8xl"
           />
           <p className="mt-6 max-w-2xl text-lg text-pretty text-muted-foreground md:text-xl">
             {s.description}
@@ -94,7 +94,7 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
         </div>
       </section>
 
-      <section aria-labelledby="outcomes" className="mx-auto max-w-7xl px-4 py-20 md:px-8 md:py-28">
+      <section aria-labelledby="outcomes" className="page-container py-20 md:py-28">
         <h2 id="outcomes" className="sr-only">
           What it does for you
         </h2>
@@ -128,7 +128,7 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
         />
       </section>
 
-      <section id="installations" className="mx-auto max-w-7xl px-4 pb-20 md:px-8 md:pb-28">
+      <section id="installations" className="page-container pb-20 md:pb-28">
         <SectionHeading
           eyebrow="Installations"
           title={`${s.label} we have built`}
@@ -153,7 +153,7 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
         )}
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-20 md:px-8 md:pb-28">
+      <section className="page-container pb-20 md:pb-28">
         <SectionHeading
           eyebrow="How it works"
           title="From brief to opening night"
@@ -162,14 +162,14 @@ export default async function SolutionPage({ params }: PageProps<"/solutions/[sl
         <Process />
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-20 md:px-8 md:pb-28">
+      <section className="page-container pb-20 md:pb-28">
         <SectionHeading eyebrow="FAQ" title="Questions we hear" className="mb-8" />
         <Faq items={s.faq} />
       </section>
 
       <Cta />
 
-      <nav aria-label="Other solutions" className="mx-auto max-w-7xl px-4 py-16 md:px-8">
+      <nav aria-label="Other solutions" className="page-container py-16">
         <p className="mb-4 text-sm text-muted-foreground">Planning something else?</p>
         <ul className="flex flex-wrap gap-x-10 gap-y-3">
           {others.map((o) => (

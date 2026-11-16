@@ -67,7 +67,7 @@ export function Occasions({ items }: { items: Solution[] }) {
               key={current.image}
               src={current.image}
               alt=""
-              className="aspect-[4/5] w-full animate-in object-cover duration-700 fade-in-0"
+              className="aspect-[4/5] w-full animate-in object-cover duration-slower fade-in-0"
             />
           ) : (
             <GenerativeWork

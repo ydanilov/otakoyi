@@ -68,7 +68,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
           ]),
         ]}
       />
-      <header className="mx-auto max-w-7xl px-4 pt-16 md:px-8 md:pt-24">
+      <header className="page-container pt-16 md:pt-24">
         <p className="mb-4 font-mono text-xs tracking-widest text-muted-foreground uppercase">
           {item.client} · {item.year}
         </p>
@@ -113,7 +113,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
         className="mx-auto mt-12 aspect-[16/9] max-w-7xl md:mt-16 md:rounded-xl"
       />
 
-      <section aria-label="Results" className="mx-auto max-w-7xl px-4 pt-12 md:px-8">
+      <section aria-label="Results" className="page-container pt-12">
         <dl className="grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-3">
           {item.results.map((r) => (
             <div key={r.label} className="bg-background p-6">
@@ -126,7 +126,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
       </section>
 
       {item.gallery && (
-        <section aria-label="Gallery" className="mx-auto max-w-7xl px-4 pt-12 md:px-8">
+        <section aria-label="Gallery" className="page-container pt-12">
           <ul className="grid gap-6 md:grid-cols-2">
             {item.gallery.map((g, i) => (
               <li
@@ -181,7 +181,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
 
       {item.outcomes ? (
         <section aria-labelledby="outcomes-title">
-          <div className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
+          <div className="page-container py-16 md:py-24">
             <div className="mb-12 max-w-2xl space-y-3">
               <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
                 Outcomes
@@ -241,7 +241,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
       </div>
 
       <Separator className="mt-24" />
-      <nav aria-label="Next installation" className="mx-auto max-w-7xl px-4 py-16 md:px-8">
+      <nav aria-label="Next installation" className="page-container py-16">
         <Link
           href={`/works/${next.slug}`}
           className="group relative block overflow-hidden rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -249,7 +249,7 @@ export default async function CasePage({ params }: PageProps<"/works/[slug]">) {
           <CaseVisual
             item={next}
             sizes="(min-width: 1280px) 1280px, 100vw"
-            className="aspect-[21/9] transition-transform duration-700 group-hover:scale-[1.02]"
+            className="aspect-[21/9] transition-transform duration-slower group-hover:scale-[1.02]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 md:p-10">
