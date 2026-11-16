@@ -64,7 +64,7 @@ Run `pnpm verify` before every commit. Run `pnpm verify:full` before opening a P
     edits into one branch and one PR; push rarely. Storybook builds only from `main`
     (`vercel.json` → `scripts/vercel-ignore.sh`).
 
-## Workflow per task (full version: `docs/workflow.md`)
+## Workflow per task (light and full loop: `docs/workflow.md`)
 
 1. Read the issue and its acceptance criteria. If ambiguous, **ask** — do not guess.
 2. Reference: check `docs/research/` (Mobbin findings). Add new references there.
@@ -73,11 +73,15 @@ Run `pnpm verify` before every commit. Run `pnpm verify:full` before opening a P
 5. Story + tests for every new or changed component.
 6. `pnpm verify:full` green locally.
 7. Open a PR with the template; attach the Vercel preview and Storybook link.
-8. **Never push to `main`, deploy to production, or update visual baselines** without explicit human approval.
+8. **Merging.** Never push to `main` directly. The owner gave standing approval to merge a PR
+   (squash, clean title and description) as soon as CI is green; `main` then deploys. For a new
+   section, page or pattern (full loop) share the preview first. **Visual baselines** are only
+   updated through the "Update visual baselines" workflow, for changes the owner asked for.
 
 ## Human checkpoints
 
-1. Brief & acceptance criteria · 2. Direction after research · 3. PR review (preview + Storybook) · 4. Production release.
+Full loop only: 1. Brief & acceptance criteria · 2. Direction after research · 3. Preview review.
+Copy, fixes and changes inside the current design (light loop) go straight to PR → CI → merge.
 
 ## Where things live
 
@@ -97,5 +101,7 @@ src/components/site/     ← header, footer
 src/components/works/    ← generative engine (R3F + GLSL) and registry
 src/content/             ← case metadata (zod) + MDX bodies
 tests/                   ← Playwright e2e, a11y, visual
-scripts/                 ← token build, story coverage, JS budget
+scripts/                 ← token build, story coverage, JS budget, sweep reports
+knip.json                ← unused-code rules for the weekly sweep
+lighthouserc.json        ← Lighthouse thresholds (CI)
 ```

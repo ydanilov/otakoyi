@@ -52,3 +52,4 @@ __pycache__/
 
 # Code Connect parse output (pnpm figma:check)
 .figma-connect.json
+.lighthouseci
