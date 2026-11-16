@@ -2,12 +2,12 @@
 
 File: **otakoyi** — https://www.figma.com/design/IS3HHVFfnJ6b4BC8jf9TNS/otakoyi
 
-| Figma page | Purpose                                                                                 | Code counterpart                  |
-| ---------- | --------------------------------------------------------------------------------------- | --------------------------------- |
-| Tokens     | Variables collection _Theme_ (one mode, _Default_; the site is dark only)               | `tokens/tokens.json`              |
-| shadcn/ui  | The shadcn primitives the site uses, 1:1 with the source, bound to Theme variables      | `src/components/ui`               |
-| Components | Site building blocks (header, footer, CTA, icons…) and _Sections_ built from primitives | `src/components/sections`, `site` |
-| Pages      | Every live route, desktop 1440 + mobile 390, built from library instances               | `src/app/**/page.tsx`             |
+| Figma page | Purpose                                                                                                                                | Code counterpart                  |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| Tokens     | Variables: _Theme_ (colours, one mode — dark only) and _Scale_ (radius, type, motion, glass, layout — ADR-012); text and effect styles | `tokens/tokens.json`              |
+| shadcn/ui  | The shadcn primitives the site uses, 1:1 with the source, bound to Theme variables                                                     | `src/components/ui`               |
+| Components | Site building blocks (header, footer, CTA, icons…) and _Sections_ built from primitives                                                | `src/components/sections`, `site` |
+| Pages      | Every live route, desktop 1440 + mobile 390, built from library instances                                                              | `src/app/**/page.tsx`             |
 
 Node IDs: token frame _Tokens_ 5:41; components are listed in `figma/components.json`.
 
@@ -69,3 +69,21 @@ Figma Variables ──bound swatches──▶ tokens/figma.json ──tokens:fig
   → the check names the drifted tokens → update `tokens.json`, `pnpm tokens`.
 - Code changed → `pnpm tokens:figma:plan` → apply `tokens/figma-push.json` with the Figma Console
   MCP (`figma_batch_update_variables`) → `pnpm tokens:figma:pull`.
+
+## Scales, text styles and effect styles (ADR-012)
+
+- **Scale** collection mirrors the non-colour groups of `tokens.json` with the same names and
+  `var(--…)` code syntax: `radius/*`, `type/size/*` (px; the fluid `clamp()` sizes exist only in
+  code), `motion/duration/*` (ms, no Figma scope — reference only), `glass/<name>/surface` (%) and
+  `glass/<name>/blur` (px), `layout/container`, `layout/gutter`, `layout/gutter-md`.
+- **Text styles** — font size is bound to `type/size/*`:
+  `Display` (8xl), `Heading/1` (7xl), `Heading/2` (5xl), `Heading/3` (xl), `Heading/4` (4xl),
+  `Heading/5` (2xl), `Title/Section` (3xl), `Lead` (xl), `Body/Large` (lg), `Body/Default` (base),
+  `Body/Small` (sm), `Eyebrow` (xs mono), `Label/Mono` (base mono), `UI/Label` (sm medium — shadcn
+  controls), `UI/Caption` (xs medium — Badge). Text on the shadcn/ui and Components pages uses
+  them; one-off display headings stay unstyled until they get a token.
+- **Effect styles** `Glass/bar`, `Glass/panel`, `Glass/pill`, `Glass/chip`, `Glass/chip-strong`:
+  background blur bound to `glass/<name>/blur`; pair with a `background` fill at
+  `glass/<name>/surface` opacity. Code: `.glass-<name>`.
+- `tokens:figma:check` covers colours only. A change to a scale is made in `tokens.json` and in
+  the _Scale_ collection in the same PR.

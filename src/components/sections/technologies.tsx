@@ -21,14 +21,14 @@ export function TechnologyBento({ items }: { items: Technology[] }) {
               src={t.image}
               alt=""
               loading="lazy"
-              className="absolute inset-0 -z-10 size-full object-cover opacity-80 transition-[opacity,transform] duration-700 group-hover:scale-105 group-hover:opacity-100"
+              className="absolute inset-0 -z-10 size-full object-cover opacity-80 transition-[opacity,transform] duration-slower group-hover:scale-105 group-hover:opacity-100"
             />
           ) : (
             <GenerativeWork
               work={t.preview.work}
               seed={t.preview.seed}
               density={t.preview.density}
-              className="absolute inset-0 -z-10 opacity-50 transition-opacity duration-500 group-hover:opacity-90"
+              className="absolute inset-0 -z-10 opacity-50 transition-opacity duration-slow group-hover:opacity-90"
             />
           )}
           <div
@@ -41,7 +41,7 @@ export function TechnologyBento({ items }: { items: Technology[] }) {
             <p className="mt-2 max-w-md text-pretty text-muted-foreground">{t.line}</p>
             <div className="mt-4 flex flex-wrap gap-1.5">
               {t.where.map((w) => (
-                <Badge key={w} variant="outline" className="bg-background/60 backdrop-blur">
+                <Badge key={w} variant="outline" className="glass-chip">
                   {w}
                 </Badge>
               ))}

@@ -42,7 +42,7 @@ export function ParticleWordmark({
       data-work="particle-wordmark"
       data-state={webgl === false ? "fallback" : ready ? "ready" : "loading"}
       className={cn(
-        "pointer-events-none relative overflow-hidden transition-opacity duration-1000",
+        "pointer-events-none relative overflow-hidden transition-opacity duration-slowest",
         ready ? "opacity-100" : "opacity-0",
         className,
       )}

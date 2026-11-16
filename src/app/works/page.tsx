@@ -45,7 +45,7 @@ export default function WorksPage() {
       />
       <section className="relative isolate hero-under-header overflow-hidden">
         <HeroField seed={13} />
-        <div className="mx-auto max-w-7xl px-4 pt-16 pb-12 md:px-8 md:pt-24">
+        <div className="page-container pt-16 pb-12 md:pt-24">
           <SectionHeading
             page
             eyebrow="Portfolio"
@@ -54,7 +54,7 @@ export default function WorksPage() {
           />
         </div>
       </section>
-      <div className="mx-auto max-w-7xl px-4 pb-16 md:px-8 md:pb-24">
+      <div className="page-container pb-16 md:pb-24">
         <h2 className="sr-only">All installations</h2>
         <WorksGrid items={cases} formats={formats} />
       </div>

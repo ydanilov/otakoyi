@@ -42,7 +42,7 @@ export function VenueTour({ stops }: VenueTourProps) {
 
   return (
     <section id="venues" aria-labelledby="venues-title">
-      <div className="mx-auto max-w-7xl px-4 pt-20 pb-12 md:px-8 md:pt-28">
+      <div className="page-container pt-20 pb-12 md:pt-28">
         <p className="mb-3 font-mono text-xs tracking-widest text-muted-foreground uppercase">
           Where it lives
         </p>
@@ -89,7 +89,7 @@ export function VenueTour({ stops }: VenueTourProps) {
           <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col justify-between px-4 py-10 md:px-8">
             <nav
               aria-label="Tour stops"
-              className="self-end rounded-full border border-foreground/10 bg-background/75 px-2 shadow-lg backdrop-blur-md"
+              className="self-end rounded-full border border-foreground/10 glass-pill px-2 shadow-lg"
             >
               <ol className="flex gap-1">
                 {stops.map((s, i) => (
@@ -105,7 +105,7 @@ export function VenueTour({ stops }: VenueTourProps) {
                       <span
                         aria-hidden
                         className={cn(
-                          "h-0.5 rounded-full transition-all duration-500",
+                          "h-0.5 rounded-full transition-all duration-slow",
                           i === active ? "w-14 bg-signal" : "w-8 bg-muted-foreground/40",
                           i < active && "bg-signal/60",
                           "group-hover:w-14 group-hover:bg-signal",
@@ -134,7 +134,7 @@ export function VenueTour({ stops }: VenueTourProps) {
               grid cell, so the panel keeps the tallest stop's height; the outgoing copy is gone
               before the incoming one appears, so two texts never overlap.
             */}
-            <div className="grid max-w-md rounded-2xl border border-border/60 bg-background/55 p-6 shadow-2xl backdrop-blur-xl md:p-8">
+            <div className="grid max-w-md rounded-2xl border border-border/60 glass-panel p-6 shadow-2xl md:p-8">
               {stops.map((s, i) => (
                 <div
                   key={s.slug}
@@ -143,8 +143,8 @@ export function VenueTour({ stops }: VenueTourProps) {
                   className={cn(
                     "transition-[opacity,translate] ease-out [grid-area:1/1]",
                     i === active
-                      ? "translate-y-0 opacity-100 delay-200 duration-500"
-                      : "pointer-events-none translate-y-3 opacity-0 duration-200",
+                      ? "translate-y-0 opacity-100 delay-fast duration-slow"
+                      : "pointer-events-none translate-y-3 opacity-0 duration-fast",
                   )}
                 >
                   <StopCopy stop={s} large />
@@ -178,7 +178,7 @@ function StopCopy({ stop, large }: { stop: Solution; large?: boolean }) {
             key={x}
             variant="outline"
             // A backdrop blur inside a fading element re-samples mid-fade; the panel already blurs.
-            className={cn("bg-background/60", !large && "backdrop-blur")}
+            className={cn(large ? "bg-background/60" : "glass-chip")}
           >
             {x}
           </Badge>

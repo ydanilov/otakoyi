@@ -52,7 +52,7 @@ export function StudioHero({ first, second, image }: StudioHeroProps) {
   return (
     <section ref={ref} className="relative isolate overflow-hidden">
       <HeroField seed={41} />
-      <div className="relative mx-auto max-w-7xl px-4 py-10 md:px-8 md:py-8">
+      <div className="relative page-container py-10 md:py-8">
         <h1 className="sr-only">
           {first}. {second}
         </h1>
@@ -83,7 +83,7 @@ export function StudioHero({ first, second, image }: StudioHeroProps) {
             decorative
             text={first}
             className={cn(
-              "relative z-20 -mt-[36%] text-6xl leading-[0.85] tracking-tighter md:absolute md:top-0 md:left-0 md:mt-0 md:max-w-[48rem] md:text-[clamp(4rem,min(9vw,15svh),8.5rem)]",
+              "relative z-20 -mt-[36%] text-6xl leading-display-tight tracking-tighter md:absolute md:top-0 md:left-0 md:mt-0 md:max-w-[48rem] md:text-display-fluid",
               "drop-shadow-[0_2px_24px_var(--background)]",
             )}
             style={{ transform: `translateX(${-t * 90}px)` }}
@@ -92,7 +92,7 @@ export function StudioHero({ first, second, image }: StudioHeroProps) {
           {/* Outlined ampersand between the two phrases: in the flow on mobile, over the photo on desktop. */}
           <span
             aria-hidden
-            className="pointer-events-none relative z-10 mx-auto -my-3 block w-fit text-[7.5rem] leading-none font-medium text-transparent select-none [--ax:0%] [-webkit-text-stroke:2px_var(--signal)] md:absolute md:top-[12%] md:left-1/2 md:my-0 md:text-[clamp(12rem,min(30vw,52svh),26rem)] md:[--ax:-50%]"
+            className="pointer-events-none relative z-10 mx-auto -my-3 block w-fit text-display-outline leading-none font-medium text-transparent select-none [--ax:0%] [-webkit-text-stroke:2px_var(--signal)] md:absolute md:top-[12%] md:left-1/2 md:my-0 md:text-display-outline-fluid md:[--ax:-50%]"
             style={{
               transform: `translateX(var(--ax)) rotate(${t * 18 - 6}deg) scale(${1 + t * 0.08})`,
             }}
@@ -104,7 +104,7 @@ export function StudioHero({ first, second, image }: StudioHeroProps) {
             as="p"
             decorative
             text={second}
-            className="relative z-20 text-right text-6xl leading-[0.85] tracking-tighter text-signal drop-shadow-[0_2px_24px_var(--background)] md:absolute md:right-0 md:bottom-[12%] md:mt-0 md:max-w-[40rem] md:text-[clamp(4rem,min(9vw,15svh),8.5rem)]"
+            className="relative z-20 text-right text-6xl leading-display-tight tracking-tighter text-signal drop-shadow-[0_2px_24px_var(--background)] md:absolute md:right-0 md:bottom-[12%] md:mt-0 md:max-w-[40rem] md:text-display-fluid"
             style={{ transform: `translateX(${t * 90}px)` }}
           />
         </div>

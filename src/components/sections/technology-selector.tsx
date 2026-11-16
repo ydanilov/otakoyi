@@ -55,7 +55,7 @@ export function TechnologySelector({ items, label }: { items: Technology[]; labe
             key={t.image}
             src={t.image}
             alt=""
-            className="absolute inset-0 -z-10 size-full animate-in object-cover duration-700 fade-in-0"
+            className="absolute inset-0 -z-10 size-full animate-in object-cover duration-slower fade-in-0"
           />
         ) : (
           <GenerativeWork
@@ -78,7 +78,7 @@ export function TechnologySelector({ items, label }: { items: Technology[]; labe
           <p className="text-lg text-pretty text-muted-foreground">{t.line}</p>
           <div className="flex flex-wrap gap-1.5">
             {t.where.map((w) => (
-              <Badge key={w} variant="outline" className="bg-background/60 backdrop-blur">
+              <Badge key={w} variant="outline" className="glass-chip">
                 {w}
               </Badge>
             ))}

@@ -135,7 +135,7 @@ export function ReactiveHeadline({
                   key={ci}
                   data-letter
                   className={cn(
-                    "inline-block transition-[font-variation-settings] duration-300 ease-out",
+                    "inline-block transition-[font-variation-settings] duration-base ease-out",
                     "[font-variation-settings:'wght'_var(--w)]",
                   )}
                   style={{ "--w": restWeight } as React.CSSProperties}

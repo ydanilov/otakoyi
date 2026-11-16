@@ -36,15 +36,15 @@ export function SiteHeader() {
     <header
       data-docked={docked || undefined}
       className={cn(
-        "fixed inset-x-0 top-0 z-40 px-2 [view-transition-name:site-header] md:px-4 motion-on:transition-[padding] motion-on:duration-500 motion-on:ease-out",
+        "fixed inset-x-0 top-0 z-40 px-2 [view-transition-name:site-header] md:px-4 motion-on:transition-[padding] motion-on:duration-slow motion-on:ease-out",
         docked ? "pt-2 md:pt-3" : "pt-5",
       )}
     >
       <div
         className={cn(
-          "relative mx-auto flex h-14 items-center justify-between rounded-full motion-on:transition-all motion-on:duration-500 motion-on:ease-out",
+          "relative mx-auto flex h-14 items-center justify-between rounded-full motion-on:transition-all motion-on:duration-slow motion-on:ease-out",
           docked
-            ? "max-w-5xl bg-background/70 px-3 shadow-2xl ring-1 shadow-background/60 ring-foreground/10 backdrop-blur-2xl backdrop-saturate-150 md:pr-2 md:pl-5"
+            ? "max-w-5xl glass-bar px-3 shadow-2xl ring-1 shadow-background/60 ring-foreground/10 md:pr-2 md:pl-5"
             : "max-w-7xl px-2 ring-1 ring-transparent md:px-4",
         )}
       >
@@ -52,7 +52,7 @@ export function SiteHeader() {
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute inset-0 rounded-full bg-gradient-to-b from-foreground/[0.07] via-transparent to-transparent motion-on:transition-opacity motion-on:duration-500",
+            "pointer-events-none absolute inset-0 rounded-full bg-gradient-to-b from-foreground/[0.07] via-transparent to-transparent motion-on:transition-opacity motion-on:duration-slow",
             docked ? "opacity-100" : "opacity-0",
           )}
         />

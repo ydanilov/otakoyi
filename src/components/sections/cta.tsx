@@ -9,7 +9,7 @@ import { proposalHref, site } from "@/config/site"
  */
 export function Cta() {
   return (
-    <section className="mx-auto max-w-7xl px-4 md:px-8">
+    <section className="page-container">
       <div className="relative isolate overflow-hidden rounded-2xl border">
         <GenerativeWork
           work="signal-field"
@@ -28,7 +28,7 @@ export function Cta() {
         <div className="flex min-h-[28rem] flex-col justify-end gap-10 p-8 md:min-h-[34rem] md:p-14 lg:p-20">
           <p className="font-mono text-xs tracking-widest text-signal uppercase">Not sure yet?</p>
           <div className="max-w-3xl space-y-6">
-            <h2 className="text-4xl leading-[0.95] font-medium tracking-tighter text-balance md:text-7xl">
+            <h2 className="text-4xl leading-display font-medium tracking-tighter text-balance md:text-7xl">
               Let&rsquo;s talk it through
             </h2>
             <p className="max-w-xl text-lg text-pretty text-muted-foreground md:text-xl">

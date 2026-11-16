@@ -19,10 +19,10 @@ export function WorkCard({ item, className }: { item: Case; className?: string }
           item={item}
           animate={false}
           sizes="(min-width: 768px) 50vw, 100vw"
-          className="aspect-[4/3] rounded-lg transition-transform duration-500 group-hover:scale-[0.985]"
+          className="aspect-[4/3] rounded-lg transition-transform duration-slow group-hover:scale-[0.985]"
         />
         {item.status !== "Delivered" && (
-          <Badge className="absolute top-3 left-3 bg-background/80 text-foreground backdrop-blur">
+          <Badge className="absolute top-3 left-3 glass-chip-strong text-foreground">
             {item.status}
           </Badge>
         )}

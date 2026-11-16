@@ -9,7 +9,7 @@ const meta = {
   parameters: { layout: "padded" },
   args: {
     text: "Installations that take people's breath away",
-    className: "max-w-5xl text-5xl leading-[0.95] tracking-tighter md:text-8xl",
+    className: "max-w-5xl text-5xl leading-display tracking-tighter md:text-8xl",
   },
 } satisfies Meta<typeof ReactiveHeadline>
 export default meta

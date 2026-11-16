@@ -131,7 +131,7 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
                     <span
                       key={s.title}
                       className={cn(
-                        "h-1 w-6 rounded-full bg-border transition-colors duration-300 md:w-10",
+                        "h-1 w-6 rounded-full bg-border transition-colors duration-base md:w-10",
                         i <= active && "bg-signal",
                       )}
                     />
@@ -204,7 +204,7 @@ export function PinnedProcess({ skipTo = "#faq" }: PinnedProcessProps) {
                 <div
                   inert={!isLast}
                   className={cn(
-                    "mt-8 transition-opacity duration-500",
+                    "mt-8 transition-opacity duration-slow",
                     isLast ? "opacity-100" : "opacity-0",
                   )}
                 >

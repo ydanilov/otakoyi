@@ -41,7 +41,7 @@ export function Included() {
             {number(i)}
             <CheckIcon
               aria-hidden
-              className="size-5 text-signal transition-transform duration-300 group-hover:scale-110"
+              className="size-5 text-signal transition-transform duration-base group-hover:scale-110"
             />
           </span>
           <span>
@@ -58,7 +58,7 @@ export function Included() {
             {number(includedItems.length)}
             <CheckIcon
               aria-hidden
-              className="size-5 text-signal transition-transform duration-300 group-hover:scale-110 lg:hidden"
+              className="size-5 text-signal transition-transform duration-base group-hover:scale-110 lg:hidden"
             />
           </span>
           <span>
@@ -78,7 +78,7 @@ export function Included() {
               See the control app
               <ArrowRightIcon
                 aria-hidden
-                className="size-4 transition-transform duration-300 group-hover:translate-x-1"
+                className="size-4 transition-transform duration-base group-hover:translate-x-1"
               />
             </Link>
           </span>
@@ -86,7 +86,7 @@ export function Included() {
         <div className="relative flex items-end justify-center gap-4 sm:gap-6 lg:justify-end">
           <CheckIcon
             aria-hidden
-            className="absolute top-0 right-0 hidden size-5 text-signal transition-transform duration-300 group-hover:scale-110 lg:block"
+            className="absolute top-0 right-0 hidden size-5 text-signal transition-transform duration-base group-hover:scale-110 lg:block"
           />
           <DeviceFrame
             screen={controlScreens.tabletVj}

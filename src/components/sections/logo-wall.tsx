@@ -80,7 +80,7 @@ export function LogoWall({ className }: { className?: string }) {
       {marks.map((m) => (
         <li
           key={m.name}
-          className="group flex h-32 items-center justify-center gap-3 rounded-xl bg-background text-muted-foreground/60 transition-colors duration-300 hover:bg-card hover:text-foreground md:h-40"
+          className="group flex h-32 items-center justify-center gap-3 rounded-xl bg-background text-muted-foreground/60 transition-colors duration-base hover:bg-card hover:text-foreground md:h-40"
         >
           {m.mark}
           <span className="text-2xl font-semibold tracking-tight md:text-3xl">{m.name}</span>

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <section>
-      <div className="mx-auto max-w-7xl px-4 pt-24 pb-24 md:px-8 md:pt-40 md:pb-32">
+      <div className="page-container pt-24 pb-24 md:pt-40 md:pb-32">
         <SectionHeading
           page
           eyebrow="404"
